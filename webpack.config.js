@@ -34,7 +34,12 @@ var config = {
 		new webpack.optimize.DedupePlugin(),
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new webpack.optimize.UglifyJsPlugin({mangle:false,source:false}),
-	]
+	],
+   node: {
+        fs: 'empty',
+        net: 'empty',
+        tls: 'empty'
+   }
 }
 
 module.exports = config;
