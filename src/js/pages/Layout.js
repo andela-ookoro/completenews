@@ -31,7 +31,6 @@ class Layout extends React.Component {
 				</div>
 			  </div>
 			</nav>
-			<h2> KillerNew.net Layout </h2>
 			{this.props.children}
 		</div>
 		);	
