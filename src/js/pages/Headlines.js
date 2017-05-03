@@ -6,14 +6,23 @@ import HealineStore from '../store/HeadlineStore';
 class Headlines extends React.Component {
 	constructor() {
     super();
-		this.state = {sources: [], articles: [],articleSource : ''};     
+	this.state = {source : '' ,sources: [], articles: [],articleSource : '', sortBy : []};     
+	this.fecthHealines = this.fecthHealines.bind(this);
   }
    
   getSources() {
-		return $.getJSON('https://newsapi.org/v1/sources?language=en')
-      .then((response) => {
-        this.setState({ sources: response.sources });
-      });
+	  	if (!localStorage.sources) {
+	  		return $.getJSON('https://newsapi.org/v1/sources?language=en')
+			      .then((response) => {
+			        this.setState({ sources: response.sources});
+			        localStorage.sources =[];
+			      	localStorage.sources = JSON.stringify(response.sources);
+			      	console.log(this.state.sources);
+			      	console.log(localStorage.sources);
+			      });
+		} else {
+			return this.setState({ sources: JSON.parse(localStorage.sources) });			
+		}
 	}
 
 	//this method runs before the component render it content
@@ -31,22 +40,34 @@ class Headlines extends React.Component {
 	{
 	    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 	}
-	//fetct headlines
-	fecthHealines() {
+
+	//get available sort parameter
+	fetchAvailableSort() {
 		const source = ReactDOM.findDOMNode(this.refs.sources).value;
 		// fix source name
-		let sourceName = this.toTitleCase(source.toString().replace(/-/g,' '));
+		let sourceName = this.toTitleCase(source.toString().replace(/-/g,' ')),
+			sources = JSON.parse(localStorage.sources),
+			sourceNode = sources.filter(function( obj ) {
+						  return obj.id == source;
+						});
+
+		this.setState({ source:source, sortBy: sourceNode[0].sortBysAvailable, articleSource:sourceName});
+	}
+
+	//fetct headlines
+	fecthHealines(e) {
+		const sort = e.target.value;
+		console.log(sort);
+		const source = ReactDOM.findDOMNode(this.refs.sources).value;
 		if (source){
-			let apiURl = "https://newsapi.org/v1/articles?source=" + 
-										source +
-										"&sortBy=top&apiKey="
-										+ "213327409d384371851777e7c7f78dfe";
+			let apiURl = "https://newsapi.org/v1/articles?source=" + source +
+						"&sortBy=" +sort +
+						"&apiKey=213327409d384371851777e7c7f78dfe";
 			$.getJSON(apiURl)
 			.then((response) => {
-        this.setState({ articles: response.articles , articleSource:sourceName});
-      });
+        		this.setState({ articles: response.articles});
+      		});
 		}
-		//TodoActions.newTodo(text);
 	}
 
 	
@@ -60,20 +81,24 @@ class Headlines extends React.Component {
 				  marginleft: "5px",
 				  float : "right"
 				};
+
       return (
       	<div>
          <div style={sourceStyle}>
-					<select name="sources" size="25" ref="sources" onChange={this.fecthHealines.bind(this)}>
+					<select name="sources" size="25" ref="sources" onChange={this.fetchAvailableSort.bind(this)}>
 						{this.state.sources.map((source, i) => <SourceOptions key = {i} data = {source} />)}
 					</select>
          </div>
          <div>
-         <h2> {this.state.articleSource} </h2>
-        		<table>
-               <tbody>
-         					{this.state.articles.map((article, i) => <Article key = {i} data = {article} />)}
-         				</tbody>
-         		</table>
+         	<h6> 
+         		{this.state.articleSource} 
+         		{this.state.sortBy.map((sortBY, i) => <SortBY key = {i} data = {sortBY} onClick={this.fecthHealines} />)} 
+         	</h6>
+        	<table>
+        		<tbody>
+         			{this.state.articles.map((article, i) => <Article key = {i} data = {article} />)}
+         		</tbody>
+         	</table>
          </div>
         </div>
       );
@@ -85,6 +110,17 @@ class SourceOptions extends React.Component {
    render() {
       return (
 				 <option value={this.props.data.id}>{this.props.data.name}</option>
+			);
+   }
+}
+
+//class to display sortBy
+class SortBY extends React.Component {
+   render() {
+   		//console.log(this.props.onClick);
+      return (
+			 <button  value={this.props.data} onClick={this.props.onClick}> {this.props.data}  </button>
+      			
 			);
    }
 }
@@ -108,4 +144,6 @@ class Article extends React.Component {
 			);
    }
 }
+
+
 export default Headlines;
