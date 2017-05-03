@@ -39,7 +39,7 @@ class Headlines extends React.Component {
 		if (source){
 			let apiURl = "https://newsapi.org/v1/articles?source=" + 
 										source +
-										"&sortBy=latest&apiKey="
+										"&sortBy=top&apiKey="
 										+ "213327409d384371851777e7c7f78dfe";
 			$.getJSON(apiURl)
 			.then((response) => {
