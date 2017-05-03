@@ -1,6 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import  Fs from 'fs';
+import Request from 'request';
+import Cheerio from 'cheerio';
 import HealineStore from '../store/HeadlineStore';
+
 
 
 class Headlines extends React.Component {
@@ -8,6 +12,8 @@ class Headlines extends React.Component {
     super();
 	this.state = {source : '' ,sources: [], articles: [],articleSource : '', sortBy : []};     
 	this.fecthHealines = this.fecthHealines.bind(this);
+	this.scrape = this.scrape.bind(this);
+
   }
    
   getSources() {
@@ -70,6 +76,16 @@ class Headlines extends React.Component {
 		}
 	}
 
+	scrape() {
+	  const url = 'https://thenextweb.com/microsoft/2017/05/02/microsoft-bringing-mixed-reality-classroom-view-mixed-reality/';
+	  Request(url, function(error, response, html){
+				if(!error){
+					Fs.writeFile('output.html', html, function(err){	
+	    				console.log('File successfully written! - Check your project directory for the output.json file');
+					});
+				}
+		});		
+	}
 	
 
 	render() {
@@ -144,6 +160,6 @@ class Article extends React.Component {
 			);
    }
 }
-
-
+var test = new Headlines();
+window.scrape = test.scrape();
 export default Headlines;
