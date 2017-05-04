@@ -37,6 +37,7 @@
     "flux": "^3.1.2",
     "fs": "0.0.1-security",
     "history": "^1.17.0",
+    "jquery": "^3.2.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-router": "^1.0.3",
@@ -44,5 +45,11 @@
     "webpack": "^2.4.1",
     "webpack-dev-server": "^2.4.5"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.3"
+  }
 }
