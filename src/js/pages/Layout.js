@@ -8,31 +8,34 @@ class Layout extends React.Component {
 	}
 	render () {
 		return (
-		<div>
-			<nav class="navbar navbar-default navbar-fixed-top">
-			  <div class="container">
-				<div class="navbar-header">
-				  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>                        
-				  </button>
-				  <a class="navbar-brand" href="myPage" style={{color:'#FF8040'}}>Complete News</a>
-				</div>
-				<div class="collapse navbar-collapse" id="myNavbar">
-				  <ul class="nav navbar-nav navbar-right">
-					<li><Link to="headlines" activeClassName="activelink"> <span>Headlines </span></Link></li>
-					<li><Link to="setting" activeClassName="activelink"><span> Setting</span> </Link></li>
-					<li><Link to="favorite" activeClassName="activelink"> <span>Favorite</span> </Link></li>
-					<li><Link to="todo" activeClassName="activelink"><span> Todo list</span> </Link></li>
-					<li><a href="\signout">Sign out</a></li>
-					<li style={{color:'#FF8040'}} ><span id="usernamet" ref="username">Okoro Okwudiri</span></li>
-				  </ul>
-				</div>
-			  </div>
-			</nav>
+		<div class="row">
+      <div class="col s12">
+				<ul id="dropdown1" class="dropdown-content">
+					<li><a href="#!">one</a></li>
+					<li><a href="#!">two</a></li>
+					<li class="divider"></li>
+					<li><a href="#!">three</a></li>
+				</ul>
+				<nav>
+					<div class="nav-wrapper">
+						<a href="#!" style={{marginRight: 10 + 'px'}} class="brand-logo">Complete News</a>
+						<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+						<ul class="right hide-on-med-and-down">
+							<li><Link to="headlines" activeClassName="activelink"> <span>Headlines </span></Link></li>
+							<li><Link to="setting" activeClassName="activelink"><span> Setting</span> </Link></li>
+							<li><a class="dropdown-button" href="#!" data-activates="dropdown1">Dropdown<i class="material-icons right"></i></a></li>
+							<li style={{color:'#FF8040'}} > 
+								<div class="chip">
+									<img src="images/yuna.jpg" alt="Contact Person"/>
+									Jane Doe
+								</div> 
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</div>
 			{this.props.children}
-		</div>
+    </div>
 		);	
 	}
 }
