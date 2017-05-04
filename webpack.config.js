@@ -7,7 +7,7 @@ const debug = process.env.NODE_ENV !== 'production';
 module.exports = {
   context : __dirname + "/src/",
   devtool: debug ? 'inline-sourcemap' : null,
-  entry: './js/client.js',
+  entry: ['./js/client.js', './scss/main.scss'],
   devServer: {
       inline: true,
       port: 1142
@@ -24,11 +24,19 @@ module.exports = {
         },
       },
       {
-        test: /\.scss$/,
+        test: /\.(scss|sass)$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           //resolve-url-loader may be chained before sass-loader if necessary
           use: ['css-loader', 'sass-loader']
+        }),
+      },
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          //resolve-url-loader may be chained before sass-loader if necessary
+          use: 'css-loader?importLoaders=1'
         }),
       },
       {
@@ -61,7 +69,7 @@ module.exports = {
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
-    new ExtractTextPlugin({ filename: `style.css`,  allChunks: true }),
+    new ExtractTextPlugin({ filename: `/src/style.css`,  allChunks: true }),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
