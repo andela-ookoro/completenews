@@ -8,6 +8,10 @@ module.exports = {
   context : __dirname + "/src/",
   devtool: debug ? 'inline-sourcemap' : null,
   entry: './js/client.js',
+  devServer: {
+      inline: true,
+      port: 1142
+   },
   module: {
     loaders: [
       {
