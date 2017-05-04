@@ -101,23 +101,21 @@ class Headlines extends React.Component {
     };
 
     return (
-      <div>
-        <div className="row">
-          <div className="col s2">
-            <select name="sources" size="25" ref="sources" onChange={this.fetchAvailableSort.bind(this)}>
-              {this.state.sources.map((source, i) => <SourceOptions key={i} data={source} />)}
+      <div class="row"> 
+        <div class="col s2">
+          Sources
+          <select style={{'minHeight': '700px'}} class="browser-default" name="sources" size={"25"} ref="sources" onChange={this.fetchAvailableSort.bind(this)}>
+                {this.state.sources.map((source, i) => <SourceOptions key={i} data={source} />)}
             </select>
-          </div>
-          <div className="col s6">
-            <h6>
-              {this.state.articleSource}
-              {this.state.sortBy.map((sortBY, i) => <SortBY key={i} data={sortBY} onClick={this.fecthHealines} />)}
-            </h6>
-            {this.state.articles.map((article, i) => <Article key={i} data={article} />)}
-          </div>
-          <div className={clear} />
         </div>
-      </div>
+        <div class="col s6">
+          <h6>
+            {this.state.articleSource} 
+            {this.state.sortBy.map((sortBY, i) => <SortBY key={i} data={sortBY} onClick={this.fecthHealines} />)}
+              </h6>
+              {this.state.articles.map((article, i) => <Article key={i} data={article} />)}
+        </div>
+    </div>
     );
   }
 }
@@ -153,15 +151,15 @@ class Article extends React.Component {
       width: '80%',
     };
     return (
-      <div className="col s12 m l12">
-        <h2 className="header">
+      <div className="col s12 m7 l12">
+        <h6 className="header">
           <span className={paragraphstyle} >
             {this.props.data.author} : {this.props.data.title}
           </span>
-        </h2>
+        </h6>
         <div className="card horizontal">
           <div className="card-image">
-            <img className={imgStyle} src={this.props.data.urlToImage} alt="news image" />
+            <img className={imgStyle} src={this.props.data.urlToImage} alt="No news image" />
           </div>
           <div className="card-stacked">
             <div className="card-content">
