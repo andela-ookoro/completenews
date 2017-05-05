@@ -7,11 +7,14 @@ const debug = process.env.NODE_ENV !== 'production';
 module.exports = {
   context : __dirname + "/src/",
   devtool: debug ? 'inline-sourcemap' : null,
-  entry: ['./js/client.js', './scss/main.scss'],
+  entry: ['./js/client.jsx', './scss/main.scss'],
   devServer: {
       inline: true,
       port: 1142
    },
+  resolve:{
+    extensions: ['.js', '.jsx']
+  },
   module: {
     loaders: [
       {
