@@ -1,11 +1,11 @@
 const webpack = require('webpack');
-
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const path = require('path');
 
 const debug = process.env.NODE_ENV !== 'production';
 
 module.exports = {
-  context : __dirname + "/src/",
+  context: __dirname + "/src/",
   devtool: debug ? 'inline-sourcemap' : null,
   entry: ['./js/client.jsx', './scss/main.scss'],
   devServer: {
@@ -13,12 +13,12 @@ module.exports = {
       port: 1142
    },
   resolve:{
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
   module: {
     loaders: [
       {
-        test: /\.jsx?$/,
+        test: /(\.js|\.jsx)$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader',
         query: {
@@ -44,9 +44,18 @@ module.exports = {
       },
       {
         test: /\.(png|woff|woff2|eot|ttf|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        loader: 'url-loader?limit=100000'
+        loader: 'url-loader?limit=100000',
       },
-      { test: /\.json$/, loader: 'json-loader' },
+      {
+        test: /\.json$/, loader: 'json-loader',
+      },
+      {
+        test: /react-icons\/(.)*(.js)$/,
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015', 'react'],
+        },
+      },
     ],
   },
   node: {

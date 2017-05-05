@@ -5,7 +5,7 @@ class HealineStore extends  EventEmitter {
 	constructor() {
 		super();
 		this.getSources = this.getSources.bind(this);
-		this.sources;
+		this.sources ;
 		this.todos =[
             {
                "id":1,
