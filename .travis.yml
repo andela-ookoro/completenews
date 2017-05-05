@@ -1,0 +1,10 @@
+language: node_js
+addons:
+	code_climate :
+    repo_token: 20fa1c9e5c02467828e5004b9ed942346389fe1b5aa9a3e2f0eb5a76d05ab449
+node_js:
+ - "stable"
+install:
+ - npm install
+script:
+ - npm test
