@@ -46,6 +46,7 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-google-login": "^2.8.9",
+    "react-icons": "^2.2.4",
     "react-router": "^1.0.3",
     "request": "^2.81.0",
     "webpack": "^2.4.1",
