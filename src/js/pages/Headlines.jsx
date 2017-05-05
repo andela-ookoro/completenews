@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 //  import Cheerio from 'cheerio';
 //  import HealineStore from '../store/HeadlineStore.js';
 import SourceOptions from './headlines/SourceOptions';
-import SortBY from './headlines/SortBy';
+//  import SortBY from './headlines/SortBy';
 import Article from './headlines/Article';
 
 
@@ -45,52 +45,54 @@ class Headlines extends React.Component {
   }
 
   toTitleCase(str) {
-    return str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+    return str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() +
+                    txt.substr(1).toLowerCase());
   }
 
   // get available sort parameter
   fetchAvailableSort(e) {
-    const source = e.target.value;
+    e.preventDefault();
+    const cursource = e.target.getAttribute('value');
     // fix source name
-    const sourceName = this.toTitleCase(source.toString().replace(/-/g, ' '));
+    const sourceName = this.toTitleCase(cursource.toString().replace(/-/g, ' '));
+    console.log(sourceName);
     const sources = JSON.parse(localStorage.sources);
-    const sourceNode = sources.filter(obj => obj.id === source);
-    const apiURl = `https://newsapi.org/v1/articles?source=${source
+    const sourceNode = sources.filter(obj => obj.id === cursource);
+    const apiURl = `https://newsapi.org/v1/articles?source=${cursource
             }&apiKey=213327409d384371851777e7c7f78dfe`;
     $.getJSON(apiURl)
       .then((response) => {
         this.setState({
-          source: sources,
+          sources,
+          source: cursource.toString(),
           sortBy: (sourceNode[0].sortBysAvailable.length > 1) ?
           sourceNode[0].sortBysAvailable : [],
           articleSource: sourceName,
-          articles: response.articles });
+          articles: response.articles }, () => console.log(this.state.articleSource));
         localStorage.setItem('articles', JSON.stringify(response.articles));
-        console.log(JSON.parse(localStorage.articles));
+        //  console.log(JSON.parse(localStorage.articles));
       });
-
+      
+    // console.log(this.state.articleSource);
     // this.setState({ source:source, sortBy: sourceNode[0].sortBysAvailable,
     //  articleSource:sourceName});
   }
-
-  // fetct headlines
+   // fetct headlines
   fecthHealines(e) {
     const sort = e.target.value;
-    // console.log(sort);
-    const source = ReactDOM.findDOMNode(this.refs.sources).value;
+    const source = this.state.source;
     if (source) {
       const apiURl = `https://newsapi.org/v1/articles?source=${source
             }&sortBy=${sort
             }&apiKey=213327409d384371851777e7c7f78dfe`;
       $.getJSON(apiURl)
       .then((response) => {
-        localStorage.articles = [];
-        localStorage.articles = JSON.stringify(response.articles);
-        //  console.log(response.articles);
+        localStorage.setItem('articles', JSON.stringify(response.articles));
         this.setState({ articles: response.articles, currentSort: sort });
       });
     }
   }
+
   /**
   scrape() {
     const url = 'https://thenextweb.com/microsoft/2017/05/02/microsoft-bringing-mixed-reality-classroom-view-mixed-reality/';
@@ -127,12 +129,12 @@ class Headlines extends React.Component {
             {this.state.sources.map((source, i) => <SourceOptions key={i} data={source} />)}
           </select>
         </div>
-        <div className={'col s9'}>
+        <div className={'col s7'}>
           <h5>
             {this.state.articleSource}
             {(this.state.currentSort === '') ? '' : '\t' + this.state.currentSort + '\t' + this.state.articles.length + ' news '}
             {this.state.sortBy.map(
-              (sortBY, i) => <SortBY key={i} data={sortBY} onClick={this.fecthHealines} />,
+              (sortBy, i) => <SortBY key={i} data={sortBy} source={this.state.source} onClick={this.fecthHealines} />,
               )}
           </h5>
           {this.state.articles.map((article, i) => <Article key={i} id={i}
@@ -142,11 +144,30 @@ class Headlines extends React.Component {
           />,
             )}
         </div>
+        <div className={'col s3'}>
+          Sources
+          
+            {this.state.sources.map((source, i) => 
+              <div key={source.id }>
+                <a className={'browser-default'} title={source.description}  href={'#'} value={source.id } onClick={this.fetchAvailableSort}>
+                  {source.name } </a>
+                </div>
+            )}
+        </div>
       </div>
     );
   }
 }
 
+// class to display sortBy
+class SortBY extends React.Component {
+ render() {
+    return (
+      <button value={this.props.data} onClick={this.props.onClick}> {this.props.data} 
+      </button>
+    );
+  }
+}
 // class to display source
 /*
 class SourceOptions extends React.Component {
@@ -157,7 +178,6 @@ class SourceOptions extends React.Component {
   }
 }
 */
-
 // const test = new Headlines();
 // window.scrape = test.scrape();
 export default Headlines;

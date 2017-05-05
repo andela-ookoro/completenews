@@ -1,5 +1,7 @@
 import React from 'react';
-import {Link} from 'react-router';
+import Link from 'react-router';
+import Login from './login.jsx';
+
 class Layout extends React.Component {
 	navigate() {
 		console.log(this.props.history);
@@ -25,10 +27,7 @@ class Layout extends React.Component {
 							<li><Link to="setting" activeClassName="activelink"><span> Setting</span> </Link></li>
 							<li><a class="dropdown-button" href="#!" data-activates="dropdown1">Dropdown<i class="material-icons right"></i></a></li>
 							<li style={{color:'#FF8040'}} > 
-								<div class="chip">
-									<img src="images/yuna.jpg" alt="Contact Person"/>
-									Jane Doe
-								</div> 
+								<Login />
 							</li>
 						</ul>
 					</div>
