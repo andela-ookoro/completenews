@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom';
 //  import Fs from 'fs';
 //  import Request from 'request';
 //  import Cheerio from 'cheerio';
-//  import HealineStore from '../store/HeadlineStore.js';
+import Sources from '../store/SourceStore';
 import SourceOptions from './headlines/SourceOptions';
 import SortBY from './headlines/SortBy';
 import Article from './headlines/Article';
+import * as SourceAction from '../action/sourceAction';
 
 
 class Headlines extends React.Component {
@@ -31,36 +32,34 @@ class Headlines extends React.Component {
   }
   // this method runs before the component render it content
   componentWillMount() {
-    this.getSources();
     localStorage.getItem('sources');
-    // HealineStore.on("change", this.getSources);
-    // console.log("count" ,HealineStore.listenerCount("change"));
+    this.getSources();
+    console.log('count', Sources.listenerCount('change'));
   }
 
   componentWillUnmount() {
-    // HealineStore.removeListener("change", this.getSources);
+    Sources.removeListener('change', this.getSources);
   }
 
   getSources() {
-    if (localStorage.getItem('sources')) {
-      return $.getJSON('https://newsapi.org/v1/sources?language=en')
-       .then((response) => {
-         let categories = {};
-         response.sources.forEach((source) => {
-           if (!categories.hasOwnProperty(source.category)) {
-             categories[source.category] = [];
-           }
-           categories[source.category].push(source);
-         });
-         this.setState({ sources: response.sources, categories });
-         localStorage.setItem('categories', JSON.stringify(categories));
-         localStorage.setItem('sources', JSON.stringify(response.sources));
-         this.displayCategories();
-         // console.log(this.state.categories);
-         // console.log(localStorage.sources);
-       });
+    if (!localStorage.getItem('sources')) {
+      SourceAction.getSources();
+      Sources.on('change', () => {
+        let sources = Sources.sources;
+        let categories = {};
+        sources.forEach((source) => {
+          if (!categories.hasOwnProperty(source.category)) {
+            categories[source.category] = [];
+          }
+          categories[source.category].push(source);
+        });
+        this.setState({ sources, categories });
+        localStorage.setItem('categories', JSON.stringify(categories));
+        localStorage.setItem('sources', JSON.stringify(sources));
+        this.displayCategories();
+      });
     }
-    return this.setState(
+    this.setState(
       {
         sources: JSON.parse(localStorage.sources),
         categories: JSON.parse(localStorage.categories),
