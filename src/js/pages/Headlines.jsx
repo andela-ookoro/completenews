@@ -81,9 +81,26 @@ class Headlines extends React.Component {
     const cursource = e.target.getAttribute('value');
     // fix source name
     const sourceName = this.toTitleCase(cursource.toString().replace(/-/g, ' '));
-    console.log(sourceName);
     const sources = JSON.parse(localStorage.sources);
     const sourceNode = sources.filter(obj => obj.id === cursource);
+    //////////////
+    HeadlineAction.getHeadlines(cursource, '');
+    HeadlineStore.on('change', () => {
+      const headlines = HeadlineStore.headlines;
+      // console.log(headlines);
+      localStorage.setItem('articles', JSON.stringify(headlines));
+      this.setState({
+        sources,
+        source: cursource.toString(),
+        sortBy: (sourceNode[0].sortBysAvailable.length > 1) ?
+        sourceNode[0].sortBysAvailable : [],
+        articleSource: sourceName,
+        articles: headlines,
+      },
+        //() => console.log(this.state.articleSource)
+      );
+    });
+    /*
     const apiURl = `https://newsapi.org/v1/articles?source=${cursource
             }&apiKey=213327409d384371851777e7c7f78dfe`;
     $.getJSON(apiURl)
@@ -101,33 +118,20 @@ class Headlines extends React.Component {
     // console.log(this.state.articleSource);
     // this.setState({ source:source, sortBy: sourceNode[0].sortBysAvailable,
     //  articleSource:sourceName});
+    **/
   }
    // fetct headlines
   fecthHealines(e) {
-    ///////////////
+    e.preventDefault();
     const sort = e.target.value;
     const source = this.state.source;
     HeadlineAction.getHeadlines(source, sort);
     HeadlineStore.on('change', () => {
       const headlines = HeadlineStore.headlines;
-      console.log(headlines);
+      // console.log(headlines);
       localStorage.setItem('articles', JSON.stringify(headlines));
       this.setState({ articles: headlines, currentSort: sort });
     });
-    /** 
-    const sort = e.target.value;
-    const source = this.state.source;
-    if (source) {
-      const apiURl = `https://newsapi.org/v1/articles?source=${source
-            }&sortBy=${sort
-            }&apiKey=213327409d384371851777e7c7f78dfe`;
-      $.getJSON(apiURl)
-      .then((response) => {
-        localStorage.setItem('articles', JSON.stringify(response.articles));
-        this.setState({ articles: response.articles, currentSort: sort });
-      });
-    }
-    */
   }
 
   displayCategories() {
