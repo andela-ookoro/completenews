@@ -37,7 +37,7 @@ class Article extends React.Component {
       width: '80%',
     };
     return (
-      <div className="col s12 m7 l12">
+      <div className="col s12 m7 l12  hoverable">
         <h6 className="header">
           <span className={paragraphstyle} >
             {(this.props.author) ? this.props.author + ': ': ''} {this.props.title}
@@ -52,7 +52,7 @@ class Article extends React.Component {
               <p className={paragraphstyle}>{this.props.description}</p>
             </div>
             <div className="card-action">
-              <span>{(this.props.publishedAt) ?'Published on ' + this.props.publishedAt : ''} </span>
+              <span>{(this.props.publishedAt) ? 'Published on ' + this.props.publishedAt : ''} </span>
               <a href={this.props.url} target="_blank" rel="noopener noreferrer">{(this.props.url) ? 'Read on site ' : ''}</a>
               <button value={this.props.id} onClick={this.addArticle} > Add to db</button>
             </div>
