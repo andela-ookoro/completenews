@@ -1,42 +1,36 @@
 import { EventEmitter } from 'events';
 import Dispatcher from '../dispatcher/Dispatcher';
-import * as Api from '../utilities/api';
 
-class HealineStore extends EventEmitter {
+class Headlines extends EventEmitter {
   constructor() {
     super();
-    this.getSources = this.getSources.bind(this);
-    this.sources = [];
+    this.getHeadlines = this.getHeadlines.bind(this);
     this.headlines = [];
-    this.categories = {};
   }
 
- // return sources
-  getSources(sources) {
-    this.sources = sources;
-    return this.sources;
+ // return Headlines
+  getHeadlines(headlines) {
+    this.headlines = headlines;
+    // console.log(Headlines);
+    return this.headlines;
   }
 
   handleActions(action) {
-  //  console.log("TodoStore received an action ...", action);
-    switch (action.type) {
-      case 'getSources' :
-        this.getSources(action.sources);
-        break;
-      case 'RECIEVE_TODO' :
-        this.todos = action.todos;
+  // console.log("TodoStore received an action ...", action.actionType);
+    switch (action.actionType) {
+      case 'GET-HEADLINES' :
+        this.getHeadlines(action.headlines);
         this.emit('change');
-        // console.log(this.todos);
         break;
       default :
         return ('error');
     }
   }
 }
-const healineStore = new HealineStore();
-Dispatcher.register(healineStore.handleActions.bind(healineStore));
+const headlinesStore = new Headlines();
+Dispatcher.register(headlinesStore.handleActions.bind(headlinesStore));
 // to use the onbject on browser console
-window.healineStore = healineStore;
+window.healineStore = headlinesStore;
 window.dispatcher = Dispatcher;
-window.healineStore = healineStore;
-export default healineStore;
+window.healineStore = headlinesStore;
+export default headlinesStore;

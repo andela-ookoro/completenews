@@ -3,11 +3,15 @@ import ReactDOM from 'react-dom';
 //  import Fs from 'fs';
 //  import Request from 'request';
 //  import Cheerio from 'cheerio';
-import Sources from '../store/SourceStore';
+
 import SourceOptions from './headlines/SourceOptions';
 import SortBY from './headlines/SortBy';
 import Article from './headlines/Article';
+
 import * as SourceAction from '../action/sourceAction';
+import Sources from '../store/SourceStore';
+import * as HeadlineAction from '../action/headlineAction';
+import HeadlineStore from '../store/HeadlineStore';
 
 
 class Headlines extends React.Component {
@@ -100,6 +104,17 @@ class Headlines extends React.Component {
   }
    // fetct headlines
   fecthHealines(e) {
+    ///////////////
+    const sort = e.target.value;
+    const source = this.state.source;
+    HeadlineAction.getHeadlines(source, sort);
+    HeadlineStore.on('change', () => {
+      const headlines = HeadlineStore.headlines;
+      console.log(headlines);
+      localStorage.setItem('articles', JSON.stringify(headlines));
+      this.setState({ articles: headlines, currentSort: sort });
+    });
+    /** 
     const sort = e.target.value;
     const source = this.state.source;
     if (source) {
@@ -112,6 +127,7 @@ class Headlines extends React.Component {
         this.setState({ articles: response.articles, currentSort: sort });
       });
     }
+    */
   }
 
   displayCategories() {
