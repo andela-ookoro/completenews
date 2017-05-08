@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import firebase from './firebase';
 
 export const getSources = (cb) => {
   axios.get('https://newsapi.org/v1/sources?language=en')
@@ -26,10 +26,28 @@ export const getHeadlines = (source, sort, cb) => {
 
   axios.get(apiURl)
 .then((response) => {
-  if (response.status !== 200) {
-    cb('error');
+  // console.log(response);
+  if (response.statusText !== 'OK') {
+    cb('error', null);
   } else {
-    cb(response.data.articles);
+    cb(null, response.data.articles);
   }
+}).catch(() => {
+  cb('error', null);
 });
+};
+
+export const getDbHeadlines = (email, cb) => {
+  firebase.database().ref(`/user/${email}/favourite`).once('value')
+  .then((snapshot) => {
+    const headlines = [];
+    const dbSnapshot = snapshot.val();
+    Object.keys(dbSnapshot).forEach((key) => {
+      headlines.push(dbSnapshot[key]);
+    });
+    cb(null, headlines);
+  })
+  .catch(() => {
+    cb('error', null);
+  });
 };
