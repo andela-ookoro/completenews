@@ -1,18 +1,34 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 //  import Fs from 'fs';
 //  import Request from 'request';
 //  import Cheerio from 'cheerio';
-//  import HealineStore from '../store/HeadlineStore.js';
-import SourceOptions from './headlines/SourceOptions';
-//  import SortBY from './headlines/SortBy';
-import Article from './headlines/Article';
+
+// import SourceOptions from './headlines/SourceOptions';
+import SortBY from './headlines/SortBy';
+import Article from './Article';
+import Category from './headlines/Category';
+// import SelectSource from './headlines/selectSource';
+
+import SourceAction from '../action/sourceAction';
+import Sources from '../store/SourceStore';
+import * as HeadlineAction from '../action/headlineAction';
+import HeadlineStore from '../store/HeadlineStore';
 
 
 class Headlines extends React.Component {
   constructor() {
     super();
-    this.state = { source: '', sources: [], articles: [], articleSource: '', sortBy: [], currentSort: '' };
+    this.state = {
+      source: '',
+      sources: [],
+      articles: [],
+      articleSource: '',
+      sortBy: [],
+      currentSort: '',
+      categories: [],
+      errorMessage: '',
+    };
     this.fecthHealines = this.fecthHealines.bind(this);
     this.getSources = this.getSources.bind(this);
     this.toTitleCase = this.toTitleCase.bind(this);
@@ -21,76 +37,107 @@ class Headlines extends React.Component {
   }
   // this method runs before the component render it content
   componentWillMount() {
-    this.getSources();
     localStorage.getItem('sources');
-    // HealineStore.on("change", this.getSources);
-    // console.log("count" ,HealineStore.listenerCount("change"));
+    this.getSources();
+    HeadlineStore.on('change', () => {
+      const headlines = HeadlineStore.headlines;
+      const error = HeadlineStore.error;
+      // console.log(headlines);
+      localStorage.setItem('articles', JSON.stringify(headlines));
+      this.setState({
+        articles: headlines,
+        errorMessage: error,
+        articleSource: 'Favourite Headlines',
+      });
+    });
+    // console.log('count', Sources.listenerCount('change'));
   }
 
   componentWillUnmount() {
-    // HealineStore.removeListener("change", this.getSources);
+    Sources.removeListener('change', this.getSources);
   }
 
   getSources() {
     if (!localStorage.getItem('sources')) {
-      return $.getJSON('https://newsapi.org/v1/sources?language=en')
-       .then((response) => {
-         this.setState({ sources: response.sources });
-         localStorage.setItem('sources', JSON.stringify(response.sources));
-         // console.log(this.state.sources);
-         // console.log(localStorage.sources);
-       });
+      SourceAction();
+      Sources.on('change', () => {
+        const sources = Sources.sources;
+        const sourcescategories = {};
+        const categories = [];
+        sources.forEach((source) => {
+          if (!sourcescategories.hasOwnProperty(source.category)) {
+            sourcescategories[source.category] = [];
+            categories.push(source.category);
+          }
+          sourcescategories[source.category].push(source);
+        });
+        this.setState({ sources, categories });
+        localStorage.setItem('cat', JSON.stringify(categories));
+        localStorage.setItem('categories', JSON.stringify(sourcescategories));
+        localStorage.setItem('sources', JSON.stringify(sources));
+        // console.log('test', this.state.categories);
+      });
+    } else {
+      this.setState(
+        {
+          sources: JSON.parse(localStorage.getItem('sources')),
+          categories: JSON.parse(localStorage.getItem('cat')),
+        });
     }
-    return this.setState({ sources: JSON.parse(localStorage.sources) });
   }
 
   toTitleCase(str) {
-    return str.replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() +
+    return str.replace(/-/g, ' ').replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() +
                     txt.substr(1).toLowerCase());
   }
 
   // get available sort parameter
   fetchAvailableSort(e) {
     e.preventDefault();
-    const cursource = e.target.getAttribute('value');
+    let cursource = e.target.getAttribute('value');
+    if (!cursource) {
+      cursource = e.target.value;
+    }
     // fix source name
-    const sourceName = this.toTitleCase(cursource.toString().replace(/-/g, ' '));
-    console.log(sourceName);
+    const sourceName = this.toTitleCase(cursource.toString());
     const sources = JSON.parse(localStorage.sources);
     const sourceNode = sources.filter(obj => obj.id === cursource);
-    const apiURl = `https://newsapi.org/v1/articles?source=${cursource
-            }&apiKey=213327409d384371851777e7c7f78dfe`;
-    $.getJSON(apiURl)
-      .then((response) => {
-        this.setState({
-          sources,
-          source: cursource.toString(),
-          sortBy: (sourceNode[0].sortBysAvailable.length > 1) ?
-          sourceNode[0].sortBysAvailable : [],
-          articleSource: sourceName,
-          articles: response.articles }, () => console.log(this.state.articleSource));
-        localStorage.setItem('articles', JSON.stringify(response.articles));
-        //  console.log(JSON.parse(localStorage.articles));
-      });
-      
-    // console.log(this.state.articleSource);
-    // this.setState({ source:source, sortBy: sourceNode[0].sortBysAvailable,
-    //  articleSource:sourceName});
+    HeadlineAction.getHeadlines(cursource, '');
+    HeadlineStore.on('change', () => {
+      const headlines = HeadlineStore.headlines;
+      const error = HeadlineStore.error;
+      // console.log(headlines);
+      localStorage.setItem('articles', JSON.stringify(headlines));
+      this.setState({
+        sources,
+        source: sourceName,
+        sortBy: (sourceNode[0].sortBysAvailable.length > 1) ?
+        sourceNode[0].sortBysAvailable : [],
+        articleSource: sourceName,
+        articles: headlines,
+        errorMessage: error,
+      },
+        //() => console.log(this.state.articleSource)
+      );
+    });
   }
    // fetct headlines
   fecthHealines(e) {
+    e.preventDefault();
     const sort = e.target.value;
     const source = this.state.source;
-    if (source) {
-      const apiURl = `https://newsapi.org/v1/articles?source=${source
-            }&sortBy=${sort
-            }&apiKey=213327409d384371851777e7c7f78dfe`;
-      $.getJSON(apiURl)
-      .then((response) => {
-        localStorage.setItem('articles', JSON.stringify(response.articles));
-        this.setState({ articles: response.articles, currentSort: sort });
+    HeadlineAction(source, sort);
+    HeadlineStore.on('change', () => {
+      const headlines = HeadlineStore.headlines;
+      const error = HeadlineStore.error;
+      // console.log(headlines);
+      localStorage.setItem('articles', JSON.stringify(headlines));
+      this.setState({
+        articles: headlines,
+        currentSort: sort,
+        errorMessage: error,
       });
-    }
+    });
   }
 
   /**
@@ -109,65 +156,57 @@ class Headlines extends React.Component {
 
 
   render() {
-    const sourceStyle = {
-      marginleft: '5px',
-      float: 'left',
-    };
-    const articleStyle = {
-      marginleft: '5px',
-      float: 'right',
-    };
-    const clear = {
-      clear: 'both',
-    };
-
     return (
       <div className="row">
         <div className="col s2">
           Sources
-          <select style={{ minHeight: '700px' }} className={'browser-default'} name={'sources'} size={'25'} ref={'sources'} onChange={this.fetchAvailableSort}>
-            {this.state.sources.map((source, i) => <SourceOptions key={i} data={source} />)}
+          <select name="sources" style={{ height: 10 + 'em'}} size="25" className={'browser-default'} onChange={this.fetchAvailableSort}>
+            {this.state.sources.map((source) =>
+              <option key={source.id} value={source.id} title={source.description} >
+                {source.name}
+              </option>,
+            )}
           </select>
+          <ul className="collapsible" data-collapsible="accordion">
+            {this.state.categories.map((cat) =>
+              <Category
+                key={cat} fetchAvailableSort={this.fetchAvailableSort}
+                category={this.toTitleCase(cat)}
+                sources={JSON.parse(localStorage.getItem('categories'))[cat]}
+              />,
+            )}
+          </ul>
         </div>
-        <div className={'col s7'}>
+        <div className={'col s10'}>
           <h5>
             {this.state.articleSource}
-            {(this.state.currentSort === '') ? '' : '\t' + this.state.currentSort + '\t' + this.state.articles.length + ' news '}
-            {this.state.sortBy.map(
-              (sortBy, i) => <SortBY key={i} data={sortBy} source={this.state.source} onClick={this.fecthHealines} />,
+            {(this.state.currentSort === '') ? ' ' : ` ${this.toTitleCase(this.state.currentSort)}   ${this.state.articles.length}  Headlines `}
+            {this.state.sortBy.map((sortBy, i) =>
+              <SortBY
+                key={i} data={sortBy} source={this.state.source}
+                onClick={this.fecthHealines}
+              />,
               )}
           </h5>
-          {this.state.articles.map((article, i) => <Article key={i} id={i}
-            author={article.author} title={article.title} urlToImage={article.urlToImage}
-            description={article.description} publishedAt={article.publishedAt}
-            url={article.url}
-          />,
-            )}
+          { (this.state.errorMessage !== '') ?
+            <h3>{this.state.errorMessage}</h3>
+            :
+            this.state.articles.map((article, i) =>
+              <Article
+                key={i} id={i} author={article.author} title={article.title}
+                urlToImage={article.urlToImage} description={article.description}
+                publishedAt={article.publishedAt} url={article.url} source={this.state.source}
+              />,
+            )
+          }
         </div>
-        <div className={'col s3'}>
-          Sources
-          
-            {this.state.sources.map((source, i) => 
-              <div key={source.id }>
-                <a className={'browser-default'} title={source.description}  href={'#'} value={source.id } onClick={this.fetchAvailableSort}>
-                  {source.name } </a>
-                </div>
-            )}
-        </div>
+      
       </div>
     );
   }
 }
 
-// class to display sortBy
-class SortBY extends React.Component {
- render() {
-    return (
-      <button value={this.props.data} onClick={this.props.onClick}> {this.props.data} 
-      </button>
-    );
-  }
-}
+
 // class to display source
 /*
 class SourceOptions extends React.Component {
