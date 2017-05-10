@@ -15,6 +15,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx'],
+    alias: {
+      SortByComponent: path.join(__dirname, '/src/js/pages/headlines/SortBy.jsx'),
+    },
   },
   module: {
     loaders: [
@@ -31,8 +34,8 @@ module.exports = {
         test: /\.(scss|sass)$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          //resolve-url-loader may be chained before sass-loader if necessary
-          use: ['css-loader', 'sass-loader']
+          // resolve-url-loader may be chained before sass-loader if necessary
+          use: ['css-loader', 'sass-loader'],
         }),
       },
       {
@@ -70,13 +73,12 @@ module.exports = {
     filename: 'client.min.js',
   },
   plugins: debug ? [
-    new ExtractTextPlugin(`style.css`),
+    new ExtractTextPlugin('style.css'),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
       'window.$': 'jquery',
       'window.jQuery': 'jquery',
-      'Hammer': 'hammerjs/hammer'
     }),
     new Dotenv({
       path: '.env',
@@ -86,13 +88,12 @@ module.exports = {
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
-    new ExtractTextPlugin({ filename: `/src/style.css`, allChunks: true }),
+    new ExtractTextPlugin({ filename: '/src/style.css', allChunks: true }),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
       'window.$': 'jquery',
       'window.jQuery': 'jquery',
-      "Hammer": "hammerjs/hammer"
     }),
     new Dotenv({
       path: './.env',
