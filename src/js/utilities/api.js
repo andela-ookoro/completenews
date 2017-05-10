@@ -35,7 +35,7 @@ export const getHeadlines = ((source, sort) => {
 });
 
 export const getDbHeadlines = ((email) => {
-  // console.log('APIKEY',process.env.APIKEY);
+   console.log('APIKEY', process.env.APIKEY);
   return new Promise((resolve, reject) => {
     firebase.database().ref(`/user/${email}/favourite`).once('value')
     .then((snapshot) => {

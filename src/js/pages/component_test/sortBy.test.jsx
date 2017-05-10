@@ -35,6 +35,5 @@ test('Button onclick should execute the function in the prop', () => {
     <SortBy data={data} source={data} onClick={onClick} />,
   );
   const button = wrapper.find('button');
-  button.simulate('click').tobe;
-  expect(onClick).toBeCalledWith(data);
-})
+  expect(button.onClick).toBe(onClick);
+});
