@@ -5,7 +5,7 @@
   "main": "webpack.config.js",
   "scripts": {
     "dev": "webpack-dev-server --content-base src --inline --hot",
-    "test": "jest",
+    "test": "jest  --config jest.config.js",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   },

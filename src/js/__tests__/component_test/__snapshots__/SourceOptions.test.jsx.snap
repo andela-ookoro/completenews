@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component render a button 1`] = `
+<div>
+  <a
+    className="browser-default"
+    href="#"
+    onClick={[Function]}
+    title="BBC world news"
+    value="BBC"
+  >
+    BBC News
+  </a>
+</div>
+`;
