@@ -20,7 +20,6 @@ class Notification extends EventEmitter {
         this.emit('change');
         break;
       default :
-        return ('error');
     }
   }
 }

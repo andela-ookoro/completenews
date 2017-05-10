@@ -34,6 +34,7 @@ class Headlines extends React.Component {
       categories: [],
       message: '',
       isAuth: false,
+      isDb: false,
     };
     this.count = 0;
     this.fecthHealines = this.fecthHealines.bind(this);
@@ -91,6 +92,9 @@ class Headlines extends React.Component {
       articles: headlines,
       message: error,
       articleSource: 'Favourite Headlines',
+      sortBy: [],
+      currentSort: '',
+      isAuth: false,
     });
     // console.log("WENT TO DB");
   }
@@ -103,6 +107,7 @@ class Headlines extends React.Component {
     this.setState({
       articles: headlines,
       message: error,
+      isAuth: true,
     });
   }
 

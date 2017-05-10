@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component render a button 1`] = `
+<button
+  onClick={[Function]}
+  value="test"
+>
+   
+  test
+   
+</button>
+`;
+
+exports[`Link changes the class when hovered 1`] = `
+<button
+  onClick={[Function]}
+  value="test"
+>
+   
+  test
+   
+</button>
+`;

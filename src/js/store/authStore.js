@@ -20,7 +20,6 @@ class Auth extends EventEmitter {
         this.emit('change');
         break;
       default :
-        return ('error');
     }
   }
 }

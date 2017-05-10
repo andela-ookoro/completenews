@@ -38,7 +38,6 @@ class Headlines extends EventEmitter {
         this.emit('dbchange');
         break;
       default :
-        return ('error');
     }
   }
 }
