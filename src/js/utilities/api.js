@@ -2,8 +2,8 @@ import axios from 'axios';
 import firebase from './firebase';
 
 
-export const getSources = () => {
-  return new Promise((resolve, reject) => {
+export const getSources = () =>
+  new Promise((resolve, reject) => {
     axios.get('https://newsapi.org/v1/sources?language=en')
     .then((response) => {
       resolve(response.data.sources);
@@ -12,7 +12,6 @@ export const getSources = () => {
       reject(`Error occurred, ${error}`);
     });
   });
-};
 
 export const getHeadlines = ((source, sort) => {
   let apiURl = '';
@@ -34,9 +33,8 @@ export const getHeadlines = ((source, sort) => {
   });
 });
 
-export const getDbHeadlines = ((email) => {
-   console.log('APIKEY', process.env.APIKEY);
-  return new Promise((resolve, reject) => {
+export const getDbHeadlines = (email =>
+  new Promise((resolve, reject) => {
     firebase.database().ref(`/user/${email}/favourite`).once('value')
     .then((snapshot) => {
       const headlines = [];
@@ -49,6 +47,5 @@ export const getDbHeadlines = ((email) => {
     .catch((error) => {
       reject(`Error occurred, ${error}`);
     });
-  });
-});
+  }));
 

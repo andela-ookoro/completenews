@@ -64,7 +64,7 @@ class Article extends React.Component {
             <div className="card-action">
               <p>{(this.props.publishedAt) ? `Published on  ${this.toServertime(this.props.publishedAt)}` : ''} </p>
               <a href={this.props.url} target="_blank" rel="noopener noreferrer">
-                {(this.props.url) ? `Read on site ${this.props.source} ` : ''}</a>
+                {(this.props.url) ? `Read on  ${this.props.source} ` : ''}</a>
               <button
                 value={this.props.id} onClick={this.addArticle}
                 className={`btn-floating btn-small waves-effect waves-light red ${(this.props.isAuth) ? '' : 'disabled'}`}

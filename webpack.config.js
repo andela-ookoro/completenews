@@ -1,7 +1,7 @@
+const Dotenv = require('dotenv-webpack');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
-const Dotenv = require('dotenv-webpack');
 
 const debug = process.env.NODE_ENV !== 'production';
 
@@ -15,9 +15,6 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx'],
-    alias: {
-      SortByComponent: path.join(__dirname, '/src/js/pages/headlines/SortBy.jsx'),
-    },
   },
   module: {
     loaders: [
@@ -43,7 +40,7 @@ module.exports = {
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
           //resolve-url-loader may be chained before sass-loader if necessary
-          use: 'css-loader?importLoaders=1'
+          use: 'css-loader?importLoaders=1',
         }),
       },
       {
