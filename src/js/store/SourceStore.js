@@ -17,7 +17,7 @@ class Sources extends EventEmitter {
 
   handleActions(action) {
   // console.log("TodoStore received an action ...", action.actionType);
-    switch (action.actionType) {
+    switch (action.Type) {
       case 'GET-SOURCES' :
         this.getSources(action.sources);
         this.emit('change');

@@ -1,18 +1,19 @@
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 const debug = process.env.NODE_ENV !== 'production';
 
 module.exports = {
-  context: __dirname + "/src/",
+  context: path.join(__dirname, '/src/'),
   devtool: debug ? 'inline-sourcemap' : null,
   entry: ['./js/client.jsx', './scss/main.scss'],
   devServer: {
-      inline: true,
-      port: 1142
-   },
-  resolve:{
+    inline: true,
+    port: 1142,
+  },
+  resolve: {
     extensions: ['.js', '.jsx'],
   },
   module: {
@@ -62,12 +63,12 @@ module.exports = {
     console: true,
     fs: 'empty',
     net: 'empty',
-    tls: 'empty'
+    tls: 'empty',
   },
   output: {
-      path:__dirname + "/src/",
-      filename: 'client.min.js',
-   },
+    path: path.join(__dirname, '/src/'),
+    filename: 'client.min.js',
+  },
   plugins: debug ? [
     new ExtractTextPlugin(`style.css`),
     new webpack.ProvidePlugin({
@@ -75,19 +76,27 @@ module.exports = {
       jQuery: 'jquery',
       'window.$': 'jquery',
       'window.jQuery': 'jquery',
-      "Hammer": "hammerjs/hammer"
+      'Hammer': 'hammerjs/hammer'
+    }),
+    new Dotenv({
+      path: '.env',
+      safe: true,
     }),
   ] : [
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
-    new ExtractTextPlugin({ filename: `/src/style.css`,  allChunks: true }),
+    new ExtractTextPlugin({ filename: `/src/style.css`, allChunks: true }),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
       'window.$': 'jquery',
       'window.jQuery': 'jquery',
       "Hammer": "hammerjs/hammer"
+    }),
+    new Dotenv({
+      path: './.env',
+      safe: true,
     }),
   ],
 };

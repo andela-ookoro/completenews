@@ -23,7 +23,7 @@ class Layout extends React.Component {
                 </Link></li>
                 <li><Link to="setting" activeClassName="activelink">
                   <span> Setting</span> </Link></li>
-                <li  >
+                <li>
                   <Login />
                 </li>
               </ul>

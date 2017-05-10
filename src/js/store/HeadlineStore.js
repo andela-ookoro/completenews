@@ -14,33 +14,28 @@ class Headlines extends EventEmitter {
   getHeadlines(headlines) {
     this.headlines = headlines;
     this.error = '';
-    // console.log(Headlines);
     return this.headlines;
   }
 
-  displayError() {
-    this.error = 'Insufficient Internet coverage, Please check your connection and try again. ';
+  displayError(error) {
+    this.error = error;
     return this.error;
   }
 
   handleActions(action) {
   // console.log("TodoStore received an action ...", action.actionType);
-    switch (action.actionType) {
+    switch (action.Type) {
       case 'GET-HEADLINES' :
         this.getHeadlines(action.headlines);
         this.emit('change');
         break;
       case 'GET-HEADLINES-ERROR' :
-        this.displayError();
-        this.emit('change');
+        this.displayError(action.err);
+        this.emit('error');
         break;
       case 'GET-DBHEADLINES' :
         this.getHeadlines(action.headlines);
-        this.emit('change');
-        break;
-      case 'RESET-HEADLINES' :
-        this.getHeadlines(action.headlines);
-        this.emit('change');
+        this.emit('dbchange');
         break;
       default :
         return ('error');

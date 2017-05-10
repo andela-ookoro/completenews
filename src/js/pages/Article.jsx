@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import firebase from '../utilities/firebase';
+import Notification from '../action/notifyAction';
 
 
 class Article extends React.Component {
@@ -20,11 +21,11 @@ class Article extends React.Component {
     const FavouriteAddress = `/user/${userEmail}/favourite`;
     const FavouriteRef = firebase.database().ref(FavouriteAddress);
     FavouriteRef.push(article)
-    .then((snapshot) => {
+    .then(() => {
       // console.log(snapshot);
     })
     .catch((err) => {
-      // console.log(err);
+      Notification(`Error occurred, ${err}`);
     });
     // console.log(articles[index]);
     // console.log(timestamp);
@@ -66,7 +67,7 @@ class Article extends React.Component {
                 {(this.props.url) ? `Read on site ${this.props.source} ` : ''}</a>
               <button
                 value={this.props.id} onClick={this.addArticle}
-                className="btn-floating btn-small waves-effect waves-light red" 
+                className={`btn-floating btn-small waves-effect waves-light red ${(this.props.isAuth) ? '' : 'disabled'}`}
                 title="Add to favourite"
               >
                 <i value={this.props.id} className="material-icons">+</i>
@@ -90,6 +91,7 @@ Article.propTypes = {
   publishedAt: PropTypes.string,
   url: PropTypes.string,
   source: PropTypes.string.isRequired,
+  isAuth: PropTypes.bool.isRequired,
 };
 
 Article.defaultProps = {

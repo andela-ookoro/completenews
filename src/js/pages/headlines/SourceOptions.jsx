@@ -4,12 +4,8 @@ import PropTypes from 'prop-types';
 // class to display source
 const SourceOptions = ({ id, title = '', name, fetchAvailableSort }) => (
   <div>
-    <a
-      className={'browser-default'} title={title} href={'#'}
-      value={id} onClick={fetchAvailableSort}
-    >
-      {name }
-    </a>
+    <a className={'browser-default'} title={title} href={'#'} value={id} onClick={fetchAvailableSort} >
+      {name }</a>
   </div>
 );
 SourceOptions.propTypes = {
@@ -20,7 +16,7 @@ SourceOptions.propTypes = {
 };
 
 SourceOptions.defaultProps = {
-  description: '',
+  title: '',
 };
 
 export default SourceOptions;

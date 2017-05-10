@@ -2,40 +2,40 @@ import Dispatcher from '../dispatcher/Dispatcher';
 import * as Api from '../utilities/api';
 
 export const getHeadlines = (source, sort = '') => {
-  Api.getHeadlines(source, sort, (error, headlines) => {
-    if (error) {
+  Api.getHeadlines(source, sort)
+    .then((headlines) => {
       Dispatcher.dispatch({
-        actionType: 'GET-HEADLINES-ERROR',
+        Type: 'GET-HEADLINES',
         headlines,
       });
-    } else {
+    })
+    .catch((err) => {
       Dispatcher.dispatch({
-        actionType: 'GET-HEADLINES',
-        headlines,
+        Type: 'GET-HEADLINES-ERROR',
+        err,
       });
-    }
-  });
+    });
 };
 
 export const getDbHeadlines = (user) => {
-  Api.getDbHeadlines(user, (error, headlines) => {
-    if (error) {
+  Api.getDbHeadlines(user)
+    .then((headlines) => {
       Dispatcher.dispatch({
-        actionType: 'GET-HEADLINES-ERROR',
+        Type: 'GET-DBHEADLINES',
         headlines,
       });
-    } else {
+    })
+    .catch((err) => {
       Dispatcher.dispatch({
-        actionType: 'GET-DBHEADLINES',
-        headlines,
+        Type: 'GET-HEADLINES',
+        err,
       });
-    }
-  });
+    });
 };
 
 export const resetHeadlines = () => {
   Dispatcher.dispatch({
-    actionType: 'RESET-HEADLINES',
+    Type: 'GET-HEADLINES',
     headlines: [],
   });
 };
