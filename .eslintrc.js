@@ -9,5 +9,10 @@ module.exports = {
   },
 	"rules": {
 		"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-	}
+	},
+	"env": {
+    "jest": true
+	},
+	"consistent-return": ["error", { "treatUndefinedAsUnspecified": true }],
+	"arrow-body-style": ["error", "as-needed"]
 };
