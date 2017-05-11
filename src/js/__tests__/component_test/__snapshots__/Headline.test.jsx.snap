@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component render the article template 1`] = `
+<div
+  className="row"
+>
+  <div
+    className="col s2"
+  >
+    Sources
+    <select
+      className="browser-default"
+      name="sources"
+      onChange={[Function]}
+      size="25"
+      style={
+        Object {
+          "height": "10em",
+        }
+      }
+    />
+    <ul
+      className="collapsible"
+      data-collapsible="accordion"
+    />
+  </div>
+  <div
+    className="col s10"
+  >
+    <div>
+      <h5>
+         
+        
+         
+      </h5>
+    </div>
+    <h5>
+      
+       
+    </h5>
+  </div>
+</div>
+`;
