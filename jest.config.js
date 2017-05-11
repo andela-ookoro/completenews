@@ -5,6 +5,6 @@ module.exports = {
     Category: '<rootDir>/src/js/pages/headlines/Category.jsx',
     SourceOptions: '<rootDir>/src/js/pages/headlines/SourceOptions.jsx',
     Article: '<rootDir>/src/js/pages/Article.jsx',
-    Headlines: '<rootDir>/src/js/Headlines.jsx',
+    Headlines: '<rootDir>/src/js/pages/Headlines.jsx',
   },
 };

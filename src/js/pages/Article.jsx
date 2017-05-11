@@ -1,8 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { ShareButtons, ShareCounts, generateShareIcon } from 'react-share';
 import firebase from '../utilities/firebase';
 import Notification from '../action/notifyAction';
 
+const {
+  FacebookShareButton,
+  GooglePlusShareButton,
+  LinkedinShareButton,
+  TwitterShareButton,
+} = ShareButtons;
+const FacebookIcon = generateShareIcon('facebook');
+const TwitterIcon = generateShareIcon('twitter');
+const GooglePlusIcon = generateShareIcon('google');
+const LinkedinIcon = generateShareIcon('linkedin');
 
 class Article extends React.Component {
   constructor() {
@@ -21,12 +32,12 @@ class Article extends React.Component {
     const FavouriteAddress = `/user/${userEmail}/favourite`;
     const FavouriteRef = firebase.database().ref(FavouriteAddress);
     FavouriteRef.push(article)
-    .then(() => {
-      // console.log(snapshot);
-    })
-    .catch((err) => {
-      Notification(`Error occurred, ${err}`);
-    });
+      .then(() => {
+        // console.log(snapshot);
+      })
+      .catch((err) => {
+        Notification(`Error occurred, ${err}`);
+      });
     // console.log(articles[index]);
     // console.log(timestamp);
   }
@@ -46,6 +57,7 @@ class Article extends React.Component {
     const paragraphstyle = {
       width: '80%',
     };
+
     return (
       <div className="col s12 m7 l12  hoverable">
         <h6 className="header">
@@ -72,6 +84,30 @@ class Article extends React.Component {
               >
                 <i value={this.props.id} className="material-icons">+</i>
               </button>
+              <div className="container" >
+                <div className="Row">
+                  <div className="col m2">
+                    <FacebookShareButton url={this.props.url} title={this.props.title} >
+                      <FacebookIcon size={32} round={true} />
+                    </FacebookShareButton>
+                  </div>
+                  <div className="col m2">
+                    <LinkedinShareButton url={this.props.url} title={this.props.title} >
+                      <LinkedinIcon size={32} round={true} />
+                    </LinkedinShareButton>
+                  </div>
+                  <div className="col m2">
+                    <TwitterShareButton url={this.props.url} title={this.props.title} >
+                      <TwitterIcon size={32} round={true} />
+                    </TwitterShareButton>
+                  </div>
+                  <div className="col m2">
+                    <GooglePlusShareButton url={this.props.url} title={this.props.title} >
+                      <GooglePlusIcon size={32} round={true} />
+                    </GooglePlusShareButton>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -107,7 +107,6 @@ class Headlines extends React.Component {
     this.setState({
       articles: headlines,
       message: error,
-      isAuth: true,
     });
   }
 
@@ -191,6 +190,7 @@ class Headlines extends React.Component {
 
 
   render() {
+    console.log(this.state.isAuth);
     return (
       <div className="row">
         <div className="col s2">
