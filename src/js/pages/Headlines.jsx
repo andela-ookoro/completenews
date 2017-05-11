@@ -56,7 +56,7 @@ class Headlines extends React.Component {
     // NotifyStore.on('change', this.notifyUser);
     AuthStore.on('change', () => {
       this.setState({ isAuth: AuthStore.isAuth });
-      // console.log(AuthStore.isAuth);
+      console.log(AuthStore.isAuth);
     });
 
     Sources.on('change', this.sourceChange);
@@ -78,12 +78,11 @@ class Headlines extends React.Component {
     if (localStorage.getItem('sources')) {
       SourceAction();
     } else {
-      console.log(JSON.parse(localStorage.getItem('sources')));
-      // this.setState(
-      //   {
-      //     sources: JSON.parse(localStorage.getItem('sources')),
-      //     categories: JSON.parse(localStorage.getItem('cat')),
-      //   });
+      this.setState(
+        {
+          sources: JSON.parse(localStorage.getItem('sources')),
+          categories: JSON.parse(localStorage.getItem('cat')),
+        });
     }
   }
 
@@ -193,11 +192,6 @@ class Headlines extends React.Component {
 
 
   render() {
-    console.log(JSON.parse(localStorage.getItem('categories')));
-    this.state.categories.map((cat) => {
-      console.log(cat);
-      console.log(JSON.parse(localStorage.getItem('categories'))[cat]);
-  });
     return (
       <div className="row">
         <div className="col s2">

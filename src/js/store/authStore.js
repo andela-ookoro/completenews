@@ -5,11 +5,11 @@ import * as Constant from '../constants';
 class Auth extends EventEmitter {
   constructor() {
     super();
-    this.auth = this.auth.bind(this);
+    this.updateAuth = this.updateAuth.bind(this);
     this.isAuth = false;
   }
 
-  auth(status) {
+  updateAuth(status) {
     this.isAuth = status;
     return this.isAuth;
   }
@@ -17,7 +17,7 @@ class Auth extends EventEmitter {
   handleActions(action) {
     switch (action.Type) {
       case Constant.Auth:
-        this.auth(action.status);
+        this.updateAuth(action.status);
         this.emit('change');
         break;
       default :
