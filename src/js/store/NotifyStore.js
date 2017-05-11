@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import Dispatcher from '../dispatcher/Dispatcher';
+import * as Constant from '../constants';
 
 class Notification extends EventEmitter {
   constructor() {
@@ -15,7 +16,7 @@ class Notification extends EventEmitter {
 
   handleActions(action) {
     switch (action.Type) {
-      case 'GET-NOTIFY' :
+      case Constant.GetNotify :
         this.displayMessage(action.message);
         this.emit('change');
         break;

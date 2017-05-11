@@ -4,6 +4,28 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const path = require('path');
 
 const debug = process.env.NODE_ENV !== 'production';
+const basePlugins = [
+  new webpack.ProvidePlugin({
+    $: 'jquery',
+    jQuery: 'jquery',
+    'window.$': 'jquery',
+    'window.jQuery': 'jquery',
+  }),
+  new Dotenv({
+    path: '.env',
+    safe: true,
+  }),
+];
+const debugPlugins = [new ExtractTextPlugin('style.css')];
+const productionPlugins = [
+  new webpack.optimize.DedupePlugin(),
+  new webpack.optimize.OccurrenceOrderPlugin(),
+  new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
+  new ExtractTextPlugin({ filename: '/src/style.css', allChunks: true }),
+];
+
+const plugins = debug ?
+  debugPlugins.concat(basePlugins) : productionPlugins.concat(basePlugins);
 
 module.exports = {
   context: path.join(__dirname, '/src/'),
@@ -11,7 +33,7 @@ module.exports = {
   entry: ['./js/client.jsx', './scss/main.scss'],
   devServer: {
     inline: true,
-    port: 1142,
+    port: process.env.PORT || 1142,
   },
   resolve: {
     extensions: ['.js', '.jsx'],
@@ -24,14 +46,14 @@ module.exports = {
         loader: 'babel-loader',
         query: {
           presets: ['react', 'es2015', 'stage-0'],
-          plugins: ['react-html-attrs', 'transform-decorators-legacy', 'transform-class-properties'],
+          plugins: ['react-html-attrs', 'transform-decorators-legacy',
+            'transform-class-properties'],
         },
       },
       {
         test: /\.(scss|sass)$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          // resolve-url-loader may be chained before sass-loader if necessary
           use: ['css-loader', 'sass-loader'],
         }),
       },
@@ -39,7 +61,6 @@ module.exports = {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          //resolve-url-loader may be chained before sass-loader if necessary
           use: 'css-loader?importLoaders=1',
         }),
       },
@@ -69,32 +90,5 @@ module.exports = {
     path: path.join(__dirname, '/src/'),
     filename: 'client.min.js',
   },
-  plugins: debug ? [
-    new ExtractTextPlugin('style.css'),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.$': 'jquery',
-      'window.jQuery': 'jquery',
-    }),
-    new Dotenv({
-      path: '.env',
-      safe: true,
-    }),
-  ] : [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({ mangle: false, sourcemap: false }),
-    new ExtractTextPlugin({ filename: '/src/style.css', allChunks: true }),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.$': 'jquery',
-      'window.jQuery': 'jquery',
-    }),
-    new Dotenv({
-      path: './.env',
-      safe: true,
-    }),
-  ],
+  plugins,
 };

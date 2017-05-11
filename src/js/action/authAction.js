@@ -1,9 +1,10 @@
 
 import Dispatcher from '../dispatcher/Dispatcher';
+import * as Constant from '../constants';
 
 const getAuthStatus = (status) => {
   Dispatcher.dispatch({
-    Type: 'AUTH',
+    Type: Constant.Auth,
     status,
   });
 };

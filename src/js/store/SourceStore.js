@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import Dispatcher from '../dispatcher/Dispatcher';
+import * as Constant from '../constants';
 
 class Sources extends EventEmitter {
   constructor() {
@@ -11,14 +12,12 @@ class Sources extends EventEmitter {
  // return sources
   getSources(sources) {
     this.sources = sources;
-    // console.log(sources);
     return this.sources;
   }
 
   handleActions(action) {
-  // console.log("TodoStore received an action ...", action.actionType);
     switch (action.Type) {
-      case 'GET-SOURCES' :
+      case Constant.GetSources :
         this.getSources(action.sources);
         this.emit('change');
         break;

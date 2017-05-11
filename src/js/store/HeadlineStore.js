@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import Dispatcher from '../dispatcher/Dispatcher';
+import * as Constant from '../constants';
 
 class Headlines extends EventEmitter {
   constructor() {
@@ -25,15 +26,15 @@ class Headlines extends EventEmitter {
   handleActions(action) {
   // console.log("TodoStore received an action ...", action.actionType);
     switch (action.Type) {
-      case 'GET-HEADLINES' :
+      case Constant.GetHeadlines:
         this.getHeadlines(action.headlines);
         this.emit('change');
         break;
-      case 'GET-HEADLINES-ERROR' :
+      case Constant.GetHeadlinesError :
         this.displayError(action.err);
         this.emit('error');
         break;
-      case 'GET-DBHEADLINES' :
+      case Constant.GetDBHeadlines :
         this.getHeadlines(action.headlines);
         this.emit('dbchange');
         break;

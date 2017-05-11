@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import Dispatcher from '../dispatcher/Dispatcher';
+import * as Constant from '../constants';
 
 class Auth extends EventEmitter {
   constructor() {
@@ -15,7 +16,7 @@ class Auth extends EventEmitter {
 
   handleActions(action) {
     switch (action.Type) {
-      case 'AUTH' :
+      case Constant.Auth:
         this.auth(action.status);
         this.emit('change');
         break;

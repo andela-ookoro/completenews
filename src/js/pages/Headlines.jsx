@@ -3,7 +3,7 @@ import React from 'react';
 //  import Fs from 'fs';
 //  import Request from 'request';
 //  import Cheerio from 'cheerio';
-
+import * as Constant from '../constants';
 // import SourceOptions from './headlines/SourceOptions';
 import SortBY from './headlines/SortBy';
 import Article from './Article';
@@ -50,7 +50,9 @@ class Headlines extends React.Component {
     HeadlineStore.on('dbchange', this.dbheadlineChange);
     HeadlineStore.on('change', this.headlineChange);
 
-    HeadlineStore.on('error', () => (this.setState({ message: HeadlineStore.error })));
+    HeadlineStore.on('error', () => (
+      this.setState({ message: HeadlineStore.error })
+    ));
     // NotifyStore.on('change', this.notifyUser);
     AuthStore.on('change', () => {
       this.setState({ isAuth: AuthStore.isAuth });
@@ -73,14 +75,15 @@ class Headlines extends React.Component {
   }
 
   getSources() {
-    if (!localStorage.getItem('sources')) {
+    if (localStorage.getItem('sources')) {
       SourceAction();
     } else {
-      this.setState(
-        {
-          sources: JSON.parse(localStorage.getItem('sources')),
-          categories: JSON.parse(localStorage.getItem('cat')),
-        });
+      console.log(JSON.parse(localStorage.getItem('sources')));
+      // this.setState(
+      //   {
+      //     sources: JSON.parse(localStorage.getItem('sources')),
+      //     categories: JSON.parse(localStorage.getItem('cat')),
+      //   });
     }
   }
 
@@ -121,11 +124,10 @@ class Headlines extends React.Component {
       }
       sourcescategories[source.category].push(source);
     });
-    this.setState({ sources, categories });
     localStorage.setItem('cat', JSON.stringify(categories));
     localStorage.setItem('categories', JSON.stringify(sourcescategories));
     localStorage.setItem('sources', JSON.stringify(sources));
-    //  console.log('sources');
+    this.setState({ sources, categories });
   }
 
   authChange() {
@@ -139,8 +141,8 @@ class Headlines extends React.Component {
   }
 
   toTitleCase(str) {
-    return str.replace(/-/g, ' ').replace(/\w\S*/g, txt => txt.charAt(0).toUpperCase() +
-                    txt.substr(1).toLowerCase());
+    return str.replace(/-/g, ' ').replace(/\w\S*/g, txt =>
+      txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   }
 
   // get available sort parameter
@@ -176,7 +178,8 @@ class Headlines extends React.Component {
 
   /**
   scrape() {
-    const url = 'https://thenextweb.com/microsoft/2017/05/02/microsoft-bringing-mixed-reality-classroom-view-mixed-reality/';
+    const url = 'https://thenextweb.com/microsoft/2017/05/02/microsoft-
+    bringing-mixed-reality-classroom-view-mixed-reality/';
     Request(url, (error, response, html) => {
     if (!error) {
       Fs.writeFile('output.html', html, (err) => {
@@ -190,28 +193,39 @@ class Headlines extends React.Component {
 
 
   render() {
-    console.log(this.state.isAuth);
+    console.log(JSON.parse(localStorage.getItem('categories')));
+    this.state.categories.map((cat) => {
+      console.log(cat);
+      console.log(JSON.parse(localStorage.getItem('categories'))[cat]);
+  });
     return (
       <div className="row">
         <div className="col s2">
           Sources
-          <select name="sources" style={{ height: 10 + 'em'}} size="25" className={'browser-default'} onChange={this.fetchAvailableSort}>
-            {this.state.sources.map((source) =>
-              <option key={source.id} value={source.id} title={source.description} >
+          <select
+            name="sources" style={{ height: 10 + 'em' }} size="25"
+            className={'browser-default'} onChange={this.fetchAvailableSort}
+          >
+            {this.state.sources.map(source =>
+              <option
+                key={source.id} value={source.id} title={source.description}
+              >
                 {source.name}
               </option>,
             )}
           </select>
           <ul className="collapsible" data-collapsible="accordion">
-            {this.state.categories.map((cat) =>
+            {this.state.categories.map(cat =>
               <li key={cat}>
-                <div className="collapsible-header"> {this.toTitleCase(cat)} </div>
+                <div className="collapsible-header"> {this.toTitleCase(cat)}
+                </div>
                 <div className="collapsible-body">
-                  {JSON.parse(localStorage.getItem('categories'))[cat].map((source) =>
-                    <SourceOptions
-                      key={source.id} name={source.name} title={source.description}
-                      id={source.id} fetchAvailableSort={this.fetchAvailableSort}
-                    />,
+                  {JSON.parse(localStorage.getItem('categories'))[cat].map(
+                    source =>
+                      <SourceOptions
+                        key={source.id} name={source.name} title={source.description}
+                        id={source.id} fetchAvailableSort={this.fetchAvailableSort}
+                      />,
                   )}
                 </div>
               </li>,
@@ -223,7 +237,7 @@ class Headlines extends React.Component {
             {(this.state.message !== '' && this.state.articles.length === 0)
               ?
                 <div className="progress">
-                  <div className="indeterminate"></div>
+                  <div className="indeterminate" />
                 </div>
               :
                 <h5> {this.state.message} </h5>
@@ -231,7 +245,13 @@ class Headlines extends React.Component {
           </div>
           <h5>
             {this.state.articleSource}
-            {(this.state.currentSort === '') ? ' ' : ` ${this.toTitleCase(this.state.currentSort)}   ${this.state.articles.length}  Headlines `}
+            {
+              (this.state.currentSort === '') ?
+              ' '
+              :
+              ` ${this.toTitleCase(this.state.currentSort)}   
+              ${this.state.articles.length}  Headlines `
+            }
             {this.state.sortBy.map((sortBy, i) =>
               <SortBY
                 key={i} data={sortBy} source={this.state.source}
@@ -246,8 +266,8 @@ class Headlines extends React.Component {
               <Article
                 key={i} id={i} author={article.author} title={article.title}
                 urlToImage={article.urlToImage} description={article.description}
-                publishedAt={article.publishedAt} url={article.url} source={this.state.source}
-                isAuth={this.state.isAuth}
+                publishedAt={article.publishedAt} url={article.url}
+                source={this.state.source} isAuth={this.state.isAuth}
               />,
             )
           }

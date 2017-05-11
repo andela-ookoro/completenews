@@ -9,13 +9,11 @@ test('Component render a button', () => {
     name: 'BBC News',
     description: 'BBC world news',
   };
-  const funtest = () => {
-    return 1;
-  };
+  const onClick = jest.fn();
   const component = Renderer.create(
     <SourceOptions
       key={source.id} name={source.name} title={source.description}
-      id={source.id} fetchAvailableSort={funtest}
+      id={source.id} fetchAvailableSort={onClick}
     />,
   );
   const tree = component.toJSON();
@@ -28,13 +26,11 @@ test('Value of render button should be same as props', () => {
     name: 'BBC News',
     description: 'BBC world news',
   };
-  const funtest = () => {
-    return 1;
-  };
+  const onClick = jest.fn();
   const component = mount(
     <SourceOptions
       key={source.id} name={source.name} title={source.description}
-      id={source.id} fetchAvailableSort={funtest}
+      id={source.id} fetchAvailableSort={onClick}
     />,
   );
   const link = component.find('a');

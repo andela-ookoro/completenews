@@ -5,11 +5,9 @@ import SortBy from 'SortBy';
 
 test('Component render a button', () => {
   const data = 'test';
-  const funtest = () => {
-    return 1;
-  };
+  const onClick = jest.fn();
   const component = Renderer.create(
-    <SortBy data={data} source={data} onClick={funtest} />,
+    <SortBy data={data} source={data} onClick={onClick} />,
   );
   const tree = component.toJSON();
   expect(tree).toMatchSnapshot();
@@ -17,14 +15,12 @@ test('Component render a button', () => {
 
 test('Value of render button should be same as props', () => {
   const data = 'Top';
-  const funtest = (e) => {
-    return e.target.value;
-  };
+  const onClick = jest.fn();
   const component = Renderer.create(
-    <SortBy data={data} source={data} onClick={funtest} />,
+    <SortBy data={data} source={data} onClick={onClick} />,
   );
   const wrapper = mount(
-    <SortBy data={data} source={data} onClick={funtest} />,
+    <SortBy data={data} source={data} onClick={onClick} />,
   );
   const button = wrapper.find('button');
   const tree = component.toJSON();
