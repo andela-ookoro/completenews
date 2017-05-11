@@ -1,41 +1,42 @@
 import Dispatcher from '../dispatcher/Dispatcher';
 import * as Api from '../utilities/api';
+import * as Constant from '../constants';
 
 export const getHeadlines = (source, sort = '') => {
-  Api.getHeadlines(source, sort, (error, headlines) => {
-    if (error) {
+  Api.getHeadlines(source, sort)
+    .then((headlines) => {
       Dispatcher.dispatch({
-        actionType: 'GET-HEADLINES-ERROR',
+        Type: Constant.GetHeadlines,
         headlines,
       });
-    } else {
+    })
+    .catch((err) => {
       Dispatcher.dispatch({
-        actionType: 'GET-HEADLINES',
-        headlines,
+        Type: Constant.GetHeadlinesError,
+        err,
       });
-    }
-  });
+    });
 };
 
 export const getDbHeadlines = (user) => {
-  Api.getDbHeadlines(user, (error, headlines) => {
-    if (error) {
+  Api.getDbHeadlines(user)
+    .then((headlines) => {
       Dispatcher.dispatch({
-        actionType: 'GET-HEADLINES-ERROR',
+        Type: Constant.GetDBHeadlines,
         headlines,
       });
-    } else {
+    })
+    .catch((err) => {
       Dispatcher.dispatch({
-        actionType: 'GET-DBHEADLINES',
-        headlines,
+        Type: Constant.GetHeadlines,
+        err,
       });
-    }
-  });
+    });
 };
 
 export const resetHeadlines = () => {
   Dispatcher.dispatch({
-    actionType: 'RESET-HEADLINES',
+    Type: Constant.GetHeadlines,
     headlines: [],
   });
 };

@@ -1,11 +1,11 @@
 import React from 'react';
 import Link from 'react-router';
-import Login from './login.jsx';
+import Login from './login';
 
 class Layout extends React.Component {
   navigate() {
     // console.log(this.props.history);
-    this.props.history.replaceState(null,'/');
+    this.props.history.replaceState(null, '/');
     //  this.props.history.goBack();
   }
 
@@ -23,7 +23,7 @@ class Layout extends React.Component {
                 </Link></li>
                 <li><Link to="setting" activeClassName="activelink">
                   <span> Setting</span> </Link></li>
-                <li  >
+                <li>
                   <Login />
                 </li>
               </ul>
@@ -35,6 +35,5 @@ class Layout extends React.Component {
     );
   }
 }
-
 
 export default Layout;

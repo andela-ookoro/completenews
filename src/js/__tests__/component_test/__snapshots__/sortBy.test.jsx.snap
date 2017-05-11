@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component render a button 1`] = `
+<button
+  onClick={[Function]}
+  value="test"
+>
+  test
+</button>
+`;
+
+exports[`Value of render button should be same as props 1`] = `
+<button
+  onClick={[Function]}
+  value="Top"
+>
+  Top
+</button>
+`;

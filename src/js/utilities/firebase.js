@@ -1,13 +1,12 @@
 import * as firebase from 'firebase';
 
 const config = {
-  apiKey: 'AIzaSyBRVO8XJcSp9EaxRRlsH5DKMILYygEUL3Y',
-  authDomain: 'completenews-3a553.firebaseapp.com',
-  databaseURL: 'https://completenews-3a553.firebaseio.com',
-  projectId: 'completenews-3a553',
-  storageBucket: 'completenews-3a553.appspot.com',
-  messagingSenderId: '21466984743',
+  apiKey: process.env.APIKEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  databaseURL: process.env.DATABASE_URL,
+  projectId: process.env.PROJECTID,
+  storageBucket: process.env.STORAGEBUCKET,
+  messagingSenderId: process.env.MESSAGINGSENDERID,
 };
 firebase.initializeApp(config);
-
 export default firebase;

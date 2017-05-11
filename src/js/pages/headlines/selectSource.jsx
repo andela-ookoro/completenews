@@ -3,12 +3,8 @@ import PropTypes from 'prop-types';
 
 // class to display source
 const SelectSource = ({ id, title = '', name, fetchAvailableSort }) => (
-    <a
-      className={'browser-default'} title={title} href={'#'}
-      value={id} onClick={fetchAvailableSort}
-    >
-      {name }
-    </a>
+    <a className={'browser-default'} title={title} href={'#'} value={id} onClick={fetchAvailableSort}>
+      {name }</a>
 );
 SelectSource.propTypes = {
   id: PropTypes.string.isRequired,
@@ -19,6 +15,7 @@ SelectSource.propTypes = {
 
 SelectSource.defaultProps = {
   description: '',
+  title: '',
 };
 
 export default SelectSource;

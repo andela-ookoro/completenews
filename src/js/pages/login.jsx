@@ -3,6 +3,8 @@ import React from 'react';
 import GoogleLogin from 'react-google-login';
 import firebase from '../utilities/firebase';
 import * as HeadlineAction from '../action/headlineAction';
+import AuthAction from '../action/authAction';
+import Notification from '../action/notifyAction';
 
 
 class Login extends React.Component {
@@ -27,7 +29,7 @@ class Login extends React.Component {
     userRef.once('value')
     .then((snapshot) => {
       if (snapshot.hasChild(userEmail)) {
-        console.log('exists');
+        // console.log('exists');
       } else {
         const user = {
           email: userProfile.email,
@@ -35,20 +37,24 @@ class Login extends React.Component {
           imageUrl: userProfile.imageUrl,
           favourite: [
             {
-              'author' : "Abhimanyu Ghoshal",
-              'description' : "After a failed effort to offer free internet access (with strings attached) to people in India, Facebook has now launched Express Wi-Fi, a service that lets users log on to Wi-Fi networks ...",
-              'publishedAt' : "2017-05-04T13:18:36Z",
-              'scrapeDetails' : "After a failed effort to offer free internet access (with strings attached) to people in India, Facebook has now launched Express Wi-Fi, a service that lets users log on to Wi-Fi networks ",
-              'title' : "Facebook launches Express Wi-Fi in India to bring rural areas online",
-              'url' : "https://thenextweb.com/facebook/2017/05/04/facebook-launches-express-wi-fi-in-india-to-bring-rural-areas-online/",
-              'urlToImage' : "https://cdn2.tnwcdn.com/wp-content/blogs.dir/1/files/2017/05/Facebook-Express-Wi-Fi.jpg"
+              'author': "Abhimanyu Ghoshal",
+              'description': "After a failed effort to offer free internet access (with strings attached) to people in India, Facebook has now launched Express Wi-Fi, a service that lets users log on to Wi-Fi networks ...",
+              'publishedAt': "2017-05-04T13:18:36Z",
+              'scrapeDetails': "After a failed effort to offer free internet access (with strings attached) to people in India, Facebook has now launched Express Wi-Fi, a service that lets users log on to Wi-Fi networks ",
+              'title': "Facebook launches Express Wi-Fi in India to bring rural areas online",
+              'url': "https://thenextweb.com/facebook/2017/05/04/facebook-launches-express-wi-fi-in-india-to-bring-rural-areas-online/",
+              'urlToImage': "https://cdn2.tnwcdn.com/wp-content/blogs.dir/1/files/2017/05/Facebook-Express-Wi-Fi.jpg"
             },
-          ]
-        }
-        userRef.child(userEmail).set(user);
+          ],
+        };
+        userRef.child(userEmail).set(user)
+        .catch((err) => {
+           Notification(`Error occurred, ${err}`);
+        });
       }
+      AuthAction(true);
     }).catch((err) => {
-      console.log(err);
+      Notification(`Error occurred, ${err}`);
     });
     //  console.log(this.state);
    //  console.log(response.profileObj);
@@ -62,6 +68,7 @@ class Login extends React.Component {
       imageUrl: '',
     });
     HeadlineAction.resetHeadlines();
+    AuthAction(false);
   }
 
   viewFavourite() {
