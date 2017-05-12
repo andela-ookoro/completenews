@@ -20,9 +20,9 @@
   "author": "Okoro Okwudiri <okwudiri.okoro@andela.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/andela_ookoro/completenews/issues"
+    "url": "https://github.com/andela-ookoro/completenews/issues"
   },
-  "homepage": "https://github.com/andela_ookoro/completenews#readme",
+  "homepage": "https://github.com/andela-ookoro/completenews#readme",
   "dependencies": {
     "axios": "^0.16.1",
     "babel-core": "^6.24.1",
