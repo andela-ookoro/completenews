@@ -48,7 +48,7 @@ test('Property of each control should be same with props variable passed',
       />,
     );
     const heading = wrapper.find('h6');
-    expect(heading.text()).toEqual(`${article.author}:   ${article.title}`);
+    expect(heading.text()).toEqual(`${article.author}:  ${article.title}`);
     const img = wrapper.find('img').props('urlToImage');
     expect(img.src).toEqual(article.urlToImage);
     const sourceURl = wrapper.find('a').props('url');

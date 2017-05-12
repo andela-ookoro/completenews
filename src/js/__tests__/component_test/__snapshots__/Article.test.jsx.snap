@@ -15,7 +15,6 @@ exports[`Component render the article template 1`] = `
       }
     >
       celestine:  
-       
       My story
     </span>
   </h6>
@@ -57,7 +56,6 @@ exports[`Component render the article template 1`] = `
       >
         <p>
           Published on  
-           
         </p>
         <a
           href="http://localhost"
@@ -67,7 +65,8 @@ exports[`Component render the article template 1`] = `
           Read on  BBC 
         </a>
         <button
-          className="btn-floating btn-small waves-effect waves-light red "
+          className="btn-floating btn-small waves-effect waves-light red 
+                          "
           onClick={[Function]}
           title="Add to favourite"
           value={1}
