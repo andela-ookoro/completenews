@@ -1,3 +1,3 @@
 # completenews
-+[![Code Climate](https://codeclimate.com/github/celelstine/completenews.svg)](https://codeclimate.com/github/celelstine/completenews) [![Build Status](https://travis-ci.org/celelstine/completenews.svg)](https://travis-ci.org/celelstine/completenews)
-[![Coverage Status](https://coveralls.io/repos/github/andela-iamao/iamdocuman/badge.svg?branch=demo-feedback)](https://coveralls.io/github/celelstine/completenews)
++[![Code Climate](https://codeclimate.com/github/andela-ookoro/completenews.svg)](https://codeclimate.com/github/andela-ookoro/completenews) [![Build Status](https://travis-ci.org/andela-ookoro/completenews.svg)](https://travis-ci.org/andela-ookoro/completenews)
+[![Coverage Status](https://coveralls.io/repos/github/andela-ookoro/completenews/badge.svg?branch=master)](https://coveralls.io/github/andela-ookoro/completenews?branch=master)
