@@ -5,11 +5,11 @@ import * as Constant from '../constants';
 class Notification extends EventEmitter {
   constructor() {
     super();
-    this.displayMessage = this.displayMessage.bind(this);
+    this.updateMessage = this.updateMessage.bind(this);
     this.message = '';
   }
 
-  displayMessage(message) {
+  updateMessage(message) {
     this.message = message;
     return this.message;
   }
@@ -17,7 +17,7 @@ class Notification extends EventEmitter {
   handleActions(action) {
     switch (action.Type) {
       case Constant.GetNotify :
-        this.displayMessage(action.message);
+        this.updateMessage(action.message);
         this.emit('change');
         break;
       default :

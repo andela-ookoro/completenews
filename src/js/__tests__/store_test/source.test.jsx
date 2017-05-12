@@ -1,15 +1,24 @@
-import NotifyStore from '../../store/NotifyStore';
+import SourceStore from '../../store/SourceStore';
 import Dispatcher from '../../dispatcher/Dispatcher';
 import * as Constant from '../../constants';
 
 
-test('Message should be intiated with empty string', () => {
-  expect(NotifyStore.message).toBe('');
+test('Source should be intiated with empty array', () => {
+  expect(SourceStore.sources).toBe([]);
 });
 
 test('Function "updateMessage" that update the isauth property', () => {
-  const text = 'welcome, Cele';
-  expect(NotifyStore.updateMessage).toBeInstanceOf(Function);
+  const sources = [
+    {
+      id: 'BBC',
+      description: 'British news',
+    },
+    {
+      id: 'Super sport',
+      description: 'super sport new',
+    },
+  ];
+  expect(SourceStore.getSources).toBeInstanceOf(Function);
   NotifyStore.updateMessage(text);
   expect(NotifyStore.message).toBe(text);
 });
