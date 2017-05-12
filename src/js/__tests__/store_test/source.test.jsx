@@ -4,10 +4,11 @@ import * as Constant from '../../constants';
 
 
 test('Source should be intiated with empty array', () => {
-  expect(SourceStore.sources).toBe([]);
+  const src = SourceStore.sources;
+  expect(src).toHaveLength(0);
 });
 
-test('Function "updateMessage" that update the isauth property', () => {
+test('Function "getSources" that update the isauth property', () => {
   const sources = [
     {
       id: 'BBC',
@@ -19,16 +20,26 @@ test('Function "updateMessage" that update the isauth property', () => {
     },
   ];
   expect(SourceStore.getSources).toBeInstanceOf(Function);
-  NotifyStore.updateMessage(text);
-  expect(NotifyStore.message).toBe(text);
+  SourceStore.getSources(sources);
+  expect(SourceStore.sources).toBe(sources);
 });
 
 test('Store should listen to "GET-NOTIFY" event', () => {
-  const message = 'welcome, Cele';
+  const sources = [
+    {
+      id: 'BBC',
+      description: 'British news',
+    },
+    {
+      id: 'Super sport',
+      description: 'super sport new',
+    },
+  ];
+
   Dispatcher.dispatch({
-    Type: Constant.GetNotify,
-    message,
+    Type: Constant.GetSources,
+    sources,
   });
-  expect(NotifyStore.message).toBe(message);
+  expect(SourceStore.sources).toBe(sources);
 });
 

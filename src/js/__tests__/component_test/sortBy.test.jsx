@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Renderer from 'react-test-renderer';
-import SortBy from 'SortBy';
+import SortBy from '../../pages/headlines/SortBy';
 
 test('Component render a button', () => {
   const data = 'test';
