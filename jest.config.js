@@ -13,4 +13,7 @@ module.exports = {
     window: true,
   },
   setupFiles: ['<rootDir>/src/js/__mocks__/localstorage.js'],
+  collectCoverage: true,
+  coverageDirectory: '<rootDir>',
+  coverageReporters: ['lcov'],
 };
