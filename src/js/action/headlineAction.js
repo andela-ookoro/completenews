@@ -12,8 +12,8 @@ export const getHeadlines = (source, sort = '') => {
     })
     .catch((err) => {
       Dispatcher.dispatch({
-        Type: Constant.GetHeadlinesError,
-        err,
+        Type: Constant.GetNotify,
+        message: err,
       });
     });
 };
@@ -28,8 +28,8 @@ export const getDbHeadlines = (user) => {
     })
     .catch((err) => {
       Dispatcher.dispatch({
-        Type: Constant.GetHeadlines,
-        err,
+        Type: Constant.GetNotify,
+        message: err,
       });
     });
 };

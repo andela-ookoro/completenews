@@ -12,8 +12,8 @@ const getSources = () => {
     })
     .catch((err) => {
       Dispatcher.dispatch({
-        Type: Constant.GetHeadlinesError,
-        err,
+        Type: Constant.GetNotify,
+        message: err,
       });
     });
 };

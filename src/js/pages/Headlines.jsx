@@ -1,17 +1,9 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
-//  import Fs from 'fs';
-//  import Request from 'request';
-//  import Cheerio from 'cheerio';
-import * as Constant from '../constants';
-// import SourceOptions from './headlines/SourceOptions';
+// import Request from 'request';
+// import Fs from 'fs';
 import SortBY from './headlines/SortBy';
 import Article from './Article';
-// import Category from './headlines/Category';
 import SourceOptions from './headlines/SourceOptions';
-// import SelectSource from './headlines/selectSource';
-
-// import NotifyAction from '../action/notifyAction';
 import NotifyStore from '../store/NotifyStore';
 import SourceAction from '../action/sourceAction';
 import Sources from '../store/SourceStore';
@@ -33,7 +25,7 @@ class Headlines extends React.Component {
       currentSort: '',
       categories: [],
       message: '',
-      isAuth: false,
+      isAuth: (!JSON.parse(localStorage.getItem('cat')) === {}),
       isDb: false,
     };
     this.count = 0;
@@ -46,36 +38,37 @@ class Headlines extends React.Component {
     this.headlineChange = this.headlineChange.bind(this);
     this.dbheadlineChange = this.dbheadlineChange.bind(this);
     this.authChange = this.authChange.bind(this);
-    // this.scrape = this.scrape.bind(this);
-    HeadlineStore.on('dbchange', this.dbheadlineChange);
-    HeadlineStore.on('change', this.headlineChange);
-
-    HeadlineStore.on('error', () => (
-      this.setState({ message: HeadlineStore.error })
-    ));
-    // NotifyStore.on('change', this.notifyUser);
-    AuthStore.on('change', () => {
-      this.setState({ isAuth: AuthStore.isAuth });
-      console.log(AuthStore.isAuth);
-    });
-
-    Sources.on('change', this.sourceChange);
+    this.scrape = this.scrape.bind(this);
+    this.viewFavourite = this.viewFavourite.bind(this);
   }
   // this method runs before the component render it content
   componentWillMount() {
+    this.viewFavourite();
     localStorage.getItem('sources');
     this.getSources();
+    HeadlineStore.on('dbchange', this.dbheadlineChange);
+    HeadlineStore.on('change', this.headlineChange);
+    AuthStore.on('change', () => {
+      this.setState({ isAuth: AuthStore.isAuth });
+    });
+    Sources.on('change', this.sourceChange);
+    NotifyStore.on('change', this.notifyUser);
+    const userinfo = JSON.parse(localStorage.getItem('userProfile'));
+    if (userinfo) {
+      this.setState({ isAuth: true });
+    }
   }
 
   componentWillUnmount() {
+    HeadlineStore.removeListener('change', this.headlineChange);
+    HeadlineStore.removeListener('dbchange', this.dbheadlineChange);
     Sources.removeListener('change', this.getSources);
-    Sources.removeListener('dbchange');
     NotifyStore.removeListener('change', this.notifyUser);
     AuthStore.removeListener('change');
   }
-
+  
   getSources() {
-    if (localStorage.getItem('sources')) {
+    if (!localStorage.getItem('sources')) {
       SourceAction();
     } else {
       this.setState(
@@ -84,6 +77,12 @@ class Headlines extends React.Component {
           categories: JSON.parse(localStorage.getItem('cat')),
         });
     }
+  }
+
+  viewFavourite() {
+    let userEmail = JSON.parse(localStorage.getItem('userProfile')).email.toString().replace('.', '_');
+    userEmail = userEmail.substring(0, userEmail.indexOf('@'));
+    HeadlineAction.getDbHeadlines(userEmail);
   }
 
   dbheadlineChange() {
@@ -98,17 +97,17 @@ class Headlines extends React.Component {
       currentSort: '',
       isAuth: false,
     });
-    // console.log("WENT TO DB");
   }
 
   headlineChange() {
     const headlines = HeadlineStore.headlines;
     const error = HeadlineStore.error;
-    // console.log(headlines);
+    const userinfo = JSON.parse(localStorage.getItem('userProfile'));
     localStorage.setItem('articles', JSON.stringify(headlines));
     this.setState({
       articles: headlines,
       message: error,
+      isAuth: (userinfo !== {}),
     });
   }
 
@@ -134,8 +133,8 @@ class Headlines extends React.Component {
     // console.log('auth');
   }
 
-  notifyUser(message) {
-    this.setState({ message });
+  notifyUser() {
+    this.setState({ message: NotifyStore.message });
     // console.log('message');
   }
 
@@ -175,32 +174,31 @@ class Headlines extends React.Component {
     });
   }
 
-  /**
-  scrape() {
-    const url = 'https://thenextweb.com/microsoft/2017/05/02/microsoft-
-    bringing-mixed-reality-classroom-view-mixed-reality/';
-    Request(url, (error, response, html) => {
-    if (!error) {
-      Fs.writeFile('output.html', html, (err) => {
-              console.log('File successfully written! - Check your project
-              directory for the output.json file');
-      });
-    }
-  });
-}
-*/
+  scrape(url) {
+    // Request(url, (error, response, html) => {
+    //   if (!error) {
+    //     Fs.writeFile('output.html', html, (err) => {
+    //       console.log(`File successfully written! - Check your project
+    //             directory for the output.json file`);
+    //     });
+    //   }
+    // });
+  }
 
 
   render() {
     return (
       <div className="row">
-        <div className="col s2">
+        <div className="col s2" id="side-nav">
           Sources
           <select
-            name="sources" style={{ height: 10 + 'em' }} size="25"
+            name="sources" style={{ height: 10 + 'em' }} size="25" id="sources"
             className={'browser-default'} onChange={this.fetchAvailableSort}
           >
-            {this.state.sources.map(source =>
+            {(this.state.sources.length < 1) ?
+              ''
+              :
+            this.state.sources.map(source =>
               <option
                 key={source.id} value={source.id} title={source.description}
               >
@@ -209,7 +207,10 @@ class Headlines extends React.Component {
             )}
           </select>
           <ul className="collapsible" data-collapsible="accordion">
-            {this.state.categories.map(cat =>
+            {(this.state.categories.length < 1 || !this.state.categories) ?
+              ''
+              :
+            this.state.categories.map(cat =>
               <li key={cat}>
                 <div className="collapsible-header"> {this.toTitleCase(cat)}
                 </div>
@@ -226,51 +227,59 @@ class Headlines extends React.Component {
             )}
           </ul>
         </div>
-        <div className={'col s10'}>
-          <div>
-            {(this.state.message !== '' && this.state.articles.length === 0)
-              ?
-                <div className="progress">
-                  <div className="indeterminate" />
-                </div>
-              :
-                <h5> {this.state.message} </h5>
-            }
+        <div className={'col s10'} id="articles">
+          <div id="articles-menu">
+            <div >
+              {(this.state.message === '' && this.state.articles.length < 1)
+                ?
+                  <div className="progress">
+                    <div className="indeterminate" />
+                  </div>
+                :
+                  <h5> {this.state.message} </h5>
+              }
+            </div>
+            <h5 name={'source'}>
+              {this.state.articleSource}
+              {
+                (this.state.currentSort === '') ?
+                ' '
+                :
+                ` ${this.toTitleCase(this.state.currentSort)}   
+                ${this.state.articles.length}  Headlines `
+              }
+              {this.state.sortBy.map((sortBy, i) =>
+                <SortBY
+                  key={i} data={sortBy} source={this.state.source}
+                  onClick={this.fecthHealines}
+                />,
+                )}
+            </h5>
           </div>
-          <h5>
-            {this.state.articleSource}
-            {
-              (this.state.currentSort === '') ?
-              ' '
-              :
-              ` ${this.toTitleCase(this.state.currentSort)}   
-              ${this.state.articles.length}  Headlines `
-            }
-            {this.state.sortBy.map((sortBy, i) =>
-              <SortBY
-                key={i} data={sortBy} source={this.state.source}
-                onClick={this.fecthHealines}
-              />,
-              )}
-          </h5>
-          { (this.state.message) ?
-            <h3>{this.state.message}</h3>
-            :
-            this.state.articles.map((article, i) =>
+          <div id="articles">
+            {this.state.articles.map((article, i) =>
               <Article
                 key={i} id={i} author={article.author} title={article.title}
                 urlToImage={article.urlToImage} description={article.description}
                 publishedAt={article.publishedAt} url={article.url}
                 source={this.state.source} isAuth={this.state.isAuth}
               />,
-            )
-          }
+              )
+            }
+          </div>
+          <button id="myBtn">Open Modal</button>
+          <div id="myModal" className="modal">
+            <div className="modal-content">
+              <span className="close">&times;</span>
+              <p>Some text in the Modal..</p>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 }
 
-// const test = new Headlines();
-// window.scrape = test.scrape();
+const test = new Headlines();
+window.scrape = test.scrape();
 export default Headlines;

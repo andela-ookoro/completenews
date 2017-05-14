@@ -7,17 +7,19 @@ class Auth extends EventEmitter {
     super();
     this.updateAuth = this.updateAuth.bind(this);
     this.isAuth = false;
+    this.userinfo = {};
   }
 
-  updateAuth(status) {
+  updateAuth(status, userinfo) {
     this.isAuth = status;
+    this.userinfo = userinfo;
     return this.isAuth;
   }
 
   handleActions(action) {
     switch (action.Type) {
       case Constant.Auth:
-        this.updateAuth(action.status);
+        this.updateAuth(action.status, action.userinfo);
         this.emit('change');
         break;
       default :

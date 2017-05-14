@@ -1,35 +1,48 @@
 import React from 'react';
 // import ReactDOM from 'react-dom';
 import GoogleLogin from 'react-google-login';
+import { hashHistory } from 'react-router';
 import firebase from '../utilities/firebase';
-import * as HeadlineAction from '../action/headlineAction';
 import AuthAction from '../action/authAction';
 import Notification from '../action/notifyAction';
+import NotifyStore from '../store/NotifyStore';
 
 
 class Login extends React.Component {
   constructor() {
     super();
+    this.state = { message: '' };
     this.responseGoogle = this.responseGoogle.bind(this);
-    this.state = { email: '', name: '', imageUrl: '' };
-    this.signout = this.signout.bind(this);
-    this.viewFavourite = this.viewFavourite.bind(this);
+    this.notifyUser = this.notifyUser.bind(this);
+  }
+  componentWillMount() {
+    NotifyStore.on('change', this.notifyUser);
+  }
+
+  componentWillUnmount() {
+    NotifyStore.removeListener('change', this.notifyUser);
+  }
+  notifyUser() {
+    this.setState({ message: NotifyStore.message });
   }
   responseGoogle(response) {
     const userProfile = response.profileObj;
     let userEmail = userProfile.email;
     userEmail = userEmail.substring(0, userEmail.indexOf('@')).replace('.', '_');
-    localStorage.setItem('userProfile', JSON.stringify(response.profileObj));
-    this.setState({
-      email: userProfile.email,
-      name: userProfile.name,
-      imageUrl: userProfile.imageUrl,
-    });
+    const userinfo = {
+      "email": userProfile.email,
+      "name": userProfile.name,
+      "imageUrl": userProfile.imageUrl,
+      "userEmail" : userEmail,
+    };
+    localStorage.setItem('userProfile', JSON.stringify(userinfo));
     const userRef = firebase.database().ref('/user');
     userRef.once('value')
     .then((snapshot) => {
       if (snapshot.hasChild(userEmail)) {
-        // console.log('exists');
+        AuthAction(true, userinfo);
+        window.location = "/#/headlines";
+        // hashHistory.push('/headlines');
       } else {
         const user = {
           email: userProfile.email,
@@ -48,11 +61,14 @@ class Login extends React.Component {
           ],
         };
         userRef.child(userEmail).set(user)
+        .then(() => {
+          AuthAction(true, userinfo);
+          hashHistory.push('/headlines')
+        })
         .catch((err) => {
-           Notification(`Error occurred, ${err}`);
+          Notification(`Error occurred, ${err}`);
         });
       }
-      AuthAction(true);
     }).catch((err) => {
       Notification(`Error occurred, ${err}`);
     });
@@ -60,49 +76,20 @@ class Login extends React.Component {
    //  console.log(response.profileObj);
   }
 
-  signout() {
-    localStorage.setItem('userProfile', null);
-    this.setState({
-      email: '',
-      name: '',
-      imageUrl: '',
-    });
-    HeadlineAction.resetHeadlines();
-    AuthAction(false);
-  }
-
-  viewFavourite() {
-    let userEmail = JSON.parse(localStorage.getItem('userProfile')).email.toString().replace('.', '_');
-    userEmail = userEmail.substring(0, userEmail.indexOf('@'));
-    HeadlineAction.getDbHeadlines(userEmail);
-  }
-
   render() {
     return (
-       (this.state.email === '') ?
-         <GoogleLogin
-           clientId="21466984743-0jkg4qsshao5t2cahrr8obm9r3sqqaa4.apps.googleusercontent.com"
-           onSuccess={this.responseGoogle}
-           onFailure={this.responseGoogle}
-           loginHint="Sign to personalize articles"
-         >
-           <span> Login with Google</span>
-         </GoogleLogin>
-     :
-         <div>
-           <button
-             onClick={this.viewFavourite}
-             className="btn-floating btn-small waves-effect waves-light"
-             title="view favourite"
-           >
-             <i className="large material-icons">stars</i>
-           </button>
-           <div className="chip">
-             <img src={this.state.imageUrl} alt="Contact Person" />
-             {this.state.name}
-             <a className="btn-flat" onClick={this.signout}>Sign Out</a>
-           </div>
-         </div>
+      <div className="centerdiv">
+        <p> <i className="material-icons prefix">account_circle</i>  </p>
+        <p> {this.state.message} </p>
+        <GoogleLogin
+          clientId="21466984743-0jkg4qsshao5t2cahrr8obm9r3sqqaa4.apps.googleusercontent.com"
+          onSuccess={this.responseGoogle}
+          onFailure={this.responseGoogle}
+          loginHint="Sign to personalize articles"
+        >
+          <span> Login with Google</span>
+        </GoogleLogin>
+      </div>
     );
   }
 
