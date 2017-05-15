@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for pages/userinfo.jsx</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">All files</a> / <a href="index.html">pages</a> userinfo.jsx
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>0/70</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/45</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/16</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>0/27</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68</td><td class="line-coverage quiet"><span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React <span class="cstat-no" title="statement not covered" >from 'react';<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span>
+import { Link } fro<span class="cstat-no" title="statement not covered" >m 'react-router';</span>
+import * as HeadlineAc<span class="cstat-no" title="statement not covered" >tion from '../action/headlineAction'</span>;<span class="cstat-no" title="statement not covered" ></span>
+import AuthAction <span class="cstat-no" title="statement not covered" >from '../action/authAction';<span class="cstat-no" title="statement not covered" ></span></span>
+import AuthStore <span class="cstat-no" title="statement not covered" >from '../store/authStore';<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ><span class="fstat-no" title="function not covered" ></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span></span>
+&nbsp;
+&nbsp;
+class UserI<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >nf</span>o extends React.Component {<span class="cstat-no" title="statement not covered" ></span></span>
+  construct<span class="fstat-no" title="function not covered" >or() {<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span></span>
+    super();
+<span class="cstat-no" title="statement not covered" >    this.state = { UserInfo: {}, isAuth: false };</span>
+<span class="cstat-no" title="statement not covered" >    this.signout = this.signout.bind(this);</span>
+<span class="cstat-no" title="statement not covered" >    this.viewFavourite = this.viewFavourite.bind(this);</span>
+<span class="cstat-no" title="statement not covered" >    this.UpdateUserInfo = this.UpdateUserInfo.bind(this);<span class="cstat-no" title="statement not covered" ></span></span>
+  }<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" ></span></span>
+  componentWillMount() {
+    const userinfo = <span class="cstat-no" title="statement not covered" >JSON.parse(localStorage.getItem('userProfile'));</span>
+    if<span class="cstat-no" title="statement not covered" > (userinfo) {</span>
+      th<span class="cstat-no" title="statement not covered" >is.setState({ UserInfo: userinfo, isAuth: true });</span>
+    }
+    Au<span class="cstat-no" title="statement not covered" >thStore.on('change', this.UpdateUserInfo);</span>
+  }<span class="fstat-no" title="function not covered" ></span>
+&nbsp;
+  componentWillUnmount() {
+    Au<span class="cstat-no" title="statement not covered" >thStore.removeListener('change', this.UpdateUserInfo);</span>
+  }<span class="fstat-no" title="function not covered" ></span>
+  UpdateUserInfo() {
+    th<span class="cstat-no" title="statement not covered" >is.setState({ UserInfo: AuthStore.userinfo, isAuth: AuthStore.isAuth });</span>
+  }<span class="fstat-no" title="function not covered" ></span>
+  signout() {
+    lo<span class="cstat-no" title="statement not covered" >calStorage.setItem('userProfile', null);</span>
+    th<span class="cstat-no" title="statement not covered" >is.setState({ UserInfo: {}, isAuth: false });</span>
+    He<span class="cstat-no" title="statement not covered" >adlineAction.resetHeadlines();</span>
+    Au<span class="cstat-no" title="statement not covered" >thAction(false, {});</span>
+  }<span class="fstat-no" title="function not covered" ></span>
+&nbsp;
+  viewFavourite() {
+    let userEmail = JS<span class="cstat-no" title="statement not covered" >ON.parse(localStorage.getItem('userProfile')).email.toString().replace('.', '_');</span>
+    us<span class="cstat-no" title="statement not covered" >erEmail = userEmail.substring(0, userEmail.indexOf('@'));</span>
+    He<span class="cstat-no" title="statement not covered" >adlineAction.getDbHeadlines(userEmail);</span>
+  }<span class="fstat-no" title="function not covered" ></span>
+&nbsp;
+  render() {
+    re<span class="cstat-no" title="statement not covered" >turn (</span>
+       (!this.state.isAuth) ?
+         &lt;Link to="/login" &gt;Click to login&lt;/Link&gt;
+          :
+         &lt;div&gt;
+            &lt;button
+                onClick={this.viewFavourite}
+                className="btn-floating btn-small waves-effect waves-light"
+                title="view favourite"
+              &gt;
+                &lt;i className="large material-icons"&gt;stars&lt;/i&gt;
+              &lt;/button&gt;
+           &lt;div className="chip"&gt;
+             &lt;img src={this.state.UserInfo.imageUrl} alt="Contact Person" /&gt;
+             {this.state.UserInfo.name}
+           &lt;/div&gt;
+           &lt;a className="btn-flat" onClick={this.signout}&gt;Sign Out&lt;/a&gt;
+         &lt;/div&gt;
+    );
+  }<span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" ></span></span>
+&nbsp;
+}
+&nbsp;
+export default UserInfo;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon May 15 2017 00:03:28 GMT+0100 (WAT)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

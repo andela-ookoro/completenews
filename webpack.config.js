@@ -61,7 +61,7 @@ module.exports = {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: 'css-loader?importLoaders=1',
+          use: ['style-loader', 'css-loader?importLoaders=1'],
         }),
       },
       {

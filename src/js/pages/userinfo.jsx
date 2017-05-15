@@ -10,7 +10,11 @@ class UserInfo extends React.Component {
     super();
     this.state = { UserInfo: {}, isAuth: false };
     this.signout = this.signout.bind(this);
-    this.viewFavourite = this.viewFavourite.bind(this);
+    this.viewFavourite = (() => {
+      let userEmail = JSON.parse(localStorage.getItem('userProfile')).email.toString().replace('.', '_');
+      userEmail = userEmail.substring(0, userEmail.indexOf('@'));
+      HeadlineAction.getDbHeadlines(userEmail);
+    });
     this.UpdateUserInfo = this.UpdateUserInfo.bind(this);
   }
   componentWillMount() {
@@ -34,11 +38,6 @@ class UserInfo extends React.Component {
     AuthAction(false, {});
   }
 
-  viewFavourite() {
-    let userEmail = JSON.parse(localStorage.getItem('userProfile')).email.toString().replace('.', '_');
-    userEmail = userEmail.substring(0, userEmail.indexOf('@'));
-    HeadlineAction.getDbHeadlines(userEmail);
-  }
 
   render() {
     return (
@@ -46,13 +45,13 @@ class UserInfo extends React.Component {
          <Link to="/login" >Click to login</Link>
           :
          <div>
-            <button
-                onClick={this.viewFavourite}
-                className="btn-floating btn-small waves-effect waves-light"
-                title="view favourite"
-              >
-                <i className="large material-icons">stars</i>
-              </button>
+           <button
+             onClick={this.viewFavourite}
+             className="btn-floating btn-small waves-effect waves-light"
+             title="view favourite"
+           >
+             <i className="large material-icons">stars</i>
+           </button>
            <div className="chip">
              <img src={this.state.UserInfo.imageUrl} alt="Contact Person" />
              {this.state.UserInfo.name}

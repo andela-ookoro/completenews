@@ -27,19 +27,47 @@ class Headlines extends React.Component {
       message: '',
       isAuth: (!JSON.parse(localStorage.getItem('cat')) === {}),
       isDb: false,
+      scrapeUrl: '',
     };
     this.count = 0;
     this.fecthHealines = this.fecthHealines.bind(this);
     this.getSources = this.getSources.bind(this);
-    this.toTitleCase = this.toTitleCase.bind(this);
+    this.toTitleCase = (str =>
+       str.replace(/-/g, ' ').replace(/\w\S*/g, txt =>
+        txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())
+      );
     this.fetchAvailableSort = this.fetchAvailableSort.bind(this);
     this.notifyUser = this.notifyUser.bind(this);
     this.sourceChange = this.sourceChange.bind(this);
     this.headlineChange = this.headlineChange.bind(this);
     this.dbheadlineChange = this.dbheadlineChange.bind(this);
     this.authChange = this.authChange.bind(this);
-    this.scrape = this.scrape.bind(this);
-    this.viewFavourite = this.viewFavourite.bind(this);
+    this.scrape = ((e) => {
+      e.preventDefault();
+      const index = e.target.value;
+      const articles = JSON.parse(localStorage.articles);
+      const article = articles[index];
+      const scrapeUrl = article.url.toString();
+      if (scrapeUrl.indexOf('hppts') < 0) {
+        this.setState({ message: 'Cannot view page; access blocked by source' });
+      } else {
+        this.setState({ scrapeUrl });
+      }
+      // Request(url, (error, response, html) => {
+      //   if (!error) {
+      //     Fs.writeFile('output.html', html, (err) => {
+      //       console.log(`File successfully written! - Check your project
+      //             directory for the output.json file`);
+      //     });
+      //   }
+      // });
+    });
+    this.viewFavourite = (() => {
+      let userEmail = JSON.parse(localStorage.getItem('userProfile'))
+                      .email.toString().replace('.', '_');
+      userEmail = userEmail.substring(0, userEmail.indexOf('@'));
+      HeadlineAction.getDbHeadlines(userEmail);
+    });
   }
   // this method runs before the component render it content
   componentWillMount() {
@@ -66,7 +94,7 @@ class Headlines extends React.Component {
     NotifyStore.removeListener('change', this.notifyUser);
     AuthStore.removeListener('change');
   }
-  
+
   getSources() {
     if (!localStorage.getItem('sources')) {
       SourceAction();
@@ -77,12 +105,6 @@ class Headlines extends React.Component {
           categories: JSON.parse(localStorage.getItem('cat')),
         });
     }
-  }
-
-  viewFavourite() {
-    let userEmail = JSON.parse(localStorage.getItem('userProfile')).email.toString().replace('.', '_');
-    userEmail = userEmail.substring(0, userEmail.indexOf('@'));
-    HeadlineAction.getDbHeadlines(userEmail);
   }
 
   dbheadlineChange() {
@@ -135,12 +157,6 @@ class Headlines extends React.Component {
 
   notifyUser() {
     this.setState({ message: NotifyStore.message });
-    // console.log('message');
-  }
-
-  toTitleCase(str) {
-    return str.replace(/-/g, ' ').replace(/\w\S*/g, txt =>
-      txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
   }
 
   // get available sort parameter
@@ -174,17 +190,6 @@ class Headlines extends React.Component {
     });
   }
 
-  scrape(url) {
-    // Request(url, (error, response, html) => {
-    //   if (!error) {
-    //     Fs.writeFile('output.html', html, (err) => {
-    //       console.log(`File successfully written! - Check your project
-    //             directory for the output.json file`);
-    //     });
-    //   }
-    // });
-  }
-
 
   render() {
     return (
@@ -192,7 +197,7 @@ class Headlines extends React.Component {
         <div className="col s2" id="side-nav">
           Sources
           <select
-            name="sources" style={{ height: 10 + 'em' }} size="25" id="sources"
+            name="sources" size="25" id="sources"
             className={'browser-default'} onChange={this.fetchAvailableSort}
           >
             {(this.state.sources.length < 1) ?
@@ -257,22 +262,19 @@ class Headlines extends React.Component {
             </h5>
           </div>
           <div id="articles">
-            {this.state.articles.map((article, i) =>
-              <Article
-                key={i} id={i} author={article.author} title={article.title}
-                urlToImage={article.urlToImage} description={article.description}
-                publishedAt={article.publishedAt} url={article.url}
-                source={this.state.source} isAuth={this.state.isAuth}
-              />,
+            {(this.state.scrapeUrl) ?
+              <iframe src={this.state.scrapeUrl} />
+            :
+              this.state.articles.map((article, i) =>
+                <Article
+                  key={i} id={i} author={article.author} title={article.title}
+                  urlToImage={article.urlToImage} description={article.description}
+                  publishedAt={article.publishedAt} url={article.url}
+                  source={(article.source) ? article.source : this.state.source}
+                  isAuth={this.state.isAuth} scrape={this.scrape}
+                />,
               )
             }
-          </div>
-          <button id="myBtn">Open Modal</button>
-          <div id="myModal" className="modal">
-            <div className="modal-content">
-              <span className="close">&times;</span>
-              <p>Some text in the Modal..</p>
-            </div>
           </div>
         </div>
       </div>
@@ -280,6 +282,4 @@ class Headlines extends React.Component {
   }
 }
 
-const test = new Headlines();
-window.scrape = test.scrape();
 export default Headlines;

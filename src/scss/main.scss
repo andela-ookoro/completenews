@@ -11,6 +11,10 @@ option:checked, option:hover {
     color: white;
     background: #00b8d4;
 }
+button{
+  color: #00b8d4;
+  margin-left: 5px
+}
 #header{
 	position: fixed;
 	z-index: 1;
@@ -131,4 +135,7 @@ footer {
   border: 1px solid #ccc;
   background-color: #f3f3f3;
   padding-left: 10em;
+}
+#sources{
+  height: 10em
 }

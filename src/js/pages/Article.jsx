@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ShareButtons, generateShareIcon } from 'react-share';
+import 'materialize-css';
 import firebase from '../utilities/firebase';
 import Notification from '../action/notifyAction';
 
@@ -18,35 +19,30 @@ const LinkedinIcon = generateShareIcon('linkedin');
 class Article extends React.Component {
   constructor() {
     super();
-    this.addArticle = this.addArticle.bind(this);
-    this.toServertime = this.toServertime.bind(this);
-  }
-
-  addArticle(e) {
-    const index = e.target.getAttribute('value');
-    const articles = JSON.parse(localStorage.articles);
-    const article = articles[index];
-    //  const timestamp = new Date().valueOf();
-    let userEmail = JSON.parse(localStorage.getItem('userProfile'))
-      .email.toString().replace('.', '_');
-    userEmail = userEmail.substring(0, userEmail.indexOf('@'));
-    const FavouriteAddress = `/user/${userEmail}/favourite`;
-    const FavouriteRef = firebase.database().ref(FavouriteAddress);
-    FavouriteRef.push(article)
-      .then(() => {
-        Notification('Headlines has been successfully added to favourites.');
-      })
-      .catch((err) => {
-        Notification(`Error occurred, ${err}`);
-      });
-    // console.log(articles[index]);
-    // console.log(timestamp);
-  }
-
-  toServertime(time) {
-    let test = new Date(time).toString();
-    test = test.substring(0, test.indexOf('G'));
-    return test;
+    this.addArticle = ((e) => {
+      const index = e.target.getAttribute('value');
+      const articles = JSON.parse(localStorage.articles);
+      const article = articles[index];
+      article.source = this.props.source;
+      //  const timestamp = new Date().valueOf();
+      let userEmail = JSON.parse(localStorage.getItem('userProfile'))
+        .email.toString().replace('.', '_');
+      userEmail = userEmail.substring(0, userEmail.indexOf('@'));
+      const FavouriteAddress = `/user/${userEmail}/favourite`;
+      const FavouriteRef = firebase.database().ref(FavouriteAddress);
+      FavouriteRef.push(article)
+        .then(() => {
+          Notification('Headlines has been successfully added to favourites.');
+        })
+        .catch((err) => {
+          Notification(`Error occurred, ${err}`);
+        });
+    });
+    this.toServertime = ((time) => {
+      let currentTime = new Date(time).toString();
+      currentTime = currentTime.substring(0, currentTime.indexOf('G'));
+      return currentTime;
+    });
   }
 
   render() {
@@ -80,7 +76,6 @@ class Article extends React.Component {
                     ''
                   }
                 </p>
-                <button onClick="scrape">View Details </button>
                 <a
                   href={this.props.url} target="_blank" rel="noopener noreferrer"
                 >
@@ -92,6 +87,10 @@ class Article extends React.Component {
                   title="Add to favourite"
                 >
                   <i value={this.props.id} className="material-icons">+</i>
+                </button>
+                <button
+                  value={this.props.id} onClick={this.props.scrape}
+                > Full view
                 </button>
                 <div className="container" >
                   <div className="Row">
@@ -146,6 +145,7 @@ Article.propTypes = {
   url: PropTypes.string,
   source: PropTypes.string.isRequired,
   isAuth: PropTypes.bool.isRequired,
+  scrape: PropTypes.func.isRequired,
 };
 
 Article.defaultProps = {

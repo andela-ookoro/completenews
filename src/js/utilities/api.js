@@ -47,5 +47,6 @@ export const getDbHeadlines = (email =>
     .catch((error) => {
       reject(`Error occurred, ${error}`);
     });
-  }));
+  })
+ );
 
