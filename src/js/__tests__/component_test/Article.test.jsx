@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Renderer from 'react-test-renderer';
-import Article from 'Article';
+import Article from '../../pages/Article';
 
 test('Component render the article template', () => {
   const article = {

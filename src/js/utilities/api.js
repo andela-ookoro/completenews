@@ -17,11 +17,11 @@ export const getHeadlines = ((source, sort) => {
   let apiURl = '';
   if (sort === '') {
     apiURl = `https://newsapi.org/v1/articles?source=${source
-            }&apiKey=213327409d384371851777e7c7f78dfe`;
+            }&apiKey=${process.env.NEWSAPIKEY}`;
   } else {
     apiURl = `https://newsapi.org/v1/articles?source=${source
             }&sortBy=${sort
-            }&apiKey=213327409d384371851777e7c7f78dfe`;
+            }&apiKey=${process.env.NEWSAPI_KEY}`;
   }
   return new Promise((resolve, reject) => {
     axios.get(apiURl)

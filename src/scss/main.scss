@@ -139,7 +139,18 @@ footer {
 #sources{
   height: 10em
 }
-.scapediv{
-  height: 90%;
-  width: 90%
+.centerdiv{
+  position:fixed;
+  top: 50%;
+  width:30em;
+  height:15em;
+  margin-top: -9em; /*set to a negative number 1/2 of your height*/
+  margin-left: -15em; /*set to a negative number 1/2 of your width*/
+  border: 1px solid #ccc;
+  background-color: #f3f3f3;
+  padding-left: 10em;
+}
+iframe{
+  min-height: 40em;
+  min-width: 70em
 }

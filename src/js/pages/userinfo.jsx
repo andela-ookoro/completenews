@@ -50,7 +50,7 @@ class UserInfo extends React.Component {
              className="btn-floating btn-small waves-effect waves-light"
              title="view favourite"
            >
-             <i className="large material-icons">stars</i>
+             <i className="large material-icons">star</i>
            </button>
            <div className="chip">
              <img src={this.state.UserInfo.imageUrl} alt="Contact Person" />

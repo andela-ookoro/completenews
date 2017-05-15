@@ -48,9 +48,12 @@ class Headlines extends React.Component {
       const articles = JSON.parse(localStorage.articles);
       const article = articles[index];
       const scrapeUrl = article.url.toString();
-      const scrapeTitle = `${article.source} : ${article.title}`;
-      if (scrapeUrl.indexOf('https') > 1) {
-        this.setState({ message: 'Cannot view page; access blocked by source' });
+      const scrapeTitle = article.title;
+      if (scrapeUrl.includes('https')) {
+        this.setState({
+          scrapeUrl: '',
+          message: 'Cannot view page; access blocked by source',
+        });
       } else {
         this.setState({ scrapeUrl, scrapeTitle });
       }
@@ -70,6 +73,7 @@ class Headlines extends React.Component {
       HeadlineAction.getDbHeadlines(userEmail);
       this.setState({ scrapeUrl: '' });
     });
+    this.resetScrapeUrl = this.resetScrapeUrl.bind(this);
   }
   // this method runs before the component render it content
   componentWillMount() {
@@ -181,6 +185,7 @@ class Headlines extends React.Component {
       articleSource: sourceName,
       sortBy: (sourceNode[0].sortBysAvailable.length > 1) ?
       sourceNode[0].sortBysAvailable : [],
+      scrapeUrl: '',
     });
   }
    // fetct headlines
@@ -191,7 +196,12 @@ class Headlines extends React.Component {
     HeadlineAction.getHeadlines(source, sort);
     this.setState({
       currentSort: sort,
+      scrapeUrl: '',
     });
+  }
+
+  resetScrapeUrl() {
+    this.setState({ scrapeUrl: '' });
   }
 
 
@@ -268,7 +278,10 @@ class Headlines extends React.Component {
           <div id="articles">
             {(this.state.scrapeUrl) ?
               <div className="scapediv">
-                <h6 className="header"> {this.state.scrapeTitle} </h6>
+                <h6 className="header"> {this.state.scrapeTitle}
+                  <button onClick={this.resetScrapeUrl}>
+                     &larr; View more Headlines </button>
+                </h6>
                 <iframe src={this.state.scrapeUrl} />
               </div>
             :

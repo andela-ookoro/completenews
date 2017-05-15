@@ -90,7 +90,7 @@ class Article extends React.Component {
                 </button>
                 <button
                   value={this.props.id} onClick={this.props.scrape}
-                > Full view
+                > Complete view
                 </button>
                 <div className="container" >
                   <div className="Row">
