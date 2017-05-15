@@ -48,10 +48,11 @@ class Headlines extends React.Component {
       const articles = JSON.parse(localStorage.articles);
       const article = articles[index];
       const scrapeUrl = article.url.toString();
-      if (scrapeUrl.indexOf('hppts') < 0) {
+      const scrapeTitle = `${article.source} : ${article.title}`;
+      if (scrapeUrl.indexOf('https') > 1) {
         this.setState({ message: 'Cannot view page; access blocked by source' });
       } else {
-        this.setState({ scrapeUrl });
+        this.setState({ scrapeUrl, scrapeTitle });
       }
       // Request(url, (error, response, html) => {
       //   if (!error) {
@@ -67,6 +68,7 @@ class Headlines extends React.Component {
                       .email.toString().replace('.', '_');
       userEmail = userEmail.substring(0, userEmail.indexOf('@'));
       HeadlineAction.getDbHeadlines(userEmail);
+      this.setState({ scrapeUrl: '' });
     });
   }
   // this method runs before the component render it content
@@ -118,6 +120,7 @@ class Headlines extends React.Component {
       sortBy: [],
       currentSort: '',
       isAuth: false,
+      scrapeUrl: '',
     });
   }
 
@@ -130,6 +133,7 @@ class Headlines extends React.Component {
       articles: headlines,
       message: error,
       isAuth: (userinfo !== {}),
+      scrapeUrl: '',
     });
   }
 
@@ -263,7 +267,10 @@ class Headlines extends React.Component {
           </div>
           <div id="articles">
             {(this.state.scrapeUrl) ?
-              <iframe src={this.state.scrapeUrl} />
+              <div className="scapediv">
+                <h6 className="header"> {this.state.scrapeTitle} </h6>
+                <iframe src={this.state.scrapeUrl} />
+              </div>
             :
               this.state.articles.map((article, i) =>
                 <Article
