@@ -1,1 +1,1 @@
-web: webpack-dev-server --content-base src --inline --hot
+web: node index.js
