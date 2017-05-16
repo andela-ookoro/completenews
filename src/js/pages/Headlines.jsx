@@ -55,7 +55,7 @@ class Headlines extends React.Component {
           message: 'Cannot view page; access blocked by source',
         });
       } else {
-        this.setState({ scrapeUrl, scrapeTitle });
+        this.setState({ message: '', scrapeUrl, scrapeTitle });
       }
       // Request(url, (error, response, html) => {
       //   if (!error) {
@@ -77,14 +77,14 @@ class Headlines extends React.Component {
   }
   // this method runs before the component render it content
   componentWillMount() {
-    this.viewFavourite();
+    if (this.state.isAuth) {
+      this.viewFavourite();
+    }
     localStorage.getItem('sources');
     this.getSources();
     HeadlineStore.on('dbchange', this.dbheadlineChange);
     HeadlineStore.on('change', this.headlineChange);
-    AuthStore.on('change', () => {
-      this.setState({ isAuth: AuthStore.isAuth });
-    });
+    AuthStore.on('change', this.authChange);
     Sources.on('change', this.sourceChange);
     NotifyStore.on('change', this.notifyUser);
     const userinfo = JSON.parse(localStorage.getItem('userProfile'));
@@ -98,7 +98,7 @@ class Headlines extends React.Component {
     HeadlineStore.removeListener('dbchange', this.dbheadlineChange);
     Sources.removeListener('change', this.getSources);
     NotifyStore.removeListener('change', this.notifyUser);
-    AuthStore.removeListener('change');
+    AuthStore.removeListener('change', this.authChange);
   }
 
   getSources() {

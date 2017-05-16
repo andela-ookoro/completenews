@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ShareButtons, generateShareIcon } from 'react-share';
-import 'materialize-css';
 import firebase from '../utilities/firebase';
 import Notification from '../action/notifyAction';
 
@@ -81,16 +80,16 @@ class Article extends React.Component {
                 >
                   {(this.props.url) ? `Read on  ${this.props.source} ` : ''}</a>
                 <button
-                  value={this.props.id} onClick={this.addArticle}
-                  className={`btn-floating btn-small waves-effect waves-light red 
-                    ${(this.props.isAuth) ? '' : 'disabled'}`}
-                  title="Add to favourite"
-                >
-                  <i value={this.props.id} className="material-icons">+</i>
-                </button>
-                <button
                   value={this.props.id} onClick={this.props.scrape}
                 > Complete view
+                </button>
+                <button
+                  id="btnAddToFav"
+                  value={this.props.id} onClick={this.addArticle}
+                  className={`${(this.props.isAuth) ? '' : 'disabled'}`}
+                  title="Add to favourite"
+                >
+                  Add to favourite
                 </button>
                 <div className="container" >
                   <div className="Row">

@@ -3,11 +3,12 @@ import Link from 'react-router';
 import UserInfo from './userinfo';
 
 class Layout extends React.Component {
-  navigate() {
-    // console.log(this.props.history);
-    this.props.history.replaceState(null, '/');
-    //  this.props.history.goBack();
-  }
+  
+  // navigate() {
+  //   // console.log(this.props.history);
+  //   this.props.history.replaceState(null, '/');
+  //   //  this.props.history.goBack();
+  // }
 
   render() {
     return (

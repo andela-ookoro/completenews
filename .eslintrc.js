@@ -5,7 +5,8 @@ module.exports = {
     "window": true,
 		"localStorage": true,
 		"$": true,
-		"console": true
+		"console": true,
+		"document": true
   },
 	"rules": {
 		"react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],

@@ -124,25 +124,14 @@ footer {
     text-decoration: none;
     cursor: pointer;
 }
-.centerdiv{
-  position:fixed;
-  top: 50%;
-  left: 50%;
-  width:30em;
-  height:15em;
-  margin-top: -9em; /*set to a negative number 1/2 of your height*/
-  margin-left: -15em; /*set to a negative number 1/2 of your width*/
-  border: 1px solid #ccc;
-  background-color: #f3f3f3;
-  padding-left: 10em;
-}
+
 #sources{
   height: 10em
 }
 .centerdiv{
   position:fixed;
   top: 50%;
-  width:30em;
+  width:20em;
   height:15em;
   margin-top: -9em; /*set to a negative number 1/2 of your height*/
   margin-left: -15em; /*set to a negative number 1/2 of your width*/
@@ -153,4 +142,20 @@ footer {
 iframe{
   min-height: 40em;
   min-width: 70em
+}
+#viewfavouritebtn{
+  background-color: #006064;
+  color: whitesmoke;
+  margin-right: 5px;
+}
+.center_content{
+  position:fixed;
+  top: 50%;
+  left: 30%;
+  width:30em;
+  height:15em;
+  margin-top: -9em;  /*set to a negative number 1/2 of your width*/
+  border: 1px solid #ccc;
+  background-color: #f3f3f3;
+  text-align: center;
 }

@@ -46,12 +46,10 @@ class UserInfo extends React.Component {
           :
          <div>
            <button
-             onClick={this.viewFavourite}
-             className="btn-floating btn-small waves-effect waves-light"
-             title="view favourite"
-           >
-             <i className="large material-icons">star</i>
-           </button>
+             id="viewfavouritebtn"
+             onClick={this.viewFavourite} title="view favourite headline"
+           > Favourite Headlines
+                </button>
            <div className="chip">
              <img src={this.state.UserInfo.imageUrl} alt="Contact Person" />
              {this.state.UserInfo.name}

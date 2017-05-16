@@ -47,11 +47,6 @@ exports[`Component render the article template 1`] = `
           <p>
             Published on  
           </p>
-          <button
-            onClick="scrape"
-          >
-            View Details 
-          </button>
           <a
             href="http://localhost"
             rel="noopener noreferrer"
@@ -60,18 +55,19 @@ exports[`Component render the article template 1`] = `
             Read on  BBC 
           </a>
           <button
-            className="btn-floating btn-small waves-effect waves-light red 
-                              "
+            onClick={[Function]}
+            value={1}
+          >
+             Complete view
+          </button>
+          <button
+            className=""
+            id="btnAddToFav"
             onClick={[Function]}
             title="Add to favourite"
             value={1}
           >
-            <i
-              className="material-icons"
-              value={1}
-            >
-              +
-            </i>
+            Add to favourite
           </button>
           <div
             className="container"

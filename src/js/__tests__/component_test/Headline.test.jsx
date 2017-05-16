@@ -10,7 +10,7 @@ import Visit from '../../helpers/visit';
 let originalTimeout;
 beforeEach(() => {
   originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 30000;
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 80000;
 });
 
 afterEach(() => {
@@ -24,28 +24,10 @@ describe('End to End test ', () => {
     Visit('/')
     .refresh()
       .wait(NEWTODO_INPUT)
-      // type a todo and press ENTER
       .select(NEWTODO_INPUT, 'abc-news-au')
       .wait('#articles-menu')
       .evaluate(() =>
         document.querySelector('#articles-menu').innerText,
-      )
-      .then((res) => {
-        expect(res).toMatch('Abc News Au');
-        done();
-      });
-  });
-
-  it('Article menu should display name of source', (done) => {
-    const NEWTODO_INPUT = '#sources';
-    Visit('/')
-    .refresh()
-      .wait(NEWTODO_INPUT)
-      // type a todo and press ENTER
-      .select(NEWTODO_INPUT, 'abc-news-au')
-      .wait('#articles-menu')
-      .evaluate(() =>
-         document.querySelector('#articles-menu').innerText,
       )
       .then((res) => {
         expect(res).toMatch('Abc News Au');

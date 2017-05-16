@@ -15,11 +15,6 @@ exports[`Component render the article template 1`] = `
       name="sources"
       onChange={[Function]}
       size="25"
-      style={
-        Object {
-          "height": "10em",
-        }
-      }
     >
       
     </select>
