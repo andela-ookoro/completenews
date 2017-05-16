@@ -21,7 +21,7 @@ export const getHeadlines = ((source, sort) => {
   } else {
     apiURl = `https://newsapi.org/v1/articles?source=${source
             }&sortBy=${sort
-            }&apiKey=${process.env.NEWSAPI_KEY}`;
+            }&apiKey=${process.env.NEWSAPIKEY}`;
   }
   return new Promise((resolve, reject) => {
     axios.get(apiURl)
