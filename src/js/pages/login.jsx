@@ -86,7 +86,6 @@ class Login extends React.Component {
     return (
       <div className="center_content">
         <div>
-          <a href="#"> calm </a>
           <p> <i className="material-icons prefix">account_circle</i> </p>
           <p> {this.state.message} </p>
         </div>
@@ -94,9 +93,10 @@ class Login extends React.Component {
           clientId="21466984743-0jkg4qsshao5t2cahrr8obm9r3sqqaa4.apps.googleusercontent.com"
           onSuccess={this.responseGoogle}
           onFailure={this.responseGoogle}
-          loginHint="Sign to personalize articles"
+          tag="span"
+          disabled="false"
         >
-          <span> Login with Google</span>
+          <span id="googlebtn" className="btn waves-effect waves-light"> Login with Google</span>
         </GoogleLogin>
       </div>
     );
