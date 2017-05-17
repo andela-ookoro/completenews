@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Renderer from 'react-test-renderer';
 import UserInfo from '../../pages/userinfo';
+import authAction from '../../action/authAction';
 
 test('Component render the article template', () => {
   const component = Renderer.create(<UserInfo />);
@@ -9,10 +10,22 @@ test('Component render the article template', () => {
   expect(tree).toMatchSnapshot();
 });
 
-test('Property of each control should be same with props variable passed',
+test('Should render a link to login when user is anonymous',
   () => {
     const wrapper = shallow(<UserInfo />);
-    const heading = wrapper.find('#viewfavouritebt');
-    expect(heading.text()).toEqual('Favourite Headlines');
+    const link = wrapper.node.props.to;
+    const loginText = wrapper.node.props.children;
+    expect(link).toEqual('/login');
+    expect(loginText).toEqual('Click to login');
+    // const UserInfo1 = {
+    //   imageUrl: '/src/favicon',
+    //   name: 'cele',
+    // };
+    // let component = new UserInfo();
+    // component.render();
+    // console.log(component);
+    // component.componentWillMount();
+    // authAction(true, UserInfo1);
+    // console.log(component);
   });
 

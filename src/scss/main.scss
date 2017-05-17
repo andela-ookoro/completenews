@@ -38,6 +38,12 @@ button{
 .nav-wrapper {
   @extend .blueheader
 }
+.pageTitle{
+  margin-left:10px
+}
+.brand-logo{
+  @extend .pageTitle;
+}
 .categoryHeader{
   color: #00838f;
 }

@@ -22,7 +22,6 @@ describe('End to End test ', () => {
   (done) => {
     const NEWTODO_INPUT = '#sources';
     Visit('/')
-    .refresh()
       .wait(NEWTODO_INPUT)
       .select(NEWTODO_INPUT, 'abc-news-au')
       .wait('#articles-menu')

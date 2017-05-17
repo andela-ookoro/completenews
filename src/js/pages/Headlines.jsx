@@ -57,14 +57,6 @@ class Headlines extends React.Component {
       } else {
         this.setState({ message: '', scrapeUrl, scrapeTitle });
       }
-      // Request(url, (error, response, html) => {
-      //   if (!error) {
-      //     Fs.writeFile('output.html', html, (err) => {
-      //       console.log(`File successfully written! - Check your project
-      //             directory for the output.json file`);
-      //     });
-      //   }
-      // });
     });
     this.viewFavourite = (() => {
       let userEmail = JSON.parse(localStorage.getItem('userProfile'))
@@ -77,9 +69,6 @@ class Headlines extends React.Component {
   }
   // this method runs before the component render it content
   componentWillMount() {
-    if (this.state.isAuth) {
-      this.viewFavourite();
-    }
     localStorage.getItem('sources');
     this.getSources();
     HeadlineStore.on('dbchange', this.dbheadlineChange);
@@ -90,6 +79,9 @@ class Headlines extends React.Component {
     const userinfo = JSON.parse(localStorage.getItem('userProfile'));
     if (userinfo) {
       this.setState({ isAuth: true });
+      this.viewFavourite();
+    } else {
+      this.setState({ articleSource: '' });
     }
   }
 

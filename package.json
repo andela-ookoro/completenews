@@ -8,7 +8,8 @@
     "test": "jest  --config jest.config.js",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "start": "node server.js"
+    "start": "node server.js",
+    "prod": "webpack -p"
   },
   "repository": {
     "type": "git",

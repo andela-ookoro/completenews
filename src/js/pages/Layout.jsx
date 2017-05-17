@@ -16,7 +16,7 @@ class Layout extends React.Component {
         <div className="col s12" id="header">
           <nav>
             <div className="nav-wrapper">
-              <a href="#!" style={{ marginRight: `${10} + px ` }} className="brand-logo">Complete News</a>
+              <a href="#!" className="brand-logo">Complete News</a>
               <a href="#!" data-activates="mobile-demo" className="button-collapse">
                 <i className="material-icons">menu</i></a>
               <ul className="right hide-on-med-and-down">
