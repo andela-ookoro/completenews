@@ -3,7 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/andela-ookoro/completenews/badge.svg?branch=master)](https://coveralls.io/github/andela-ookoro/completenews?branch=master)
 
 ## Introduction
-### **`completenews`** is a Web applciation built with [React] (https://facebook.github.io/react/) framework that fetch and display headline sources and articles.
+### **`completenews`** is a single page web application built with [React](https://facebook.github.io/react/) framework that fetch and display headline sources and articles.
 ### It has the following features;
   * User signin and signup via Google
   * User can view headline sources
@@ -34,7 +34,7 @@ completenews uses [React](https://facebook.github.io/react/) and [Materialize cs
 * Install the app's backend dependencies.Open node.js, navigate to the directory that contains the application code base,then enter the command below:
    >npm install
    #### Create a .env file in the root folder with the variables in the .env.example file; ensure that your change the values to real values.The variable includes [firebase web config values](console.firebase.google.com), [google client key](console.developers.google.com/) and [Newsapi key](newsapi.org). Ensure that you create a project on these platforms.
-* The project test includes unit test and ene to end test.It uses jest and nightmare for testing.
+* The project test includes unit test and end to end test.It uses jest and nightmare for testing.
   #### To run test on the project, enter the command below
   > npm test
   #### To run the test and view coverage, enter the command below
@@ -53,26 +53,18 @@ completenews uses [React](https://facebook.github.io/react/) and [Materialize cs
   [Google chrome ](https://www.google.com/chrome/) is recommended 
 
 ## Code Structure
-* React files are stored in src/js/(action|component|action) folders
-* SCSS files  are stored in the src/js/scss folder
-* Test scripts are stored in the src/js/__tests__ folder
-The table illustartes the code structure
-```
-    Name          use                                                         js file       template      
-    -----------------------------------------------------------------------------------------------------
-    signin        Authentication                                              login          sigin
-    signout       logout user                                                 
-    myqueue       View issue(s) assign to user                                todo           myqueue
-    myreport      View issue(s) reported by user                              issuelog       myreport
-    opennissue    View open issue(s) reported to admin's department           openissue      openissue
-    closeissue    View close issue(s) reported to admin's department          closeissue     closeissue
-    profile       View and edit user profile                                  profile        profile
-    reportissue   Report a new issue                                          issue          reportissue
-    setsession    Start  user setsession
-    505           Display error for programm bug                                             505
-    404           Display error for wrong routes                                             404
-    notify        Send notification to issue owner
-  ```
+* React files are stored in `src/js/(action|component|action)` folders
+* SCSS files  are stored in the `src/scss` folder
+* Test scripts are stored in the `src/js/__tests__` folder
 
+##Contribution
+ ### To contribute to this project, follow the steps below:
+  * Clone the repository as described in the section 'Installation and setup' above
+  * Create a branch using the format, branch name => `Feature_<few words about your contribution>` 
+  * Add your contributions to your branch
+  * Push to your branch
+  * Create a pull Request from your branch
+  * We would review it and get back to you. (Ensure your attach a contact to your PR comment)
+  * For more information send an email to  [Developing team](okwudiri.okoro@andela.com)
 
 
