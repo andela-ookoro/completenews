@@ -2,6 +2,7 @@
 
 exports[`Component render a button 1`] = `
 <button
+  className="sort-btn"
   onClick={[Function]}
   value="test"
 >
@@ -11,6 +12,7 @@ exports[`Component render a button 1`] = `
 
 exports[`Value of render button should be same as props 1`] = `
 <button
+  className="sort-btn"
   onClick={[Function]}
   value="Top"
 >

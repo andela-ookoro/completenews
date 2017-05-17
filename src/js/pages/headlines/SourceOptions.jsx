@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 // class to display source
 const SourceOptions = ({ id, title = '', name, fetchAvailableSort }) => (
   <div>
-    <a className={'browser-default'} title={title} href={'#'} value={id} onClick={fetchAvailableSort} >
+    <a
+      className={'browser-default'} title={title} href={'!#'}
+      value={id} onClick={fetchAvailableSort}
+    >
       {name }</a>
   </div>
 );

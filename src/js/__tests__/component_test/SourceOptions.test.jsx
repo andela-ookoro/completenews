@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Renderer from 'react-test-renderer';
-import SourceOptions from 'SourceOptions';
+import SourceOptions from '../../pages/headlines/SourceOptions';
 
 test('Component render a button', () => {
   const source = {
