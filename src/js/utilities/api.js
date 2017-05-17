@@ -42,6 +42,7 @@ export const getDbHeadlines = (email =>
       Object.keys(dbSnapshot).forEach((key) => {
         headlines.push(dbSnapshot[key]);
       });
+      localStorage.setItem('favourite', headlines);
       resolve(headlines);
     })
     .catch((error) => {

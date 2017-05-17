@@ -5,3 +5,4 @@ export const GetHeadlinesError = 'GET-HEADLINES-ERROR';
 export const GetDBHeadlines = 'GET-DBHEADLINES';
 export const GetNotify = 'GET-NOTIFY';
 export const GetSources = 'GET-SOURCES';
+export const GETFAVOURITE_COUNT = 'GETFAVOURITE_COUNT';

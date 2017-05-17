@@ -25,7 +25,7 @@ class Headlines extends React.Component {
       currentSort: '',
       categories: [],
       message: '',
-      isAuth: (!JSON.parse(localStorage.getItem('cat')) === {}),
+      isAuth: false,
       isDb: false,
       scrapeUrl: '',
     };
@@ -73,16 +73,16 @@ class Headlines extends React.Component {
     this.getSources();
     HeadlineStore.on('dbchange', this.dbheadlineChange);
     HeadlineStore.on('change', this.headlineChange);
-    AuthStore.on('change', this.authChange);
-    Sources.on('change', this.sourceChange);
-    NotifyStore.on('change', this.notifyUser);
     const userinfo = JSON.parse(localStorage.getItem('userProfile'));
     if (userinfo) {
       this.setState({ isAuth: true });
       this.viewFavourite();
     } else {
-      this.setState({ articleSource: '' });
+      this.setState({ articleSource: '', isAuth: false });
     }
+    AuthStore.on('change', this.authChange);
+    Sources.on('change', this.sourceChange);
+    NotifyStore.on('change', this.notifyUser);
   }
 
   componentWillUnmount() {
@@ -115,7 +115,7 @@ class Headlines extends React.Component {
       articleSource: 'Favourite Headlines',
       sortBy: [],
       currentSort: '',
-      isAuth: false,
+      isDb: true,
       scrapeUrl: '',
     });
   }
@@ -123,13 +123,12 @@ class Headlines extends React.Component {
   headlineChange() {
     const headlines = HeadlineStore.headlines;
     const error = HeadlineStore.error;
-    const userinfo = JSON.parse(localStorage.getItem('userProfile'));
     localStorage.setItem('articles', JSON.stringify(headlines));
     this.setState({
       articles: headlines,
       message: error,
-      isAuth: (userinfo !== {}),
       scrapeUrl: '',
+      isDb: false,
     });
   }
 
@@ -283,7 +282,7 @@ class Headlines extends React.Component {
                   urlToImage={article.urlToImage} description={article.description}
                   publishedAt={article.publishedAt} url={article.url}
                   source={(article.source) ? article.source : this.state.source}
-                  isAuth={this.state.isAuth} scrape={this.scrape}
+                  isAuth={(this.state.isAuth && !this.state.isDb) ? true : false} scrape={this.scrape}
                 />,
               )
             }

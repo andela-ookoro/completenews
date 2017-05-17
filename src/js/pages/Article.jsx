@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { ShareButtons, generateShareIcon } from 'react-share';
 import firebase from '../utilities/firebase';
 import Notification from '../action/notifyAction';
+import FavouriteAction from '../action/favourite';
 
 const {
   FacebookShareButton,
@@ -29,9 +30,11 @@ class Article extends React.Component {
       userEmail = userEmail.substring(0, userEmail.indexOf('@'));
       const FavouriteAddress = `/user/${userEmail}/favourite`;
       const FavouriteRef = firebase.database().ref(FavouriteAddress);
+
       FavouriteRef.push(article)
         .then(() => {
           Notification('Headlines has been successfully added to favourites.');
+          FavouriteAction(1);
         })
         .catch((err) => {
           Notification(`Error occurred, ${err}`);
@@ -81,12 +84,14 @@ class Article extends React.Component {
                   {(this.props.url) ? `Read on  ${this.props.source} ` : ''}</a>
                 <button
                   value={this.props.id} onClick={this.props.scrape}
-                > Complete view
+                  title="view full story"
+                > Read more
                 </button>
                 <button
                   id="btnAddToFav"
                   value={this.props.id} onClick={this.addArticle}
-                  className={`${(this.props.isAuth) ? '' : 'disabled'}`}
+                  className={`waves-effect waves-light 
+                  btn ${(this.props.isAuth) ? '' : 'disabled'}`}
                   title="Add to favourite"
                 >
                   Add to favourite
