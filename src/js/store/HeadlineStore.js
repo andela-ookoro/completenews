@@ -30,10 +30,6 @@ class Headlines extends EventEmitter {
         this.getHeadlines(action.headlines);
         this.emit('change');
         break;
-      case Constant.GetHeadlinesError :
-        this.displayError(action.err);
-        this.emit('error');
-        break;
       case Constant.GetDBHeadlines :
         this.getHeadlines(action.headlines);
         this.emit('dbchange');

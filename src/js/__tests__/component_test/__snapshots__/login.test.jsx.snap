@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component render the article template 1`] = `
+<a
+  className=""
+  onClick={[Function]}
+  style={Object {}}
+>
+  Click to login
+</a>
+`;
