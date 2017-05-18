@@ -12,8 +12,7 @@ test('Component render the article template', () => {
 test('Should render a link to login when user is anonymous',
   () => {
     const wrapper = shallow(<Login />);
-    // const loginText = wrapper.find('a').text();
-    // expect(loginText).toEqual('Click to login');
-    console.log(wrapper);
+    const loginText = wrapper.find('a').text();
+    expect(loginText).toEqual('Click to login');
   });
 

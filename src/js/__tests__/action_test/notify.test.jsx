@@ -1,7 +1,6 @@
 import NotifyAction from '../../action/notifyAction';
 import NotifyStore from '../../store/NotifyStore';
 
-
 test('Check if action  has function \'getAuthStatus\'', () => {
   expect(NotifyAction).toBeInstanceOf(Function);
 });

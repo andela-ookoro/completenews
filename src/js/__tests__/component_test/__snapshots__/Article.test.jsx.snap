@@ -56,12 +56,14 @@ exports[`Component render the article template 1`] = `
           </a>
           <button
             onClick={[Function]}
+            title="view full story"
             value={1}
           >
-             Complete view
+             Read more
           </button>
           <button
-            className=""
+            className="waves-effect waves-light 
+                            btn "
             id="btnAddToFav"
             onClick={[Function]}
             title="Add to favourite"

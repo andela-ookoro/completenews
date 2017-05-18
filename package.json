@@ -58,6 +58,7 @@
     "materialize-css": "^0.98.2",
     "nightmare": "^2.10.0",
     "node-sass": "^4.5.2",
+    "opn": "^5.0.0",
     "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-addons-test-utils": "^15.5.1",
