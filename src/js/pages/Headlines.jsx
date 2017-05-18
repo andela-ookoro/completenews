@@ -1,6 +1,4 @@
 import React from 'react';
-// import Request from 'request';
-// import Fs from 'fs';
 import SortBY from './headlines/SortBy';
 import Article from './Article';
 import SourceOptions from './headlines/SourceOptions';
@@ -62,7 +60,7 @@ class Headlines extends React.Component {
       let userEmail = JSON.parse(localStorage.getItem('userProfile'))
                       .email.toString().replace('.', '_');
       userEmail = userEmail.substring(0, userEmail.indexOf('@'));
-      HeadlineAction.getDbHeadlines(userEmail);
+      HeadlineAction.getFavouriteArticles(userEmail);
       this.setState({ scrapeUrl: '' });
     });
     this.resetScrapeUrl = this.resetScrapeUrl.bind(this);
@@ -106,7 +104,7 @@ class Headlines extends React.Component {
   }
 
   dbheadlineChange() {
-    const headlines = HeadlineStore.headlines;
+    const headlines = HeadlineStore.articles;
     const error = HeadlineStore.error;
     localStorage.setItem('articles', JSON.stringify(headlines));
     this.setState({
@@ -121,7 +119,7 @@ class Headlines extends React.Component {
   }
 
   headlineChange() {
-    const headlines = HeadlineStore.headlines;
+    const headlines = HeadlineStore.articles;
     const error = HeadlineStore.error;
     localStorage.setItem('articles', JSON.stringify(headlines));
     this.setState({

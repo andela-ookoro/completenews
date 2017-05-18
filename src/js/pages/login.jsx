@@ -1,87 +1,105 @@
 import React from 'react';
-// import ReactDOM from 'react-dom';
 import GoogleLogin from 'react-google-login';
 import firebase from '../utilities/firebase';
 import AuthAction from '../action/authAction';
 import Notification from '../action/notifyAction';
-import NotifyStore from '../store/NotifyStore';
+import NotificationStore from '../store/NotifyStore';
 
-
+/**
+ * @FileOverview A class that renders login metadata
+ * and emit a change.
+ *  @extends React.Component
+ * @Author okwudiri.okoro@andela.com (Okoro Celestine)
+ */
 class Login extends React.Component {
+  /** Create UserInfo object  */
   constructor() {
     super();
     this.state = { message: '' };
     this.notifyUser = this.notifyUser.bind(this);
+    this.authenticate = this.authenticate.bind(this);
     this.responseGoogle = ((response) => {
-      if (response) {
-        const userProfile = response.profileObj;
-        let userEmail = userProfile.email;
-        userEmail = userEmail.substring(0,
-          userEmail.indexOf('@')).replace('.', '_');
-        const userinfo = {
-          'email': userProfile.email,
-          'name': userProfile.name,
-          'imageUrl': userProfile.imageUrl,
-          'userEmail': userEmail,
-        };
-        // console.log(userEmail);
-        localStorage.setItem('userProfile', JSON.stringify(userinfo));
-        const userRef = firebase.database().ref('/user');
-        userRef.once('value')
-        .then((snapshot) => {
-          if (snapshot.hasChild(userEmail)) {
-            AuthAction(true, userinfo);
-            window.location = '/#/headlines';
-            // hashHistory.push('/headlines');
-          } else {
-            const user = {
-              email: userProfile.email,
-              name: userProfile.name,
-              imageUrl: userProfile.imageUrl,
-              favourite: [
-                {
-                  'author': 'Abhimanyu Ghoshal',
-                  'description': 'After a failed effort to offer free internet' +
-                    'access (with strings attached) to people in India,' +
-                      'Facebook has now launched Express Wi-Fi, a service that' +
-                      'lets users log on to Wi-Fi networks ...',
-                  'publishedAt': '2017-05-04T13:18:36Z',
-                  'title': 'Facebook launches Express Wi-Fi in India to bring' +
-                    'rural areas online',
-                  'url': 'https://thenextweb.com/facebook/2017/05/04/facebook-' +
-                    'launches-express-wi-fi-in-india-to-bring-rural-areas-online/',
-                  'urlToImage': 'https://cdn2.tnwcdn.com/wp-content/blogs.dir/' +
-                    '1/files/2017/05/Facebook-Express-Wi-Fi.jpg',
-                },
-              ],
-            };
-            userRef.child(userEmail).set(user)
-            .then(() => {
-              AuthAction(true, userinfo);
-              window.location = '/#/headlines';
-            })
-            .catch((err) => {
-              Notification(`Error occurred, ${err}`);
-            });
-          }
-        }).catch((err) => {
-          Notification(`Error occurred, ${err}`);
-        });
-      }
+      this.authenticate(response);
     });
   }
+
+  /**
+   * called when the component is ready to render its content
+   * @return {null} Return no value.
+  */
   componentWillMount() {
-    NotifyStore.on('change', this.notifyUser);
+    NotificationStore.on('change', this.notifyUser);
   }
 
+  /**
+   * called when the component  remove its content
+   * @return {null} Return no value.
+  */
   componentWillUnmount() {
-    NotifyStore.removeListener('change', this.notifyUser);
+    NotificationStore.removeListener('change', this.notifyUser);
   }
+
+  /**
+   * authenticate user, if user is not registered; a user object is created
+   * @param {object} response The reponse recieved from google
+   * @return {null} Return no value.
+  */
+  authenticate(response) {
+    if (response) {
+      const userProfile = response.profileObj;
+      let userEmail = userProfile.email;
+      userEmail = userEmail.substring(0, userEmail.indexOf('@'));
+      userEmail = userEmail.replace('.', '_');
+
+      const userinfo = {
+        'email': userProfile.email,
+        'name': userProfile.name,
+        'imageUrl': userProfile.imageUrl,
+        'userEmail': userEmail,
+      };
+
+      localStorage.setItem('userProfile', JSON.stringify(userinfo));
+      const userRef = firebase.database().ref('/user');
+
+      userRef.once('value')
+      .then((snapshot) => {
+        if (snapshot.hasChild(userEmail)) {
+          AuthAction(true, userinfo);
+          window.location = '/#/headlines';
+        } else {
+          const user = {
+            email: userProfile.email,
+            name: userProfile.name,
+            imageUrl: userProfile.imageUrl,
+            favourite: [],
+          };
+          userRef.child(userEmail).set(user)
+          .then(() => {
+            AuthAction(true, userinfo);
+            window.location = '/#/headlines';
+          })
+          .catch((err) => {
+            Notification(`Error occurred, ${err}`);
+          });
+        }
+      }).catch((err) => {
+        Notification(`Error occurred, ${err}`);
+      });
+    }
+  }
+
+  /**
+   * set the message state variable when the NotificationStore emit change
+   * @return {null} Return no value.
+  */
   notifyUser() {
-    this.setState({ message: NotifyStore.message });
+    this.setState({ message: NotificationStore.message });
   }
 
-
+  /**
+   * Render the component content
+   * @return {null} Return no value.
+  */
   render() {
     return (
       <div className="center_content">
@@ -96,7 +114,9 @@ class Login extends React.Component {
           tag="span"
           disabled="false"
         >
-          <span id="googlebtn" className="btn waves-effect waves-light"> Login with Google</span>
+          <span id="googlebtn" className="btn waves-effect waves-light">
+             Login with Google
+           </span>
         </GoogleLogin>
       </div>
     );

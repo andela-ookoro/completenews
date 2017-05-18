@@ -17,7 +17,7 @@ test('Function "updateAuth" that update the isauth property', () => {
 test('Store should listen to "GET-NOTIFY" event', () => {
   const status = true;
   Dispatcher.dispatch({
-    Type: Constant.Auth,
+    Type: Constant.GET_AUTH_STATUS,
     status,
   });
   expect(AuthStore.isAuth).toBe(status);

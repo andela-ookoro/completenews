@@ -2,46 +2,60 @@ import { EventEmitter } from 'events';
 import Dispatcher from '../dispatcher/Dispatcher';
 import * as Constant from '../constants';
 
-class Headlines extends EventEmitter {
+/**
+ * @FileOverview A class that listen to action dispatched for articles
+ * and emit a change.
+ * @Author okwudiri.okoro@gandela.com (Okoro Celestine)
+ */
+class Articles extends EventEmitter {
+  /** Create a store for articles. */
   constructor() {
     super();
-    this.getHeadlines = this.getHeadlines.bind(this);
-    this.displayError = this.displayError.bind(this);
-    this.headlines = [];
+    this.setArticles = this.setArticles.bind(this);
+    this.setError = this.setError.bind(this);
+    this.articles = [];
     this.error = '';
   }
 
- // return Headlines
-  getHeadlines(headlines) {
-    this.headlines = headlines;
-    this.error = '';
-    return this.headlines;
+ /**
+   * Set the sources .
+   * @param {array} articles - The articles to be set
+   * @return {array} The articles of the object.
+  */
+  setArticles(articles) {
+    this.articles = articles;
+    return this.articles;
   }
 
-  displayError(error) {
+   /**
+   * Set the sources .
+   * @param {string} error - The message to be set
+   * @return {string} The error of the object.
+  */
+  setError(error) {
     this.error = error;
     return this.error;
   }
 
+  /**
+   * Listen to action dispatched and react to action of type GET_ARTICLES
+   * @param {object} action - The an action that was dispatched
+   * @return {null} It return no value
+  */
   handleActions(action) {
-  // console.log("TodoStore received an action ...", action.actionType);
     switch (action.Type) {
-      case Constant.GetHeadlines:
-        this.getHeadlines(action.headlines);
+      case Constant.GET_ARTICLES:
+        this.setArticles(action.articles);
         this.emit('change');
         break;
-      case Constant.GetDBHeadlines :
-        this.getHeadlines(action.headlines);
+      case Constant.GET_FAVOURITE_ARTICLES :
+        this.setArticles(action.articles);
         this.emit('dbchange');
         break;
       default :
     }
   }
 }
-const headlinesStore = new Headlines();
-Dispatcher.register(headlinesStore.handleActions.bind(headlinesStore));
-// to use the onbject on browser console
-window.healineStore = headlinesStore;
-window.dispatcher = Dispatcher;
-window.healineStore = headlinesStore;
-export default headlinesStore;
+const articles = new Articles();
+Dispatcher.register(articles.handleActions.bind(articles));
+export default articles;

@@ -1,8 +1,8 @@
 
-export const Auth = 'AUTH';
-export const GetHeadlines = 'GET-HEADLINES';
-export const GetHeadlinesError = 'GET-HEADLINES-ERROR';
-export const GetDBHeadlines = 'GET-DBHEADLINES';
-export const GetNotify = 'GET-NOTIFY';
-export const GetSources = 'GET-SOURCES';
-export const GETFAVOURITE_COUNT = 'GETFAVOURITE_COUNT';
+export const GET_AUTH_STATUS = 'GET_AUTH_STATUS';
+export const GET_ARTICLES = 'GET_ARTICLES';
+export const GET_ARTICLES_ERROR = 'GET_ARTICLES_ERROR';
+export const GET_FAVOURITE_ARTICLES = 'GET_FAVOURITE_ARTICLES';
+export const GET_NOTIFY = 'GET_NOTIFY';
+export const GET_SOURCES = 'GET_SOURCES';
+export const GET_FAVOURITE_COUNT = 'GET_FAVOURITE_COUNT';

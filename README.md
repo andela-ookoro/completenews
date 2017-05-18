@@ -3,7 +3,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/andela-ookoro/completenews/badge.svg?branch=master)](https://coveralls.io/github/andela-ookoro/completenews?branch=master)
 
 ## Introduction
-### **`completenews`** is a single page web application built with [React](https://facebook.github.io/react/) framework that fetch and display headline sources and articles.
+### **`completenews`** is a single page web application built with [React](https://facebook.github.io/react/) framework that fetches and displays headline sources and articles.
 ### It has the following features;
   * User signin and signup via Google
   * User can view headline sources

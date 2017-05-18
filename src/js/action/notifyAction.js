@@ -3,7 +3,7 @@ import * as Constant from '../constants';
 
 const getNotification = (message) => {
   Dispatcher.dispatch({
-    Type: Constant.GetNotify,
+    Type: Constant.GET_NOTIFY,
     message,
   });
 };

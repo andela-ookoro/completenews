@@ -7,7 +7,7 @@ const GETFAVOURITE = (i = 0) => {
   const favouriteArray = favouriteCount.split(']');
   favouriteCount = favouriteArray.length + i;
   Dispatcher.dispatch({
-    Type: Constant.GETFAVOURITE_COUNT,
+    Type: Constant.GET_FAVOURITE_COUNT,
     favouriteCount,
   });
 };

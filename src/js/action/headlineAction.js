@@ -3,32 +3,32 @@ import * as Api from '../utilities/api';
 import * as Constant from '../constants';
 
 export const getHeadlines = (source, sort = '') => {
-  Api.getHeadlines(source, sort)
-    .then((headlines) => {
+  Api.getArticles(source, sort)
+    .then((articles) => {
       Dispatcher.dispatch({
-        Type: Constant.GetHeadlines,
-        headlines,
+        Type: Constant.GET_ARTICLES,
+        articles,
       });
     })
     .catch((err) => {
       Dispatcher.dispatch({
-        Type: Constant.GetNotify,
+        Type: Constant.GET_NOTIFY,
         message: err,
       });
     });
 };
 
-export const getDbHeadlines = (user) => {
-  Api.getDbHeadlines(user)
-    .then((headlines) => {
+export const getFavouriteArticles = (user) => {
+  Api.getFavouriteArticles(user)
+    .then((articles) => {
       Dispatcher.dispatch({
-        Type: Constant.GetDBHeadlines,
-        headlines,
+        Type: Constant.GET_FAVOURITE_ARTICLES,
+        articles,
       });
     })
     .catch((err) => {
       Dispatcher.dispatch({
-        Type: Constant.GetNotify,
+        Type: Constant.GET_NOTIFY,
         message: err,
       });
     });
@@ -36,7 +36,7 @@ export const getDbHeadlines = (user) => {
 
 export const resetHeadlines = () => {
   Dispatcher.dispatch({
-    Type: Constant.GetHeadlines,
-    headlines: [],
+    Type: Constant.GET_ARTICLES,
+    articles: [],
   });
 };
