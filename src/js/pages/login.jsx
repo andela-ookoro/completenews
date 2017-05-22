@@ -12,14 +12,58 @@ import NotificationStore from '../store/NotifyStore';
  * @Author okwudiri.okoro@andela.com (Okoro Celestine)
  */
 class Login extends React.Component {
-  /** Create UserInfo object  */
+  /** Create Login object  */
   constructor() {
     super();
     this.state = { message: '' };
     this.notifyUser = this.notifyUser.bind(this);
-    this.authenticate = this.authenticate.bind(this);
-    this.responseGoogle = ((response) => {
-      this.authenticate(response);
+    /**
+     * authenticate user, if user is not registered; a user object is created
+     * @param {object} response The reponse recieved from google
+     * @return {null} Return no value.
+    */
+    this.authenticate = ((response) => {
+      if (response) {
+        const userProfile = response.profileObj;
+        let userEmail = userProfile.email;
+        userEmail = userEmail.substring(0, userEmail.indexOf('@'));
+        userEmail = userEmail.replace('.', '_');
+
+        const userinfo = {
+          'email': userProfile.email,
+          'name': userProfile.name,
+          'imageUrl': userProfile.imageUrl,
+          'userEmail': userEmail,
+        };
+
+        localStorage.setItem('userProfile', JSON.stringify(userinfo));
+        const userRef = firebase.database().ref('/user');
+
+        userRef.once('value')
+        .then((snapshot) => {
+          if (snapshot.hasChild(userEmail)) {
+            AuthAction(true, userinfo);
+            window.location = '/#/headlines';
+          } else {
+            const user = {
+              email: userProfile.email,
+              name: userProfile.name,
+              imageUrl: userProfile.imageUrl,
+              favourite: [],
+            };
+            userRef.child(userEmail).set(user)
+            .then(() => {
+              AuthAction(true, userinfo);
+              window.location = '/#/headlines';
+            })
+            .catch((err) => {
+              Notification(`Error occurred, ${err}`);
+            });
+          }
+        }).catch((err) => {
+          Notification(`Error occurred, ${err}`);
+        });
+      }
     });
   }
 
@@ -37,55 +81,6 @@ class Login extends React.Component {
   */
   componentWillUnmount() {
     NotificationStore.removeListener('change', this.notifyUser);
-  }
-
-  /**
-   * authenticate user, if user is not registered; a user object is created
-   * @param {object} response The reponse recieved from google
-   * @return {null} Return no value.
-  */
-  authenticate(response) {
-    if (response) {
-      const userProfile = response.profileObj;
-      let userEmail = userProfile.email;
-      userEmail = userEmail.substring(0, userEmail.indexOf('@'));
-      userEmail = userEmail.replace('.', '_');
-
-      const userinfo = {
-        'email': userProfile.email,
-        'name': userProfile.name,
-        'imageUrl': userProfile.imageUrl,
-        'userEmail': userEmail,
-      };
-
-      localStorage.setItem('userProfile', JSON.stringify(userinfo));
-      const userRef = firebase.database().ref('/user');
-
-      userRef.once('value')
-      .then((snapshot) => {
-        if (snapshot.hasChild(userEmail)) {
-          AuthAction(true, userinfo);
-          window.location = '/#/headlines';
-        } else {
-          const user = {
-            email: userProfile.email,
-            name: userProfile.name,
-            imageUrl: userProfile.imageUrl,
-            favourite: [],
-          };
-          userRef.child(userEmail).set(user)
-          .then(() => {
-            AuthAction(true, userinfo);
-            window.location = '/#/headlines';
-          })
-          .catch((err) => {
-            Notification(`Error occurred, ${err}`);
-          });
-        }
-      }).catch((err) => {
-        Notification(`Error occurred, ${err}`);
-      });
-    }
   }
 
   /**
@@ -109,8 +104,8 @@ class Login extends React.Component {
         </div>
         <GoogleLogin
           clientId={process.env.GOOGLE_KEY}
-          onSuccess={this.responseGoogle}
-          onFailure={this.responseGoogle}
+          onSuccess={this.authenticate}
+          onFailure={this.authenticate}
           tag="span"
           disabled="false"
         >

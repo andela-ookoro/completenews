@@ -1,4 +1,4 @@
-const localStorageMock = ( function () {
+const localStorageMock = (() => {
   let store = {};
 
   return {

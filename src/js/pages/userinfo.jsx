@@ -26,7 +26,12 @@ class UserInfo extends React.Component {
       let userEmail = JSON.parse(localStorage.getItem('userProfile'));
       userEmail = userEmail.email.toString().replace('.', '_');
       userEmail = userEmail.substring(0, userEmail.indexOf('@'));
-      ArticlesAction.getDbHeadlines(userEmail);
+      ArticlesAction.getFavouriteArticles(userEmail);
+      // check if user is viewing the headline page else redirect
+      const url = window.location.href.toString();
+      if (!url.includes('headlines')) {
+        window.location = '/#/headlines';
+      }
     });
     this.UpdateUserInfo = this.UpdateUserInfo.bind(this);
     this.UpdateCount = this.UpdateCount.bind(this);
@@ -97,13 +102,13 @@ class UserInfo extends React.Component {
           <button
             id="viewfavouritebtn"
             onClick={this.viewFavourite} title="view favourite headline"
-          > Favourite Headlines ({this.state.favouriteCount})
+          > Favourite Articles ({this.state.favouriteCount})
                 </button>
+          <a className="btn-flat" onClick={this.signout}>Sign Out</a>
           <div className="chip">
             <img src={this.state.UserInfo.imageUrl} alt="Contact Person" />
             {this.state.UserInfo.name}
           </div>
-          <a className="btn-flat" onClick={this.signout}>Sign Out</a>
         </div>
     );
   }

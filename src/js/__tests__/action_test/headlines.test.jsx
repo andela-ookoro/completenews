@@ -4,9 +4,9 @@ import HeadlineStore from '../../store/HeadlineStore';
 
 test('Function-resetHeadlines should reset headlines to an empty array',
  () => {
-   expect(HeadlineAction.resetHeadlines).toBeInstanceOf(Function);
-   HeadlineAction.resetHeadlines();
-   const headlines = HeadlineStore.headlines;
-   expect(headlines).toHaveLength(0);
+   expect(HeadlineAction.resetArticles).toBeInstanceOf(Function);
+   HeadlineAction.resetArticles();
+   const articles = HeadlineStore.articles;
+   expect(articles).toHaveLength(0);
  });
 

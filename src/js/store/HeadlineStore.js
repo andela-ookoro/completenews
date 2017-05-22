@@ -14,16 +14,19 @@ class Articles extends EventEmitter {
     this.setArticles = this.setArticles.bind(this);
     this.setError = this.setError.bind(this);
     this.articles = [];
+    this.source = '';
     this.error = '';
   }
 
  /**
    * Set the sources .
    * @param {array} articles - The articles to be set
+   * @param {string} source - The articles to be set
    * @return {array} The articles of the object.
   */
-  setArticles(articles) {
+  setArticles(articles, source) {
     this.articles = articles;
+    this.source = source;
     return this.articles;
   }
 
@@ -45,7 +48,7 @@ class Articles extends EventEmitter {
   handleActions(action) {
     switch (action.Type) {
       case Constant.GET_ARTICLES:
-        this.setArticles(action.articles);
+        this.setArticles(action.articles, action.source);
         this.emit('change');
         break;
       case Constant.GET_FAVOURITE_ARTICLES :

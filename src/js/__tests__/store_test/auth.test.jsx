@@ -9,8 +9,12 @@ test('Default auth should have a value "false" ', () => {
 
 test('Function "updateAuth" that update the isauth property', () => {
   const status = true;
-  expect(AuthStore.updateAuth).toBeInstanceOf(Function);
-  AuthStore.updateAuth(status);
+  const userinfo = {
+    name: 'okoro',
+    email: 'okoro@me.com',
+  };
+  expect(AuthStore.updateUserInfo).toBeInstanceOf(Function);
+  AuthStore.updateUserInfo(status, userinfo);
   expect(AuthStore.isAuth).toBe(status);
 });
 

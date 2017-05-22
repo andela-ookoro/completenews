@@ -1,14 +1,13 @@
 import React from 'react';
-import Link from 'react-router';
 import PropTypes from 'prop-types';
-import Userinfo from './userinfo';
+import UserInfo from './userinfo';
+import * as Source from './headlines/SourceOptions';
 
  /**
  * @FileOverview A class that renders master template of the application.
  *  @extends React.Component
  * @Author okwudiri.okoro@andela.com (Okoro Celestine)
  */
-
 class Layout extends React.Component {
    /**
    * Render the component content
@@ -17,25 +16,43 @@ class Layout extends React.Component {
   render() {
     return (
       <div className="row">
-        <div className="col s12">
+        <div className="col s12 m12 l12" id="header">
           <nav>
             <div className="nav-wrapper">
-              <a href="#!" style={{ marginRight: `${10} + px ` }} className="brand-logo">Complete News</a>
-              <a href="#!" data-activates="mobile-demo" className="button-collapse">
-                <i className="material-icons">menu</i></a>
+              <a href="#" className="brand-logo">Complete News</a>
+              <a
+                href="#" data-activates="mobile-demo" className="button-collapse"
+              >
+                <i className="material-icons">menu</i>
+              </a>
               <ul className="right hide-on-med-and-down">
-                <li><Link to="headlines" activeClassName="activelink"> <span>Headlines </span>
-                </Link></li>
-                <li><Link to="setting" activeClassName="activelink">
-                  <span> Setting</span> </Link></li>
                 <li>
-                  <Userinfo />
+                  <UserInfo />
                 </li>
+              </ul>
+              <ul className="side-nav" id="mobile-demo">
+                <li><UserInfo /></li>
+                <li> <Source.sources /></li>
               </ul>
             </div>
           </nav>
         </div>
-        { this.props.children }
+        <div className="col s12 m12 l12">
+          { this.props.children }
+        </div>
+        <div className="col s12 m12 l12">
+          <footer>
+            <h6>
+              &copy; 2017 Complete news Ltd
+              <a
+                href="mailto:okwudiri.okoro@andela.com?Subject=User%20Feedback"
+                target="_top" id="feedback-mail"
+              >
+                Contact Developer
+              </a>
+            </h6>
+          </footer>
+        </div>
       </div>
     );
   }

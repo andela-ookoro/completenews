@@ -1,56 +1,50 @@
 import React from 'react';
-import { mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import Renderer from 'react-test-renderer';
-import SourceOptions from '../../pages/headlines/SourceOptions';
+import ReactTestUtils from 'react-dom/test-utils'; 
+import * as Source from '../../pages/headlines/SourceOptions';
 
-test('Component render a button', () => {
-  const source = {
-    id: 'BBC',
-    name: 'BBC News',
-    description: 'BBC world news',
-  };
-  const onClick = jest.fn();
-  const component = Renderer.create(
-    <SourceOptions
+const sources = Source.SourceOptions;
+const source = {
+  id: 'BBC',
+  name: 'BBC News',
+  description: 'BBC world news',
+};
+const onClick = jest.fn();
+
+describe('rendering', () => {
+  it('should render content as describe in the component', () => {
+    const component = Renderer.create(
+      <sources
+        key={source.id} name={source.name} title={source.description}
+        id={source.id} fetchAvailableSort={onClick}
+      />,
+    );
+    const tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+  const component = shallow(
+    <Source.SourceOptions
       key={source.id} name={source.name} title={source.description}
       id={source.id} fetchAvailableSort={onClick}
     />,
   );
-  const tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
+
+  it('should display a link with source name as text and source id as a value',
+   () => {
+     const link = component.find('a');
+     const linkNode = link.root.node.props.children.props;
+     const linkText = linkNode.children;
+     const linkValue = linkNode.value;
+     expect(linkValue).toEqual(source.id);
+     expect(linkText).toEqual(source.name);
+   });
+
+  it('Clicking the link should call a fuction passed as props', () => {
+    const link = component.nodes[0].props.children;
+    link.props.onClick();
+    expect(onClick).toHaveBeenCalledTimes(1);
+  });
 });
 
-test('Value of render button should be same as props', () => {
-  const source = {
-    id: 'BBC',
-    name: 'BBC News',
-    description: 'BBC world news',
-  };
-  const onClick = jest.fn();
-  const component = mount(
-    <SourceOptions
-      key={source.id} name={source.name} title={source.description}
-      id={source.id} fetchAvailableSort={onClick}
-    />,
-  );
-  const link = component.find('a');
-  expect(link.text()).toEqual(source.name);
-});
-
-test('Link onclick should execute the function in the prop', () => {
-  const source = {
-    id: 'BBC',
-    name: 'BBC News',
-    description: 'BBC world news',
-  };
-  const onClick = jest.fn();
-  const component = mount(
-    <SourceOptions
-      key={source.id} name={source.name} title={source.description}
-      id={source.id} fetchAvailableSort={onClick}
-    />,
-  );
-  const link = component.find('a');
-  link.simulate('click');
-  expect(onClick).toBeCalled();
-});

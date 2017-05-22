@@ -19,14 +19,14 @@ test('Source should be intiated with empty array', () => {
 });
 
 test('Function "getSources" that update the isauth property', () => {
-  expect(SourceStore.getSources).toBeInstanceOf(Function);
-  SourceStore.getSources(sources);
+  expect(SourceStore.setSources).toBeInstanceOf(Function);
+  SourceStore.setSources(sources);
   expect(SourceStore.sources).toBe(sources);
 });
 
 test('Store should listen to "GET-NOTIFY" event', () => {
   Dispatcher.dispatch({
-    Type: Constant.GetSources,
+    Type: Constant.GET_SOURCE,
     sources,
   });
   expect(SourceStore.sources).toBe(sources);

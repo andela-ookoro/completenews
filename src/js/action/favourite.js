@@ -2,7 +2,13 @@
 import Dispatcher from '../dispatcher/Dispatcher';
 import * as Constant from '../constants';
 
-const GETFAVOURITE = (i = 0) => {
+/**
+ * set the articles to an empty array
+ * @param {int} i - An option array; which would be added to the favourite
+ * articles count
+ * @return {object } Return nothing.
+*/
+const setFavouriteArticles = (i = 0) => {
   let favouriteCount = JSON.stringify(localStorage.getItem('favourite'));
   const favouriteArray = favouriteCount.split(']');
   favouriteCount = favouriteArray.length + i;
@@ -12,4 +18,4 @@ const GETFAVOURITE = (i = 0) => {
   });
 };
 
-export default GETFAVOURITE;
+export default setFavouriteArticles;

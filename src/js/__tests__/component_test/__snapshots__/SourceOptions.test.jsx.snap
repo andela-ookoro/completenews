@@ -1,15 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Component render a button 1`] = `
-<div>
-  <a
-    className="browser-default"
-    href="!#"
-    onClick={[Function]}
-    title="BBC world news"
-    value="BBC"
-  >
-    BBC News
-  </a>
-</div>
+exports[`rendering should render content as describe in the component 1`] = `
+<sources
+  fetchAvailableSort={[Function]}
+  id="BBC"
+  name="BBC News"
+  title="BBC world news"
+/>
 `;

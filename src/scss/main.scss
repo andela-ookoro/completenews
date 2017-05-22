@@ -1,3 +1,9 @@
+ @import '../../node_modules/react-selectize/themes/material.css';
+ @media screen and (max-width: 1000px) {
+  #side-nav {
+    display: none;
+  }
+}
 body {
  background-color: #e0f7fa;
 }
@@ -13,11 +19,19 @@ option:checked, option:hover {
 }
 button{
   color: #00b8d4;
-  margin-left: 5px
+  margin-left: 5px;
+  z-index: 0;
+  cursor: pointer; 
+}
+.SocialMediaShareButton{
+  cursor: pointer;
+}
+img {
+   box-shadow: 0 0 10px 0 rgba(#000, 0.1); 
 }
 #header{
 	position: fixed;
-	z-index: 1;
+	z-index: 3;
 }
 #side-nav{
 	position: fixed;
@@ -31,12 +45,23 @@ button{
 	position: relative;
 	top: 70px;
 }
+.header{
+	margin-top: 20px;
+	color: #00838f
+}
 .blueheader{
   background-color: #006064;
 	position: fixed;
+	z-index: 3;
 }
 .nav-wrapper {
   @extend .blueheader
+}
+.signoutbtn{
+  color: whitesmoke
+}
+.btn-flat{
+  @extend .signoutbtn
 }
 .pageTitle{
   margin-left:10px
@@ -59,6 +84,7 @@ footer {
     width: 100%;
 		color: whitesmoke;
 		padding-left: 50px;
+    z-index: 2;
 }
 #feedback-mail{
 	float: right;
@@ -66,7 +92,7 @@ footer {
 }
 #articles-menu{
 	position: fixed;
-	z-index: 1;
+	z-index: 2;
 	top: 62px;
 	background-color: #00838f;
 	width: 81.56%;
@@ -74,7 +100,7 @@ footer {
 	color: whitesmoke
 }
 #articles{
-	margin-top: 20px;
+	margin-top: 40px;
 	z-index: 2
 }
 .imgStyle {
@@ -84,12 +110,9 @@ footer {
 .paragraphstyle{
   width: '80%';
 };
-.header{
-	margin-top: 20px;
-	color: #00838f
-}
 .sort-btn{
-	color: #00838f
+	color: #00838f;
+  font-size: 15px;
 }
 
 /* The Modal (background) */
@@ -152,6 +175,7 @@ iframe{
 #viewfavouritebtn{
   background-color: #006064;
   color: whitesmoke;
+  border: 0px;
   margin-right: 5px;
 }
 .center_content{
@@ -173,16 +197,51 @@ iframe{
   color: #00b8d4;
   background-color: whitesmoke;
   text-transform: capitalize;
+  z-index: 0;
 }
 
-.404{
+.notfound{
   position:fixed;
-  top: 50%;
-  width:20em;
-  height:15em;
-  margin-top: -9em; /*set to a negative number 1/2 of your height*/
-  margin-left: 15em; /*set to a negative number 1/2 of your width*/
+  top: 20%;
+  left: 30%;
   border: 1px solid #ccc;
   background-color: #f3f3f3;
-  padding-left: 10em;
+  text-align: center
+}
+.blueBlock{
+  background-color:  #00b8d4;
+  width: 100%;
+  height: 40%;
+  font-size: 54px;
+  padding-top: 10%;
+  text-align: center;
+  font-family: Verdana, Geneva, sans-serif;
+}
+.blueBorderBottom{
+ border-bottom: 4px solid #00b8d4;;
+}
+.article-content{
+  @extend .blueBorderBottom
+}
+.tipHeading{
+  background-color:  #00b8d4;
+  width: 100%;
+  height: 10%;
+  font-size: 40px;
+  padding-top: 10%;
+  text-align: center;
+  font-family: Verdana, Geneva, sans-serif;
+  padding-right: 5px;
+  padding-left: 5px;
+}
+.tip{
+  position:fixed;
+  top: 20%;
+  left: 30%;
+  border: 1px solid #ccc;
+  background-color: #f3f3f3;
+  text-align: center
+}
+.shareDiv{
+  margin-left: -10px;
 }
