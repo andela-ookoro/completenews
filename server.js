@@ -12,7 +12,7 @@ router.get('/', (req, res) => {
   res.sendFile(`${sourcePath}index.html`);
 });
 router.get('*', (req, res) => {
-  res.send('404 not found');
+  res.sendFile(`${sourcePath}404.html`);
 });
 
 app.use('/', router);
