@@ -2,8 +2,9 @@ import React from 'react';
 import Headlines from '../../pages/Headlines';
 import Visit from '../../helpers/visit';
 
-
-
+it('basic test', () => {
+  expect(1).toBe(1);
+});
 // localStorage.setItem('sources', JSON.stringify(sources));
 // localStorage.setItem('categories', JSON.stringify(['general', 'sport']));
 
