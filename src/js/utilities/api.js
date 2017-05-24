@@ -32,14 +32,13 @@ export const getArticles = ((source, sort) => {
 export const getFavouriteArticles = (email =>
   new Promise((resolve, reject) => {
     firebase.database().ref(`/user/${email}/favourite`).once('value')
-    .then((snapshot) => {
-      const headlines = [];
-      const dbSnapshot = snapshot.val();
-      Object.keys(dbSnapshot).forEach((key) => {
-        headlines.push(dbSnapshot[key]);
+    .then((result) => {
+      const articles = [];
+      const dbArticles = result.val();
+      Object.keys(dbArticles).forEach((key) => {
+        articles.push(dbArticles[key]);
       });
-      localStorage.setItem('favourite', headlines);
-      resolve(headlines);
+      resolve(articles);
     })
     .catch((error) => {
       reject(`Error occurred, ${error}`);

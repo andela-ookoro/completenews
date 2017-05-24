@@ -1,7 +1,8 @@
 import React from 'react';
 import SortBY from './headlines/SortBy';
 import Article from './Article';
-import * as Source from './headlines/SourceOptions';
+import SourceLink from './headlines/SourceOptions';
+import SelectSources from './headlines/selectSource';
 import NotifyStore from '../store/NotifyStore';
 import SourceAction from '../action/sourceAction';
 import Sources from '../store/SourceStore';
@@ -294,7 +295,7 @@ class Articles extends React.Component {
         <div className="col s1 m1 l2" id="side-nav">
           <h5 className="categoryHeader"> Sources </h5>
           <br />
-          <Source.sources />
+          <SelectSources />
           <ul className="collapsible" data-collapsible="accordion">
             {(this.state.categories.length < 1 || !this.state.categories) ?
               ''
@@ -306,7 +307,7 @@ class Articles extends React.Component {
                 <div className="collapsible-body">
                   {JSON.parse(localStorage.getItem('categories'))[cat].map(
                     source =>
-                      <Source.SourceOptions
+                      <SourceLink
                         key={source.id} name={source.name}
                         title={source.description} id={source.id}
                         fetchAvailableSort={this.fetchAvailableSort}

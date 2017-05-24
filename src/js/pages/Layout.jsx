@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import UserInfo from './userinfo';
-import * as Source from './headlines/SourceOptions';
+import SelectSources from './headlines/selectSource';
 
  /**
  * @FileOverview A class that renders master template of the application.
@@ -32,7 +32,7 @@ class Layout extends React.Component {
               </ul>
               <ul className="side-nav" id="mobile-demo">
                 <li><UserInfo /></li>
-                <li> <Source.sources /></li>
+                <li> <SelectSources /></li>
               </ul>
             </div>
           </nav>
@@ -63,5 +63,9 @@ Layout.propTypes = {
     PropTypes.arrayOf(React.PropTypes.node),
     PropTypes.node
   ]).isRequired
+};
+
+Layout.defaultProps = {
+  children: '',
 };
 export default Layout;
