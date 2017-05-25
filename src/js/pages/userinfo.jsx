@@ -106,7 +106,12 @@ class UserInfo extends React.Component {
                 </button>
           <a className="btn-flat" onClick={this.signout}>Sign Out</a>
           <div className="chip">
-            <img src={this.state.UserInfo.imageUrl} alt="Contact Person" />
+            {(this.state.UserInfo.imageUrl)
+            ?
+              <img src={this.state.UserInfo.imageUrl} alt="Contact Person" />
+            :
+              <i className="large material-icons">perm_identity</i>
+            }
             {this.state.UserInfo.name}
           </div>
         </div>

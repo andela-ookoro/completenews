@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import SortBY from './headlines/SortBy';
 import Article from './Article';
 import SourceLink from './headlines/SourceOptions';
@@ -10,7 +11,7 @@ import * as ArticlesAction from '../action/headlineAction';
 import ArticlesStore from '../store/HeadlineStore';
 import AuthStore from '../store/authStore';
 import Tip from './headlines/tip';
-
+import * as Utilties from '../utilities/api';
 /**
  * @FileOverview A class that renders Articles
  * and emit a change.
@@ -34,6 +35,8 @@ class Articles extends React.Component {
       isAuth: false,
       isDb: false,
       scrapeUrl: '',
+      scrapeContent: '',
+      scarpeImage: ''
     };
     this.count = 0;
     this.fecthArticles = this.fecthArticles.bind(this);
@@ -55,6 +58,22 @@ class Articles extends React.Component {
       const article = articles[index];
       const scrapeUrl = article.url.toString();
       const scrapeTitle = article.title;
+      //// try lateral
+      const url = `https://document-parser-api.lateral.io/?url=${scrapeUrl}
+        &subscription-key=${process.env.LATERAL_READ_WRITE_KEY}`;
+      axios.get(url, { 'content-type': 'application/json' })
+          .then((response) => {
+            console.log(response.data);
+            document.getElementById('scrapeBody').innerHTML = Utilties.replaceLinks(response.data.body);
+            this.setState({
+              scrapeContent: response.data.body,
+              scarpeImage: response.data.image
+            });
+          })
+          .catch((error) => {
+            console.log(`Error occurred, ${error}`);
+          });
+      /////////
       if (scrapeUrl.includes('https')) {
         this.setState({
           scrapeUrl: '',
@@ -293,7 +312,7 @@ class Articles extends React.Component {
     return (
       <div className="row">
         <div className="col s1 m1 l2" id="side-nav">
-          <h5 className="categoryHeader"> Sources </h5>
+          <h5 className="sourcesHeader"> Sources </h5>
           <br />
           <SelectSources />
           <ul className="collapsible" data-collapsible="accordion">
@@ -336,7 +355,7 @@ class Articles extends React.Component {
                 (this.state.currentSort === '') ?
                 ' '
                 :
-                ` ${this.toTitleCase(this.state.currentSort)}   
+                ` , ${this.toTitleCase(this.state.currentSort)}   
                 ${this.state.articles.length}  Articles `
               }
               {this.state.sortBy.map((sortBy, i) =>
@@ -359,7 +378,12 @@ class Articles extends React.Component {
                   <button onClick={this.resetScrapeUrl}>
                      &larr; View more Articles </button>
                 </h6>
-                <iframe src={this.state.scrapeUrl} />
+                <img
+                  className="col s12 m10 l8 scrapeImage"
+                  src={this.state.scarpeImage} alt="article image"
+                />
+                <div className="col s12 m10 l8 scrapeArticle" id="scrapeBody">
+                </div>
               </div>
             :
               this.state.articles.map((article, i) =>
