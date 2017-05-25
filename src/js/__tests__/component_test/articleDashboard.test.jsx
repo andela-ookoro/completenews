@@ -1,107 +1,115 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
+import sinon from 'sinon';
 import HeadlineDashboard from '../../pages/Headlines';
+import * as ArticlesAction from '../../action/headlineAction';
+import ArticleStore from '../../store/HeadlineStore';
+import Dispatcher from '../../dispatcher/Dispatcher';
+import * as Constant from '../../constants';
 
-describe('rendering', () => {
-  it('should a have function to convert string to toTitleCase', () => {
-    const dashboard = new HeadlineDashboard();
-    const toTitleCase = dashboard.toTitleCase('hello-world');
-    expect(toTitleCase).toBe('Hello World');
-  });
-
-  const component = shallow(<HeadlineDashboard />);
-
-  const sources = [
+const userInfo = {
+  name: 'celestine',
+  imageUrl: 'test.jpg',
+  email: 'okorocelestine@gmail.com'
+};
+const sources = [
+  {
+    'id': 'abc-news-au',
+    'name': 'ABC News (AU)',
+    'description': 'Australias most trusted source of local',
+    'url': 'http: //www.abc.net.au/news',
+    'category': 'general',
+    'language': 'en',
+    'country': 'au',
+    'urlsToLogos': { 'small': '', 'medium': '', 'large': '' },
+    'sortBysAvailable': ['top']
+  },
+  {
+    'id': 'al-jazeera-english',
+    'name': 'Al Jazeera English',
+    'description': 'News, analysis from the Middle East and worldwide.',
+    'url': 'http: //www.aljazeera.com',
+    'category': 'general',
+    'language': 'en',
+    'country': 'us',
+    'urlsToLogos': { 'small': '', 'medium': '', 'large': '' },
+    'sortBysAvailable': ['top', 'latest']
+  }
+];
+const articles = [
+  {
+    'author': 'Abhimanyu Ghoshal',
+    'description': 'After a failed effort to offer free internet acces.',
+    'publishedAt': '2017-05-04T13: 18: 36Z',
+    'scrapeDetails': 'After a failed effort Facebook  ',
+    'title': 'Facebook launches Express Wi-Fi in India to bre',
+    'url': 'https: //thenextweb.com/facebook/2017/05/04/' +
+      'facebook-launches-express-wi-fi-in-india-to-bring-rural-areas-online/',
+    'urlToImage': 'https: //cdn2.tnwcdn.com/wp-content/blogs.dir/1/files/' +
+      '2017/05/Facebook-Express-Wi-Fi.jpg'
+  }
+];
+const sourceGroup = JSON.stringify({
+  'general': [
     {
       'id': 'abc-news-au',
       'name': 'ABC News (AU)',
-      'description': 'Australias most trusted source of local',
+      'description': 'Australias most trusted more.',
       'url': 'http: //www.abc.net.au/news',
       'category': 'general',
       'language': 'en',
       'country': 'au',
       'urlsToLogos': { 'small': '', 'medium': '', 'large': '' },
       'sortBysAvailable': ['top']
-    },
+    }
+  ],
+  'technology': [
     {
-      'id': 'al-jazeera-english',
-      'name': 'Al Jazeera English',
-      'description': 'News, analysis from the Middle East and worldwide.',
-      'url': 'http: //www.aljazeera.com',
-      'category': 'general',
+      'id': 'ars-technica',
+      'name': 'Ars Technica',
+      'description': 'The PC enthusiasts resource.',
+      'url': 'http: //arstechnica.com',
+      'category': 'technology',
       'language': 'en',
       'country': 'us',
       'urlsToLogos': { 'small': '', 'medium': '', 'large': '' },
       'sortBysAvailable': ['top', 'latest']
     }
-  ];
-  const articles = [
+  ],
+  'sport': [
     {
-      'author': 'Abhimanyu Ghoshal',
-      'description': 'After a failed effort to offer free internet acces.',
-      'publishedAt': '2017-05-04T13: 18: 36Z',
-      'scrapeDetails': 'After a failed effort Facebook  ',
-      'title': 'Facebook launches Express Wi-Fi in India to bre',
-      'url': 'https: //thenextweb.com/facebook/2017/05/04/' +
-        'facebook-launches-express-wi-fi-in-india-to-bring-rural-areas-online/',
-      'urlToImage': 'https: //cdn2.tnwcdn.com/wp-content/blogs.dir/1/files/' +
-        '2017/05/Facebook-Express-Wi-Fi.jpg'
+      'id': 'bbc-sport',
+      'name': 'BBC Sport',
+      'description': 'The home of BBC Sport online.',
+      'url': 'http: //www.bbc.co.uk/sport',
+      'category': 'sport',
+      'language': 'en',
+      'country': 'gb',
+      'urlsToLogos': { 'small': '', 'medium': '', 'large': '' },
+      'sortBysAvailable': ['top']
     }
-  ];
-  const sourceGroup = JSON.stringify({
-    'general': [
-      {
-        'id': 'abc-news-au',
-        'name': 'ABC News (AU)',
-        'description': 'Australias most trusted more.',
-        'url': 'http: //www.abc.net.au/news',
-        'category': 'general',
-        'language': 'en',
-        'country': 'au',
-        'urlsToLogos': { 'small': '', 'medium': '', 'large': '' },
-        'sortBysAvailable': ['top']
-      }
-    ],
-    'technology': [
-      {
-        'id': 'ars-technica',
-        'name': 'Ars Technica',
-        'description': 'The PC enthusiasts resource.',
-        'url': 'http: //arstechnica.com',
-        'category': 'technology',
-        'language': 'en',
-        'country': 'us',
-        'urlsToLogos': { 'small': '', 'medium': '', 'large': '' },
-        'sortBysAvailable': ['top', 'latest']
-      }
-    ],
-    'sport': [
-      {
-        'id': 'bbc-sport',
-        'name': 'BBC Sport',
-        'description': 'The home of BBC Sport online.',
-        'url': 'http: //www.bbc.co.uk/sport',
-        'category': 'sport',
-        'language': 'en',
-        'country': 'gb',
-        'urlsToLogos': { 'small': '', 'medium': '', 'large': '' },
-        'sortBysAvailable': ['top']
-      }
-    ],
-    'business': [
-      {
-        'id': 'bloomberg',
-        'name': 'Bloomberg',
-        'description': 'Bloomberg delivers business and markets news.',
-        'url': 'http: //www.bloomberg.com',
-        'category': 'business',
-        'language': 'en',
-        'country': 'us',
-        'urlsToLogos': { 'small': '', 'medium': '', 'large': '' },
-        'sortBysAvailable': ['top']
-      }
-    ],
-  });
+  ],
+  'business': [
+    {
+      'id': 'bloomberg',
+      'name': 'Bloomberg',
+      'description': 'Bloomberg delivers business and markets news.',
+      'url': 'http: //www.bloomberg.com',
+      'category': 'business',
+      'language': 'en',
+      'country': 'us',
+      'urlsToLogos': { 'small': '', 'medium': '', 'large': '' },
+      'sortBysAvailable': ['top']
+    }
+  ],
+});
+
+ArticlesAction.getFavouriteArticles = jest.fn(email =>
+   articles
+);
+
+describe('rendering', () => {
+  const component = shallow(<HeadlineDashboard />);
   const categories = ['general', 'technology', 'sport', 'business'];
   const isAuth = true;
   const articleSource = 'bloomberg';
@@ -181,5 +189,38 @@ describe('rendering', () => {
      expect(firstArticle.scrape).toBeInstanceOf(Function);
      expect(firstArticle.isAuth).toBe(isAuth);
    });
-});
 
+  describe('Testing component fucntions', () => {
+    const newArticleDashboard = new HeadlineDashboard();
+    localStorage.setItem('userProfile', JSON.stringify(userInfo));
+    it('should a have function to convert string to toTitleCase', () => {
+      const dashboard = new HeadlineDashboard();
+      const toTitleCase = dashboard.toTitleCase('hello-world');
+      expect(toTitleCase).toBe('Hello World');
+    });
+
+    it('should have  a Function; \'viewFavourite\' that invokes ' +
+        'the \'getFavouriteArticles\' function in  article action',
+    () => {
+      expect(newArticleDashboard.viewFavourite).toBeInstanceOf(Function);
+      newArticleDashboard.viewFavourite();
+      expect(ArticlesAction.getFavouriteArticles)
+        .toBeCalledWith('okorocelestine');
+    });
+
+    describe('should have  a Function; \'getFavouriteArticles\' ',
+    () => {
+      expect(newArticleDashboard.getFavouriteArticles).toBeInstanceOf(Function);
+      it('getFavouriteArticles is invokes when the \'ArticlesStore\' ' +
+        'emits \'dbchange\' change',
+      () => {
+        Dispatcher.dispatch({
+          Type: Constant.GET_FAVOURITE_ARTICLES,
+          articles,
+        });
+        sinon.spy(HeadlineDashboard.prototype, 'getFavouriteArticles');
+        expect(HeadlineDashboard.prototype.getFavouriteArticles.calledOnce).toBeDefined();
+      });
+    });
+  });
+});

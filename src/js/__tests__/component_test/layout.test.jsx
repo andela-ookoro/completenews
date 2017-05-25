@@ -54,6 +54,5 @@ describe('rendering', () => {
     expect(feedbackMail.id).toBe('feedback-mail');
     expect(feedbackMail.children).toBe('Contact Developer');
   });
-  console.log(layout[1]);
 });
 

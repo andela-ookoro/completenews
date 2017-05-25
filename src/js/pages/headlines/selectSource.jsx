@@ -59,7 +59,7 @@ class SourceList extends React.Component {
    * called when the component is ready to render its content
    * @return {null} Return no value.
   */
-  componentWillMount() {
+  componentDidMount() {
     localStorage.getItem('sources');
     this.getSources();
     Sources.on('change', this.updateSource);

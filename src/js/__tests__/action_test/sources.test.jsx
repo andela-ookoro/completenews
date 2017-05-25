@@ -42,7 +42,7 @@ test('Should should make a call to an external function that ' +
    SourcesAction();
    let sources = [];
    const setSources = (() => {
-     sources = Sources.sources;g
+     sources = Sources.sources;
      expect(sources).toHaveLength(2);
    });
    Sources.on('change', setSources);

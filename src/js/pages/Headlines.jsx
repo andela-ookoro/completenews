@@ -72,7 +72,7 @@ class Articles extends React.Component {
       this.setState({ scrapeUrl: '' });
     });
     this.resetScrapeUrl = this.resetScrapeUrl.bind(this);
-    this.onInput = this.onInput.bind(this);
+    // this.onInput = this.onInput.bind(this);
   }
 
    /**
@@ -112,23 +112,23 @@ class Articles extends React.Component {
    * get the source select from the autocomplete text box
    * @return {null} Return no value.
   */
-  onInput() {
-    const val = document.getElementById('source1').value;
-    const opts = document.getElementById('sourcesData').childNodes;
-    let sourceName;
-    for (let i = 0; i < opts.length; i += 1) {
-      if (opts[i].value === val) {
-        sourceName = opts[i].value;
-        break;
-      }
-    }
-    const results = this.state.sources.filter(item =>
-     item.name === sourceName
-    );
-    if (results.length > 0) {
-      this.fetchAvailableSort('tst', results[0].id);
-    }
-  }
+  // onInput() {
+  //   const val = document.getElementById('source1').value;
+  //   const opts = document.getElementById('sourcesData').childNodes;
+  //   let sourceName;
+  //   for (let i = 0; i < opts.length; i += 1) {
+  //     if (opts[i].value === val) {
+  //       sourceName = opts[i].value;
+  //       break;
+  //     }
+  //   }
+  //   const results = this.state.sources.filter(item =>
+  //    item.name === sourceName
+  //   );
+  //   if (results.length > 0) {
+  //     this.fetchAvailableSort('tst', results[0].id);
+  //   }
+  // }
 
   /**
    * set the sources
