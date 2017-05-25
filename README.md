@@ -1,6 +1,6 @@
 # completenews
 [![Code Climate](https://codeclimate.com/github/andela-ookoro/completenews.svg)](https://codeclimate.com/github/andela-ookoro/completenews) [![Build Status](https://travis-ci.org/andela-ookoro/completenews.svg)](https://travis-ci.org/andela-ookoro/completenews)
-[![Coverage Status](https://coveralls.io/repos/github/andela-ookoro/completenews/badge.svg?branch=master)](https://coveralls.io/github/andela-ookoro/completenews?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/andela-ookoro/completenews/badge.svg)](https://coveralls.io/github/andela-ookoro/completenews)
 
 ## Introduction
 ### **`completenews`** is a single page web application built with [React](https://facebook.github.io/react/) framework that fetches and displays headline sources and articles.
