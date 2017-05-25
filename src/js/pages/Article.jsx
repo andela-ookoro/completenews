@@ -127,36 +127,36 @@ class Article extends React.Component {
                 :
                 ''
                 }
-                  <div className="col m12" style={{ paddingLeft: '0px', paddingTop: '10px' }}>
-                    <div className="col m2" style={{ paddingLeft: '0px' }}>
-                      <FacebookShareButton
-                        url={this.props.url} title={this.props.title}
-                      >
-                        <FacebookIcon size={32} round={true} />
-                      </FacebookShareButton>
-                    </div>
-                    <div className="col m2" style={{ paddingLeft: '0px' }}>
-                      <LinkedinShareButton
-                        url={this.props.url} title={this.props.title}
-                      >
-                        <LinkedinIcon size={32} round={true} />
-                      </LinkedinShareButton>
-                    </div>
-                    <div className="col m2" style={{ paddingLeft: '0px' }}>
-                      <TwitterShareButton
-                        url={this.props.url} title={this.props.title}
-                      >
-                        <TwitterIcon size={32} round={true} />
-                      </TwitterShareButton>
-                    </div>
-                    <div className="col m2" style={{ paddingLeft: '0px' }}>
-                      <GooglePlusShareButton
-                        url={this.props.url} title={this.props.title}
-                      >
-                        <GooglePlusIcon size={32} round={true} />
-                      </GooglePlusShareButton>
-                    </div>
+                <div className="col m12" style={{ paddingLeft: '0px', paddingTop: '10px' }}>
+                  <div className="col m2" style={{ paddingLeft: '0px' }}>
+                    <FacebookShareButton
+                      url={this.props.url} title={this.props.title}
+                    >
+                      <FacebookIcon size={32} round={true} />
+                    </FacebookShareButton>
                   </div>
+                  <div className="col m2" style={{ paddingLeft: '0px' }}>
+                    <LinkedinShareButton
+                      url={this.props.url} title={this.props.title}
+                    >
+                      <LinkedinIcon size={32} round={true} />
+                    </LinkedinShareButton>
+                  </div>
+                  <div className="col m2" style={{ paddingLeft: '0px' }}>
+                    <TwitterShareButton
+                      url={this.props.url} title={this.props.title}
+                    >
+                      <TwitterIcon size={32} round={true} />
+                    </TwitterShareButton>
+                  </div>
+                  <div className="col m2" style={{ paddingLeft: '0px' }}>
+                    <GooglePlusShareButton
+                      url={this.props.url} title={this.props.title}
+                    >
+                      <GooglePlusIcon size={32} round={true} />
+                    </GooglePlusShareButton>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
