@@ -11,6 +11,12 @@ const browser = new Nightmare({
   typeInterval: 20,
   pollInterval: 500,
 });
+
+/**
+ * Route to a given route
+ * @param {string} path The relative path to visit
+ * @return {object} Return a nigthmare object calling the goto function.
+*/
 export default function (path = '') {
   const location = url.resolve(BASE_URL, path);
   return browser.goto(location);

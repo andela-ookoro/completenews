@@ -2,33 +2,45 @@ import { EventEmitter } from 'events';
 import Dispatcher from '../dispatcher/Dispatcher';
 import * as Constant from '../constants';
 
+/**
+ * @FileOverview A class that listen to action dispatched for sources
+ * and emit a change.
+ * @extend EventEmitter
+ * @Author okwudiri.okoro@andela.com (Okoro Celestine)
+ */
 class Sources extends EventEmitter {
+   /** Create sources object . */
   constructor() {
     super();
-    this.getSources = this.getSources.bind(this);
+    this.setSources = this.setSources.bind(this);
     this.sources = [];
   }
 
- // return sources
-  getSources(sources) {
+ /**
+   * Set the sources .
+   * @param {array} sources - The sources to be set
+   * @return {array} The sources value.
+  */
+  setSources(sources) {
     this.sources = sources;
     return this.sources;
   }
 
+  /**
+   * Listen to action dispatched and react to action of type GET_SOURCES
+   * @param {object} action - The an action that was dispatched
+   * @return {null} It return no value
+  */
   handleActions(action) {
     switch (action.Type) {
-      case Constant.GetSources :
-        this.getSources(action.sources);
+      case Constant.GET_SOURCES :
+        this.setSources(action.sources);
         this.emit('change');
         break;
       default :
     }
   }
 }
-const sourceStore = new Sources();
-Dispatcher.register(sourceStore.handleActions.bind(sourceStore));
-// to use the onbject on browser console
-window.healineStore = sourceStore;
-window.dispatcher = Dispatcher;
-window.healineStore = sourceStore;
-export default sourceStore;
+const sources = new Sources();
+Dispatcher.register(sources.handleActions.bind(sources));
+export default sources;

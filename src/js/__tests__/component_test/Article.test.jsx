@@ -3,87 +3,87 @@ import { shallow } from 'enzyme';
 import Renderer from 'react-test-renderer';
 import Article from '../../pages/Article';
 
-test('Component render the article template', () => {
-  const article = {
-    author: 'celestine',
-    title: 'My story',
-    urlToImage: 'test.jpg',
-    publishedAt: '24/12/24',
-    isAuth: true,
-    url: 'http://localhost',
-  };
-  const i = 1;
-  const source = 'BBC';
-  const isAuth1 = true;
-  const onClick = jest.fn();
-  const component = Renderer.create(
-    <Article
-      key={i} id={i} author={article.author} title={article.title}
-      urlToImage={article.urlToImage} description={article.description}
-      publishedAt={article.publishedAt} url={article.url} source={source}
-      isAuth={isAuth1} scrape={onClick}
-    />,
-  );
-  const tree = component.toJSON();
-  expect(tree).toMatchSnapshot();
-});
+const article = {
+  author: 'celestine',
+  title: 'My story',
+  urlToImage: 'test.jpg',
+  publishedAt: '24/12/24',
+  isAuth: true,
+  url: 'http://localhost',
+  description: 'Tia is me',
+};
+const source = 'BBC';
+const i = 1;
+const onClick = jest.fn();
+const scrape = jest.fn();
 
-test('Property of each control should be same with props variable passed',
-  () => {
-    const article = {
-      author: 'celestine',
-      title: 'My story',
-      urlToImage: 'test.jpg',
-      publishedAt: '24/12/24',
-      url: 'http://localhost',
-    };
-    const i = 1;
-    const source = 'BBC';
-    const isAuth = true;
-    const onClick = jest.fn();
-    const wrapper = shallow(
-      <Article
-        key={i} id={i} author={article.author} title={article.title}
-        urlToImage={article.urlToImage} description={article.description}
-        publishedAt={article.publishedAt} url={article.url} source={source}
-        isAuth={isAuth} scrape={onClick}
-      />,
+/**
+ * @param {object} props - the additional prop object to pass
+ * @return {object} the component props
+ */
+function createTestProps(props) {
+  return {
+    author: article.author,
+    title: article.title,
+    urlToImage: article.urlToImage,
+    url: article.url,
+    publishedAt: article.publishedAt,
+    description: article.description,
+    i,
+    source,
+    onClick,
+    scrape,
+    ...props,
+  };
+}
+
+describe('rendering', () => {
+  it('should render content as describe in the component', () => {
+    const props = createTestProps({ isAuth: true });
+    const component = Renderer.create(
+      <Article {...props} />,
     );
-    const heading = wrapper.find('h6');
-    expect(heading.text()).toEqual(`${article.author}: ${article.title}`);
-    const img = wrapper.find('img').props('urlToImage');
-    expect(img.src).toEqual(article.urlToImage);
-    const sourceURl = wrapper.find('a').props('url');
-    expect(sourceURl.href).toEqual(article.url);
-    expect(sourceURl.children).toEqual(`Read on  ${source} `);
-    expect(sourceURl.target).toEqual('_blank');
-    const button = wrapper.find('#btnAddToFav').props('isAuth');
-    const className = button.className;
-    expect(!className.includes('disabled')).toEqual(true);
-  // expect(wrapper.getDOMNode()).to.have.property('card-image');
+    const tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
   });
 
-test('Add to favourite button should be disabled for anonymous users', () => {
-  const article = {
-    author: 'celestine',
-    title: 'My story',
-    urlToImage: 'test.jpg',
-    publishedAt: '24/12/24',
-    url: 'http://localhost',
-  };
-  const i = 1;
-  const source = 'BBC';
-  const isAuth = false;
-  const onClick = jest.fn();
+  const props = createTestProps({ isAuth: false });
   const wrapper = shallow(
-    <Article
-      id={i} author={article.author} title={article.title}
-      urlToImage={article.urlToImage} description={article.description}
-      publishedAt={article.publishedAt} url={article.url} source={source}
-      isAuth={isAuth} scrape={onClick}
-    />,
+    <Article {...props} />,
   );
-  const button = wrapper.find('#btnAddToFav').props('isAuth');
-  const className = button.className;
-  expect(className.includes('disabled')).toEqual(true);
+
+  it('component should have a heading in the format <author>:<title', () => {
+    const heading = wrapper.find('.paragraphstyle').nodes[0].props.children;
+    const author = heading[0].toString().trimRight();
+    const headingText = `${author} ${heading[1]}`;
+    expect(headingText).toEqual(`${article.author}: ${article.title}`);
+  });
+
+  it('should display the image of the article', () => {
+    const img = wrapper.find('img').props('urlToImage');
+    expect(img.src).toEqual(article.urlToImage);
+  });
+
+  it('should display the link to the article with caption "Read on <source>"',
+    () => {
+      const sourceURl = wrapper.find('a').props('url');
+      expect(sourceURl.href).toEqual(article.url);
+      expect(sourceURl.children).toEqual(`Read on  ${source} `);
+      expect(sourceURl.target).toEqual('_blank');
+    });
+
+  it('should hide the "Add to favourite button" for anonymous user"', () => {
+    const button = wrapper.find('#btnAddToFav');
+    expect(button.nodes).toHaveLength(0);
+  });
+
+  const Identifiedprops = createTestProps({ isAuth: true });
+  const IdentifiedWrapper = shallow(
+    <Article {...Identifiedprops} />,
+  );
+
+  it('should show the "Add to favourite button" for identified user"', () => {
+    const button = IdentifiedWrapper.find('#btnAddToFav').props('isAuth');
+    expect(button).toBeTruthy();
+  });
 });

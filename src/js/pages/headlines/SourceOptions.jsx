@@ -11,6 +11,7 @@ const SourceOptions = ({ id, title = '', name, fetchAvailableSort }) => (
       {name }</a>
   </div>
 );
+
 SourceOptions.propTypes = {
   id: PropTypes.string.isRequired,
   title: PropTypes.string,
