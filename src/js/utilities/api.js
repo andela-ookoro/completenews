@@ -46,3 +46,21 @@ export const getFavouriteArticles = (email =>
   })
  );
 
+const Linkify = ((str) => {
+  // get the last sectio of the link
+  let str1 = str.match(/[\/][a-zA-Z0-9]*/g).pop();
+  if (str1 === '/') {
+    str1 = str.match(/[\.][a-zA-Z0-9]*[\.]/g).pop();
+    str1 = str1.substr(1, str1.length - 2);
+  } else {
+    str1 = str1.substr(1, str1.lenght);
+  }
+
+  // create the link
+  return `<a href="${str}" target="_blank" >${str1}</a>`;
+});
+
+export const replaceLinks = (str =>
+  str.replace(/\b(?:https?|ftp):\/\/[a-z0-9-+&@#\/%?=~_|!:,.;]*/gi,
+    (x => Linkify(x)))
+);
