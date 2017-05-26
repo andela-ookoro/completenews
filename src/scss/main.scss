@@ -5,6 +5,12 @@
   }
 }
 body {
+ font-family: 'Slabo 27px', serif;
+  font-family: 'Lora', serif;
+  font-family: 'Barrio', cursive;
+  font-family: 'Indie Flower', cursive;
+  font-family: 'Abril Fatface', cursive;
+  font-family: 'Abel', sans-serif;;
  background-color: #e0f7fa;
 }
 a {
@@ -53,6 +59,10 @@ img {
   background-color: #006064;
 	position: fixed;
 	z-index: 3;
+  font-family: 'Slabo 27px', serif;
+  font-family: 'Lora', serif;
+  font-family: 'Barrio', cursive;
+  font-family: 'Roboto Slab', serif;
 }
 .nav-wrapper {
   @extend .blueheader
