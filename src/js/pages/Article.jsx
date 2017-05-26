@@ -34,7 +34,7 @@ class Article extends React.Component {
     */
     this.addArticle = ((e) => {
       const index = e.target.getAttribute('value');
-      const articles = JSON.parse(localStorage.articles);
+      const articles = JSON.parse(localStorage.getItem('articles'));
       const article = articles[index];
       article.source = this.props.source;
       //  const timestamp = new Date().valueOf();
@@ -52,6 +52,9 @@ class Article extends React.Component {
         .catch((err) => {
           Notification(`Error occurred, ${err}`);
         });
+      FavouriteRef.on('child_changed', (data) => {
+        FavouriteAction(1);
+      });
     });
 
      /**

@@ -54,7 +54,7 @@ class Articles extends React.Component {
     this.scrape = ((e) => {
       e.preventDefault();
       const index = e.target.value;
-      const articles = JSON.parse(localStorage.articles);
+      const articles = JSON.parse(localStorage.getItem('articles'));
       const article = articles[index];
       const scrapeUrl = article.url.toString();
       const scrapeTitle = article.title;
@@ -63,7 +63,6 @@ class Articles extends React.Component {
         &subscription-key=${process.env.LATERAL_READ_WRITE_KEY}`;
       axios.get(url, { 'content-type': 'application/json' })
           .then((response) => {
-            console.log(response.data);
             document.getElementById('scrapeBody').innerHTML = Utilties.replaceLinks(response.data.body);
             this.setState({
               scrapeContent: response.data.body,
@@ -195,7 +194,7 @@ class Articles extends React.Component {
     localStorage.setItem('articles', JSON.stringify(articles));
     // fix source name
     const sourceName = this.toTitleCase(source.toString());
-    const sources = JSON.parse(localStorage.sources);
+    const sources = JSON.parse(localStorage.getItem('sources'));
     const sourceNode = sources.filter(obj => obj.id === source);
     this.setState({
       articles,
@@ -253,8 +252,8 @@ class Articles extends React.Component {
    * @param {object} source - An option param for the source name
    * @return {null} Return no value.
   */
-  fetchAvailableSort(e) {
-    let cursource, source;
+  fetchAvailableSort(e, source) {
+    let cursource;
     if (source) {
       cursource = source;
     } else {
@@ -266,7 +265,7 @@ class Articles extends React.Component {
     }
     // fix source name
     const sourceName = this.toTitleCase(cursource.toString());
-    const sources = JSON.parse(localStorage.sources);
+    const sources = JSON.parse(localStorage.getItem('sources'));
     const sourceNode = sources.filter(obj => obj.id === cursource);
     ArticlesAction.getArticles(cursource, '');
     this.setState({
