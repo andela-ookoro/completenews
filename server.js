@@ -18,6 +18,6 @@ router.get('*', (req, res) => {
 app.use('/', router);
 
 app.listen(app.get('port'), () => {
-  const url = `http://localhost:${app.get('port')}`;
-  opn(url);
+  // const url = `http://localhost:${app.get('port')}`;
+  // Opn(url);
 });
