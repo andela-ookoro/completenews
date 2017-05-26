@@ -1,4 +1,4 @@
-const localStorageMock = ( function () {
+const localStorageMock = (() => {
   let store = {};
 
   return {
@@ -6,7 +6,11 @@ const localStorageMock = ( function () {
       return store[key] || null;
     },
     setItem(key, value) {
-      store[key] = value.toString();
+      if (value == null) {
+        store[key] = value;
+      } else {
+        store[key] = value.toString();
+      }
     },
     clear() {
       store = {};
@@ -15,3 +19,8 @@ const localStorageMock = ( function () {
 })();
 
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+
+Object.defineProperty(window.location, 'href', {
+  writable: true,
+  value: '/testRoute'
+});

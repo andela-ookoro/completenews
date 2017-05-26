@@ -2,3 +2,5 @@ node_modules
 .Ds_Store
 .env
 lcov-report/
+coverage/
+learn

@@ -1,11 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Component render the article template 1`] = `
-<a
-  className=""
-  onClick={[Function]}
-  style={Object {}}
->
-  Click to login
-</a>
+<div>
+  <button
+    id="viewfavouritebtn"
+    onClick={[Function]}
+    title="view favourite headline"
+  >
+     Favourite Articles (
+    3
+    )
+  </button>
+  <a
+    className="btn-flat"
+    onClick={[Function]}
+  >
+    Sign Out
+  </a>
+  <div
+    className="chip"
+  >
+    <img
+      alt="Contact Person"
+      src="test.jpg"
+    />
+    celestine
+  </div>
+</div>
 `;

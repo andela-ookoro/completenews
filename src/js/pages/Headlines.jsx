@@ -1,20 +1,30 @@
 import React from 'react';
-// import Request from 'request';
-// import Fs from 'fs';
+import axios from 'axios';
 import SortBY from './headlines/SortBy';
 import Article from './Article';
-import SourceOptions from './headlines/SourceOptions';
+import SourceLink from './headlines/SourceOptions';
+import SelectSources from './headlines/selectSource';
 import NotifyStore from '../store/NotifyStore';
 import SourceAction from '../action/sourceAction';
 import Sources from '../store/SourceStore';
-import * as HeadlineAction from '../action/headlineAction';
-import HeadlineStore from '../store/HeadlineStore';
+import * as ArticlesAction from '../action/headlineAction';
+import ArticlesStore from '../store/HeadlineStore';
 import AuthStore from '../store/authStore';
-
-
-class Headlines extends React.Component {
-  constructor() {
-    super();
+import Tip from './headlines/tip';
+import * as Utilties from '../utilities/utilities';
+/**
+ * @FileOverview A class that renders Articles
+ * and emit a change.
+ *  @extends React.Component
+ * @Author okwudiri.okoro@andela.com (Okoro Celestine)
+ */
+class ArticlesDashboard extends React.Component {
+  /** Create Articles object
+   * @param {object} props - The properties of the class
+   * @param {object} context - The context which the class runs
+   */
+  constructor(props, context) {
+    super(props, context);
     this.state = {
       source: '',
       sort: '',
@@ -28,9 +38,11 @@ class Headlines extends React.Component {
       isAuth: false,
       isDb: false,
       scrapeUrl: '',
+      scrapeContent: '',
+      scarpeImage: ''
     };
     this.count = 0;
-    this.fecthHealines = this.fecthHealines.bind(this);
+    this.fecthArticles = this.fecthArticles.bind(this);
     this.getSources = this.getSources.bind(this);
     this.toTitleCase = (str =>
        str.replace(/-/g, ' ').replace(/\w\S*/g, txt =>
@@ -38,10 +50,10 @@ class Headlines extends React.Component {
       );
     this.fetchAvailableSort = this.fetchAvailableSort.bind(this);
     this.notifyUser = this.notifyUser.bind(this);
-    this.sourceChange = this.sourceChange.bind(this);
-    this.headlineChange = this.headlineChange.bind(this);
-    this.dbheadlineChange = this.dbheadlineChange.bind(this);
-    this.authChange = this.authChange.bind(this);
+    this.updateSource = this.updateSource.bind(this);
+    this.getArticles = this.getArticles.bind(this);
+    this.getFavouriteArticles = this.getFavouriteArticles.bind(this);
+    this.setAuth = this.setAuth.bind(this);
     this.scrape = ((e) => {
       e.preventDefault();
       const index = e.target.value;
@@ -49,50 +61,113 @@ class Headlines extends React.Component {
       const article = articles[index];
       const scrapeUrl = article.url.toString();
       const scrapeTitle = article.title;
-      if (scrapeUrl.includes('https')) {
-        this.setState({
-          scrapeUrl: '',
-          message: 'Cannot view page; access blocked by source',
-        });
-      } else {
-        this.setState({ message: '', scrapeUrl, scrapeTitle });
-      }
+      // try lateral
+      const url = `https://document-parser-api.lateral.io/?url=${scrapeUrl}
+        &subscription-key=${process.env.LATERAL_READ_WRITE_KEY}`;
+      axios.get(url, { 'content-type': 'application/json' })
+          .then((response) => {
+            document.getElementById('scrapeBody').innerHTML =
+              Utilties.replaceLinks(response.data.body);
+            this.setState({
+              scrapeContent: response.data.body,
+              scarpeImage: response.data.image
+            });
+          });
+      // // literal ends here
+      // if (scrapeUrl.includes('https')) {
+      //   this.setState({
+      //     scrapeUrl: '',
+      //     message: 'Cannot view page; access blocked by source',
+      //   });
+      // } else {
+      this.setState({ message: '', scrapeUrl, scrapeTitle });
+      //}
     });
     this.viewFavourite = (() => {
       let userEmail = JSON.parse(localStorage.getItem('userProfile'))
                       .email.toString().replace('.', '_');
       userEmail = userEmail.substring(0, userEmail.indexOf('@'));
-      HeadlineAction.getDbHeadlines(userEmail);
+      ArticlesAction.getFavouriteArticles(userEmail);
       this.setState({ scrapeUrl: '' });
     });
     this.resetScrapeUrl = this.resetScrapeUrl.bind(this);
+    this.sourceClick = this.sourceClick.bind(this);
+    this.sortClick = this.sortClick.bind(this);
+    // this.onInput = this.onInput.bind(this);
   }
-  // this method runs before the component render it content
+
+   /**
+   * called when the component is ready to render its content
+   * @return {null} Return no value.
+  */
   componentWillMount() {
     localStorage.getItem('sources');
     this.getSources();
-    HeadlineStore.on('dbchange', this.dbheadlineChange);
-    HeadlineStore.on('change', this.headlineChange);
+    ArticlesStore.on('dbchange', this.getFavouriteArticles);
+    ArticlesStore.on('change', this.getArticles);
+    const routeParams = this.props.routeParams;
+    let sourceIDParam = '';
+    let sortOptionParam = '';
+    if (routeParams) {
+      sourceIDParam = routeParams.sourceId;
+      sortOptionParam = routeParams.sortOption;
+    }
     const userinfo = JSON.parse(localStorage.getItem('userProfile'));
-    if (userinfo) {
+
+    if (sortOptionParam) {
+      this.fecthArticles(sourceIDParam, sortOptionParam);
+    } else if (sourceIDParam) {
+      this.fetchAvailableSort(sourceIDParam);
+    } else if (userinfo) {
       this.setState({ isAuth: true });
       this.viewFavourite();
     } else {
       this.setState({ articleSource: '', isAuth: false });
     }
-    AuthStore.on('change', this.authChange);
-    Sources.on('change', this.sourceChange);
+
+    AuthStore.on('change', this.setAuth);
+    Sources.on('change', this.updateSource);
     NotifyStore.on('change', this.notifyUser);
   }
 
+  /**
+   * called when the component  remove its content
+   * @return {null} Return no value.
+  */
   componentWillUnmount() {
-    HeadlineStore.removeListener('change', this.headlineChange);
-    HeadlineStore.removeListener('dbchange', this.dbheadlineChange);
-    Sources.removeListener('change', this.getSources);
+    ArticlesStore.removeListener('change', this.getArticles);
+    ArticlesStore.removeListener('dbchange', this.getFavouriteArticles);
+    Sources.removeListener('change', this.updateSource);
     NotifyStore.removeListener('change', this.notifyUser);
-    AuthStore.removeListener('change', this.authChange);
+    AuthStore.removeListener('change', this.setAuth);
   }
 
+   /**
+   * get the source select from the autocomplete text box
+   * @return {null} Return no value.
+  */
+  // onInput() {
+  //   const val = document.getElementById('source1').value;
+  //   const opts = document.getElementById('sourcesData').childNodes;
+  //   let sourceName;
+  //   for (let i = 0; i < opts.length; i += 1) {
+  //     if (opts[i].value === val) {
+  //       sourceName = opts[i].value;
+  //       break;
+  //     }
+  //   }
+  //   const results = this.state.sources.filter(item =>
+  //    item.name === sourceName
+  //   );
+  //   if (results.length > 0) {
+  //     this.fetchAvailableSort('tst', results[0].id);
+  //   }
+  // }
+
+  /**
+   * set the sources
+   * @return {null} Return no value.
+  */
   getSources() {
     if (!localStorage.getItem('sources')) {
       SourceAction();
@@ -105,14 +180,18 @@ class Headlines extends React.Component {
     }
   }
 
-  dbheadlineChange() {
-    const headlines = HeadlineStore.headlines;
-    const error = HeadlineStore.error;
-    localStorage.setItem('articles', JSON.stringify(headlines));
+  /**
+   * get the Favourite Articles
+   * @return {null} Return no value.
+  */
+  getFavouriteArticles() {
+    const articles = ArticlesStore.articles;
+    const error = ArticlesStore.error;
+    localStorage.setItem('articles', JSON.stringify(articles));
     this.setState({
-      articles: headlines,
+      articles,
       message: error,
-      articleSource: 'Favourite Headlines',
+      articleSource: 'Favourite Articles',
       sortBy: [],
       currentSort: '',
       isDb: true,
@@ -120,19 +199,47 @@ class Headlines extends React.Component {
     });
   }
 
-  headlineChange() {
-    const headlines = HeadlineStore.headlines;
-    const error = HeadlineStore.error;
-    localStorage.setItem('articles', JSON.stringify(headlines));
+  /**
+   * get the source Articles
+   * @return {null} Return no value.
+  */
+  getArticles() {
+    const articles = ArticlesStore.articles;
+    const source = ArticlesStore.source;
+    const error = ArticlesStore.error;
+    localStorage.setItem('articles', JSON.stringify(articles));
+    // fix source name
+    const sourceName = this.toTitleCase(source.toString());
+    const sources = JSON.parse(localStorage.getItem('sources'));
+    const sourceNode = sources.filter(obj => obj.id === source);
+    let showSortOption = (sourceNode[0]);
+    if (showSortOption) {
+      showSortOption = (!(sourceNode[0].sortBysAvailable.length < 2));
+    }
     this.setState({
-      articles: headlines,
+      articles,
       message: error,
       scrapeUrl: '',
       isDb: false,
+      source,
+      articleSource: sourceName,
+      sortBy: (showSortOption) ? sourceNode[0].sortBysAvailable : [],
     });
   }
 
-  sourceChange() {
+  /**
+   * set the isAuth value
+   * @return {null} Return no value.
+  */
+  setAuth() {
+    this.setState({ isAuth: AuthStore.isAuth });
+  }
+
+  /**
+   * update the sources
+   * @return {null} Return no value.
+  */
+  updateSource() {
     const sources = Sources.sources;
     const sourcescategories = {};
     const categories = [];
@@ -149,73 +256,96 @@ class Headlines extends React.Component {
     this.setState({ sources, categories });
   }
 
-  authChange() {
-    this.setState({ isAuth: AuthStore.isAuth });
-    // console.log('auth');
-  }
-
+  /**
+   * set the message value
+   * @return {null} Return no value.
+  */
   notifyUser() {
     this.setState({ message: NotifyStore.message });
   }
 
-  // get available sort parameter
-  fetchAvailableSort(e) {
+  /**
+   * get the articles and avaliable sort parameters of a source
+   * @param {object} e - The object that trigger the event
+   * @return {null} Return no value.
+  */
+  sourceClick(e) {
+    let cursource = '';
     e.preventDefault();
-    let cursource = e.target.getAttribute('value');
+    cursource = e.target.getAttribute('value');
     if (!cursource) {
       cursource = e.target.value;
     }
+    this.fetchAvailableSort(cursource);
+  }
+
+  /**
+   * get the articles and avaliable sort parameters of a source
+   * @param {object} source - An option param for the source name
+   * @return {null} Return no value.
+  */
+  fetchAvailableSort(source) {
     // fix source name
-    const sourceName = this.toTitleCase(cursource.toString());
+    const sourceName = this.toTitleCase(source.toString());
     const sources = JSON.parse(localStorage.sources);
-    const sourceNode = sources.filter(obj => obj.id === cursource);
-    HeadlineAction.getHeadlines(cursource, '');
+    const sourceNode = sources.filter(obj => obj.id === source);
+    ArticlesAction.getArticles(source, '');
     this.setState({
       sources,
-      source: cursource,
+      source,
       articleSource: sourceName,
       sortBy: (sourceNode[0].sortBysAvailable.length > 1) ?
       sourceNode[0].sortBysAvailable : [],
       scrapeUrl: '',
     });
   }
-   // fetct headlines
-  fecthHealines(e) {
+
+  /**
+   * get the articles  of a source given it's sort parameter
+   * @param {object} e The object that trigger the event
+   *  @return {null} Return no value.
+  */
+  sortClick(e) {
     e.preventDefault();
-    const sort = e.target.value;
-    const source = this.state.source;
-    HeadlineAction.getHeadlines(source, sort);
+    const Sort = e.target.value;
+    const Source = this.state.source;
+    this.fecthArticles(Source, Sort);
+  }
+
+  /**
+   * get the articles  of a source given it's sort parameter
+   * @param {string} source The source id which is optional
+   * @param {string} sort The sort option which is optional
+   * @return {null} Return no value.
+  */
+  fecthArticles(source, sort) {
+    ArticlesAction.getArticles(source, sort);
     this.setState({
       currentSort: sort,
       scrapeUrl: '',
     });
   }
 
+  /**
+   * set the value of scrapeUrl to an empty string
+   * @return {null} Return no value.
+  */
   resetScrapeUrl() {
     this.setState({ scrapeUrl: '' });
   }
 
-
+  /**
+   * Render the component content
+   * @return {null} Return no value.
+  */
   render() {
+    const showAddToFavouriteButton = (this.state.isAuth && !this.state.isDb);
     return (
       <div className="row">
-        <div className="col s2" id="side-nav">
-          Sources
-          <select
-            name="sources" size="25" id="sources"
-            className={'browser-default'} onChange={this.fetchAvailableSort}
-          >
-            {(this.state.sources.length < 1) ?
-              ''
-              :
-            this.state.sources.map(source =>
-              <option
-                key={source.id} value={source.id} title={source.description}
-              >
-                {source.name}
-              </option>,
-            )}
-          </select>
+        <div className="col s1 m1 l2" id="side-nav">
+          <h5 className="sourcesHeader"> Sources </h5>
+          <br />
+          <SelectSources />
           <ul className="collapsible" data-collapsible="accordion">
             {(this.state.categories.length < 1 || !this.state.categories) ?
               ''
@@ -227,9 +357,10 @@ class Headlines extends React.Component {
                 <div className="collapsible-body">
                   {JSON.parse(localStorage.getItem('categories'))[cat].map(
                     source =>
-                      <SourceOptions
-                        key={source.id} name={source.name} title={source.description}
-                        id={source.id} fetchAvailableSort={this.fetchAvailableSort}
+                      <SourceLink
+                        key={source.id} name={source.name}
+                        title={source.description} id={source.id}
+                        fetchAvailableSort={this.sourceClick}
                       />,
                   )}
                 </div>
@@ -237,7 +368,7 @@ class Headlines extends React.Component {
             )}
           </ul>
         </div>
-        <div className={'col s10'} id="articles">
+        <div className="col s11 m11 l10" id="articles">
           <div id="articles-menu">
             <div >
               {(this.state.message === '' && this.state.articles.length < 1)
@@ -255,34 +386,46 @@ class Headlines extends React.Component {
                 (this.state.currentSort === '') ?
                 ' '
                 :
-                ` ${this.toTitleCase(this.state.currentSort)}   
-                ${this.state.articles.length}  Headlines `
+                ` , ${this.toTitleCase(this.state.currentSort)}   
+                ${this.state.articles.length}  Articles `
               }
               {this.state.sortBy.map((sortBy, i) =>
                 <SortBY
                   key={i} data={sortBy} source={this.state.source}
-                  onClick={this.fecthHealines}
+                  onClick={this.sortClick}
                 />,
                 )}
             </h5>
           </div>
-          <div id="articles">
-            {(this.state.scrapeUrl) ?
+          <br />
+          <div className="col s12 m12 l12" id="articles">
+            {(!this.state.scrapeUrl && this.state.articles.length === 0)
+            ?
+              <Tip />
+            :
+            (this.state.scrapeUrl) ?
               <div className="scapediv">
                 <h6 className="header"> {this.state.scrapeTitle}
                   <button onClick={this.resetScrapeUrl}>
-                     &larr; View more Headlines </button>
+                     &larr; View more Articles </button>
                 </h6>
-                <iframe src={this.state.scrapeUrl} />
+                <img
+                  className="col s12 m10 l8 scrapeImage"
+                  src={this.state.scarpeImage} alt="article image"
+                />
+                <div className="col s12 m10 l8 scrapeArticle" id="scrapeBody">
+                </div>
               </div>
             :
               this.state.articles.map((article, i) =>
                 <Article
                   key={i} id={i} author={article.author} title={article.title}
-                  urlToImage={article.urlToImage} description={article.description}
+                  urlToImage={article.urlToImage}
+                  description={article.description}
                   publishedAt={article.publishedAt} url={article.url}
                   source={(article.source) ? article.source : this.state.source}
-                  isAuth={(this.state.isAuth && !this.state.isDb) ? true : false} scrape={this.scrape}
+                  isAuth={showAddToFavouriteButton}
+                  scrape={this.scrape}
                 />,
               )
             }
@@ -293,4 +436,4 @@ class Headlines extends React.Component {
   }
 }
 
-export default Headlines;
+export default ArticlesDashboard;

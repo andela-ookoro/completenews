@@ -12,9 +12,12 @@ router.get('/', (req, res) => {
   res.sendFile(`${sourcePath}index.html`);
 });
 router.get('*', (req, res) => {
-  res.send('404 not found');
+  res.sendFile(`${sourcePath}404.html`);
 });
 
 app.use('/', router);
 
-app.listen(app.get('port'));
+app.listen(app.get('port'), () => {
+  const url = `http://localhost:${app.get('port')}`;
+  opn(url);
+});

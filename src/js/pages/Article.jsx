@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ShareButtons, generateShareIcon } from 'react-share';
+import * as Utilties from '../utilities/utilities';
 import firebase from '../utilities/firebase';
 import Notification from '../action/notifyAction';
 import FavouriteAction from '../action/favourite';
@@ -16,9 +17,22 @@ const TwitterIcon = generateShareIcon('twitter');
 const GooglePlusIcon = generateShareIcon('google');
 const LinkedinIcon = generateShareIcon('linkedin');
 
+/**
+ * @FileOverview A class that renders Article
+ * and emit a change.
+ *  @extends React.Component
+ * @Author okwudiri.okoro@andela.com (Okoro Celestine)
+ */
 class Article extends React.Component {
+  /** Create Articles object  */
   constructor() {
     super();
+
+     /**
+     * Add an article to the user favourite list and update the favourite count
+     * @param {object} e The object that trigger the event
+     * @return {null} Return no value.
+    */
     this.addArticle = ((e) => {
       const index = e.target.getAttribute('value');
       const articles = JSON.parse(localStorage.articles);
@@ -40,6 +54,12 @@ class Article extends React.Component {
           Notification(`Error occurred, ${err}`);
         });
     });
+
+     /**
+     * convert article time to server time zone
+     * @param {object} time The object that trigger the event
+     * @return {string} Return the date in server time zone.
+    */
     this.toServertime = ((time) => {
       let currentTime = new Date(time).toString();
       currentTime = currentTime.substring(0, currentTime.indexOf('G'));
@@ -47,33 +67,43 @@ class Article extends React.Component {
     });
   }
 
+  /**
+   * Render the component content
+   * @return {null} Return no value.
+  */
   render() {
     return (
-      <div className="col s12 m7 l12  hoverable">
+      <div className="col s12 m12 l12  hoverable">
         <div className="article-content">
           <h6 className="header">
-            <span className="paragraphstyle" >
+            <span className="paragraphstyle">
               {(this.props.author) ? `${this.props.author}:  ` : ''}
               {this.props.title}
             </span>
           </h6>
           <div className="card horizontal">
             <div className="card-image">
-              <img
-                className="imgStyle" src={this.props.urlToImage}
-                alt="No news image"
-              />
+              {(this.props.urlToImage) ?
+                <img
+                  className="imgStyle" src={this.props.urlToImage}
+                  alt="No news image"
+                />
+                :
+                <img src="https://placehold.it/800x400?text=CompleteNEWS" alt="Image" />
+              }
             </div>
             <div className="card-stacked">
               <div className="card-content">
-                <p className="paragraphstyle">{this.props.description}</p>
+                <p className="paragraphstyle">
+                  {Utilties.replaceLinks(this.props.description)}
+                </p>
               </div>
               <div className="card-action">
                 <p>
                   {
                     (this.props.publishedAt)
                     ?
-                    `Published on  ${this.toServertime(this.props.publishedAt)}`
+                    `Published on ${this.toServertime(this.props.publishedAt)}`
                     :
                     ''
                   }
@@ -83,49 +113,51 @@ class Article extends React.Component {
                 >
                   {(this.props.url) ? `Read on  ${this.props.source} ` : ''}</a>
                 <button
+                  className="waves-effect waves-light"
                   value={this.props.id} onClick={this.props.scrape}
                   title="view full story"
                 > Read more
                 </button>
-                <button
-                  id="btnAddToFav"
-                  value={this.props.id} onClick={this.addArticle}
-                  className={`waves-effect waves-light 
-                  btn ${(this.props.isAuth) ? '' : 'disabled'}`}
-                  title="Add to favourite"
-                >
+                {(this.props.isAuth) ?
+                  <button
+                    id="btnAddToFav"
+                    value={this.props.id} onClick={this.addArticle}
+                    className="waves-effect waves-light"
+                    title="Add to favourite"
+                  >
                   Add to favourite
                 </button>
-                <div className="container" >
-                  <div className="Row">
-                    <div className="col m2">
-                      <FacebookShareButton
-                        url={this.props.url} title={this.props.title}
-                      >
-                        <FacebookIcon size={32} round={true} />
-                      </FacebookShareButton>
-                    </div>
-                    <div className="col m2">
-                      <LinkedinShareButton
-                        url={this.props.url} title={this.props.title}
-                      >
-                        <LinkedinIcon size={32} round={true} />
-                      </LinkedinShareButton>
-                    </div>
-                    <div className="col m2">
-                      <TwitterShareButton
-                        url={this.props.url} title={this.props.title}
-                      >
-                        <TwitterIcon size={32} round={true} />
-                      </TwitterShareButton>
-                    </div>
-                    <div className="col m2">
-                      <GooglePlusShareButton
-                        url={this.props.url} title={this.props.title}
-                      >
-                        <GooglePlusIcon size={32} round={true} />
-                      </GooglePlusShareButton>
-                    </div>
+                :
+                ''
+                }
+                <div className="col m12" style={{ paddingLeft: '0px', paddingTop: '10px' }}>
+                  <div className="col m2" style={{ paddingLeft: '0px' }}>
+                    <FacebookShareButton
+                      url={this.props.url} title={this.props.title}
+                    >
+                      <FacebookIcon size={32} round={true} />
+                    </FacebookShareButton>
+                  </div>
+                  <div className="col m2" style={{ paddingLeft: '0px' }}>
+                    <LinkedinShareButton
+                      url={this.props.url} title={this.props.title}
+                    >
+                      <LinkedinIcon size={32} round={true} />
+                    </LinkedinShareButton>
+                  </div>
+                  <div className="col m2" style={{ paddingLeft: '0px' }}>
+                    <TwitterShareButton
+                      url={this.props.url} title={this.props.title}
+                    >
+                      <TwitterIcon size={32} round={true} />
+                    </TwitterShareButton>
+                  </div>
+                  <div className="col m2" style={{ paddingLeft: '0px' }}>
+                    <GooglePlusShareButton
+                      url={this.props.url} title={this.props.title}
+                    >
+                      <GooglePlusIcon size={32} round={true} />
+                    </GooglePlusShareButton>
                   </div>
                 </div>
               </div>
