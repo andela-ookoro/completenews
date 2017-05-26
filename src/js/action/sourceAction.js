@@ -1,5 +1,5 @@
 import Dispatcher from '../dispatcher/Dispatcher';
-import * as Api from '../utilities/api';
+import * as Api from '../utilities/utilities';
 import * as Constant from '../constants';
 
 /**

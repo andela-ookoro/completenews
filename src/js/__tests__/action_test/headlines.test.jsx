@@ -1,7 +1,7 @@
 import * as HeadlineAction from '../../action/headlineAction';
 import HeadlineStore from '../../store/HeadlineStore';
 import NotifyStore from '../../store/NotifyStore';
-import * as resourceFetch from '../../utilities/api';
+import * as resourceFetch from '../../utilities/utilities';
 
 
 test('Function-resetHeadlines should reset headlines to an empty array',

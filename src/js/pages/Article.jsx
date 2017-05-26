@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ShareButtons, generateShareIcon } from 'react-share';
+import * as Utilties from '../utilities/utilities';
 import firebase from '../utilities/firebase';
 import Notification from '../action/notifyAction';
 import FavouriteAction from '../action/favourite';
@@ -75,7 +76,7 @@ class Article extends React.Component {
       <div className="col s12 m12 l12  hoverable">
         <div className="article-content">
           <h6 className="header">
-            <span className="paragraphstyle" >
+            <span className="paragraphstyle">
               {(this.props.author) ? `${this.props.author}:  ` : ''}
               {this.props.title}
             </span>
@@ -93,7 +94,9 @@ class Article extends React.Component {
             </div>
             <div className="card-stacked">
               <div className="card-content">
-                <p className="paragraphstyle">{this.props.description}</p>
+                <p className="paragraphstyle">
+                  {Utilties.replaceLinks(this.props.description)}
+                </p>
               </div>
               <div className="card-action">
                 <p>

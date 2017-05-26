@@ -2,7 +2,7 @@ import React from 'react';
 import { mount, shallow } from 'enzyme';
 import SourceSelect from '../../pages/headlines/selectSource';
 import Sources from '../../store/SourceStore';
-import * as resourceFetch from '../../utilities/api';
+import * as resourceFetch from '../../utilities/utilities';
 
 const Mocksources = [
   {

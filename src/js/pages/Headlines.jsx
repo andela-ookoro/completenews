@@ -11,17 +11,20 @@ import * as ArticlesAction from '../action/headlineAction';
 import ArticlesStore from '../store/HeadlineStore';
 import AuthStore from '../store/authStore';
 import Tip from './headlines/tip';
-import * as Utilties from '../utilities/api';
+import * as Utilties from '../utilities/utilities';
 /**
  * @FileOverview A class that renders Articles
  * and emit a change.
  *  @extends React.Component
  * @Author okwudiri.okoro@andela.com (Okoro Celestine)
  */
-class Articles extends React.Component {
-  /** Create Articles object  */
-  constructor() {
-    super();
+class ArticlesDashboard extends React.Component {
+  /** Create Articles object
+   * @param {object} props - The properties of the class
+   * @param {object} context - The context which the class runs
+   */
+  constructor(props, context) {
+    super(props, context);
     this.state = {
       source: '',
       sort: '',
@@ -58,30 +61,27 @@ class Articles extends React.Component {
       const article = articles[index];
       const scrapeUrl = article.url.toString();
       const scrapeTitle = article.title;
-      //// try lateral
+      // try lateral
       const url = `https://document-parser-api.lateral.io/?url=${scrapeUrl}
         &subscription-key=${process.env.LATERAL_READ_WRITE_KEY}`;
       axios.get(url, { 'content-type': 'application/json' })
           .then((response) => {
-            console.log(response.data);
-            document.getElementById('scrapeBody').innerHTML = Utilties.replaceLinks(response.data.body);
+            document.getElementById('scrapeBody').innerHTML =
+              Utilties.replaceLinks(response.data.body);
             this.setState({
               scrapeContent: response.data.body,
               scarpeImage: response.data.image
             });
-          })
-          .catch((error) => {
-            console.log(`Error occurred, ${error}`);
           });
-      /////////
-      if (scrapeUrl.includes('https')) {
-        this.setState({
-          scrapeUrl: '',
-          message: 'Cannot view page; access blocked by source',
-        });
-      } else {
-        this.setState({ message: '', scrapeUrl, scrapeTitle });
-      }
+      // // literal ends here
+      // if (scrapeUrl.includes('https')) {
+      //   this.setState({
+      //     scrapeUrl: '',
+      //     message: 'Cannot view page; access blocked by source',
+      //   });
+      // } else {
+      this.setState({ message: '', scrapeUrl, scrapeTitle });
+      //}
     });
     this.viewFavourite = (() => {
       let userEmail = JSON.parse(localStorage.getItem('userProfile'))
@@ -91,6 +91,8 @@ class Articles extends React.Component {
       this.setState({ scrapeUrl: '' });
     });
     this.resetScrapeUrl = this.resetScrapeUrl.bind(this);
+    this.sourceClick = this.sourceClick.bind(this);
+    this.sortClick = this.sortClick.bind(this);
     // this.onInput = this.onInput.bind(this);
   }
 
@@ -103,13 +105,26 @@ class Articles extends React.Component {
     this.getSources();
     ArticlesStore.on('dbchange', this.getFavouriteArticles);
     ArticlesStore.on('change', this.getArticles);
+    const routeParams = this.props.routeParams;
+    let sourceIDParam = '';
+    let sortOptionParam = '';
+    if (routeParams) {
+      sourceIDParam = routeParams.sourceId;
+      sortOptionParam = routeParams.sortOption;
+    }
     const userinfo = JSON.parse(localStorage.getItem('userProfile'));
-    if (userinfo) {
+
+    if (sortOptionParam) {
+      this.fecthArticles(sourceIDParam, sortOptionParam);
+    } else if (sourceIDParam) {
+      this.fetchAvailableSort(sourceIDParam);
+    } else if (userinfo) {
       this.setState({ isAuth: true });
       this.viewFavourite();
     } else {
       this.setState({ articleSource: '', isAuth: false });
     }
+
     AuthStore.on('change', this.setAuth);
     Sources.on('change', this.updateSource);
     NotifyStore.on('change', this.notifyUser);
@@ -195,18 +210,20 @@ class Articles extends React.Component {
     localStorage.setItem('articles', JSON.stringify(articles));
     // fix source name
     const sourceName = this.toTitleCase(source.toString());
-    const sources = JSON.parse(localStorage.sources);
+    const sources = JSON.parse(localStorage.getItem('sources'));
     const sourceNode = sources.filter(obj => obj.id === source);
+    let showSortOption = (sourceNode[0]);
+    if (showSortOption) {
+      showSortOption = (!(sourceNode[0].sortBysAvailable.length < 2));
+    }
     this.setState({
       articles,
       message: error,
       scrapeUrl: '',
       isDb: false,
-      sources,
       source,
       articleSource: sourceName,
-      sortBy: (sourceNode[0].sortBysAvailable.length > 1) ?
-      sourceNode[0].sortBysAvailable : [],
+      sortBy: (showSortOption) ? sourceNode[0].sortBysAvailable : [],
     });
   }
 
@@ -250,28 +267,32 @@ class Articles extends React.Component {
   /**
    * get the articles and avaliable sort parameters of a source
    * @param {object} e - The object that trigger the event
+   * @return {null} Return no value.
+  */
+  sourceClick(e) {
+    let cursource = '';
+    e.preventDefault();
+    cursource = e.target.getAttribute('value');
+    if (!cursource) {
+      cursource = e.target.value;
+    }
+    this.fetchAvailableSort(cursource);
+  }
+
+  /**
+   * get the articles and avaliable sort parameters of a source
    * @param {object} source - An option param for the source name
    * @return {null} Return no value.
   */
-  fetchAvailableSort(e) {
-    let cursource, source;
-    if (source) {
-      cursource = source;
-    } else {
-      e.preventDefault();
-      cursource = e.target.getAttribute('value');
-      if (!cursource) {
-        cursource = e.target.value;
-      }
-    }
+  fetchAvailableSort(source) {
     // fix source name
-    const sourceName = this.toTitleCase(cursource.toString());
+    const sourceName = this.toTitleCase(source.toString());
     const sources = JSON.parse(localStorage.sources);
-    const sourceNode = sources.filter(obj => obj.id === cursource);
-    ArticlesAction.getArticles(cursource, '');
+    const sourceNode = sources.filter(obj => obj.id === source);
+    ArticlesAction.getArticles(source, '');
     this.setState({
       sources,
-      source: cursource,
+      source,
       articleSource: sourceName,
       sortBy: (sourceNode[0].sortBysAvailable.length > 1) ?
       sourceNode[0].sortBysAvailable : [],
@@ -282,12 +303,22 @@ class Articles extends React.Component {
   /**
    * get the articles  of a source given it's sort parameter
    * @param {object} e The object that trigger the event
+   *  @return {null} Return no value.
+  */
+  sortClick(e) {
+    e.preventDefault();
+    const Sort = e.target.value;
+    const Source = this.state.source;
+    this.fecthArticles(Source, Sort);
+  }
+
+  /**
+   * get the articles  of a source given it's sort parameter
+   * @param {string} source The source id which is optional
+   * @param {string} sort The sort option which is optional
    * @return {null} Return no value.
   */
-  fecthArticles(e) {
-    e.preventDefault();
-    const sort = e.target.value;
-    const source = this.state.source;
+  fecthArticles(source, sort) {
     ArticlesAction.getArticles(source, sort);
     this.setState({
       currentSort: sort,
@@ -329,7 +360,7 @@ class Articles extends React.Component {
                       <SourceLink
                         key={source.id} name={source.name}
                         title={source.description} id={source.id}
-                        fetchAvailableSort={this.fetchAvailableSort}
+                        fetchAvailableSort={this.sourceClick}
                       />,
                   )}
                 </div>
@@ -361,7 +392,7 @@ class Articles extends React.Component {
               {this.state.sortBy.map((sortBy, i) =>
                 <SortBY
                   key={i} data={sortBy} source={this.state.source}
-                  onClick={this.fecthArticles}
+                  onClick={this.sortClick}
                 />,
                 )}
             </h5>
@@ -405,4 +436,4 @@ class Articles extends React.Component {
   }
 }
 
-export default Articles;
+export default ArticlesDashboard;
