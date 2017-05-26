@@ -1,6 +1,6 @@
 import SourcesAction from '../../action/sourceAction';
 import Sources from '../../store/SourceStore';
-import * as resourceFetch from '../../utilities/api';
+import * as resourceFetch from '../../utilities/utilities';
 
 const Mocksources = [
   {

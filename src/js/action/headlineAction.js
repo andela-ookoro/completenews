@@ -1,5 +1,5 @@
 import Dispatcher from '../dispatcher/Dispatcher';
-import * as Api from '../utilities/api';
+import * as Api from '../utilities/utilities';
 import * as Constant from '../constants';
 
 /**
@@ -33,6 +33,7 @@ export const getArticles = (source, sort = '') => {
 export const getFavouriteArticles = (userEmail) => {
   Api.getFavouriteArticles(userEmail)
     .then((articles) => {
+      localStorage.setItem('favoutireArticles', JSON.stringify(articles));
       Dispatcher.dispatch({
         Type: Constant.GET_FAVOURITE_ARTICLES,
         articles,
@@ -54,5 +55,6 @@ export const resetArticles = () => {
   Dispatcher.dispatch({
     Type: Constant.GET_ARTICLES,
     articles: [],
+    source: ''
   });
 };

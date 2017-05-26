@@ -52,7 +52,7 @@ class Articles extends EventEmitter {
         this.emit('change');
         break;
       case Constant.GET_FAVOURITE_ARTICLES :
-        this.setArticles(action.articles);
+        this.setArticles(action.articles, '');
         this.emit('dbchange');
         break;
       default :

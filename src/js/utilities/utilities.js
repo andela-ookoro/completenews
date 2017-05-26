@@ -24,7 +24,12 @@ export const getArticles = ((source, sort) => {
     .then((response) => {
       resolve(response.data.articles);
     }).catch((error) => {
-      reject(`Error occurred, ${error}`);
+      if (error.toString().includes('400')) {
+        reject(`Error occurred, No article found. Check the source or sort
+        option select`);
+      } else {
+        reject(`Errorsk  occurred, ${error}`);
+      }
     });
   });
 });

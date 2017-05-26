@@ -22,7 +22,11 @@ class FavouriteCount extends EventEmitter {
   handleActions(action) {
     switch (action.Type) {
       case Constant.GET_FAVOURITE_COUNT:
-        this.count = action.favouriteCount;
+        if (action.favouriteCount === 1) {
+          this.count += 1;
+        } else {
+          this.count = action.favouriteCount;
+        }
         this.emit('change');
         break;
       default:

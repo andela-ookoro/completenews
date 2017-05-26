@@ -19,7 +19,7 @@ class UserInfo extends React.Component {
     this.state = {
       UserInfo: {},
       isAuth: false,
-      favouriteCount: FavouriteStore.count
+      favouriteCount: 0
     };
     this.signout = this.signout.bind(this);
     this.viewFavourite = (() => {
@@ -84,7 +84,7 @@ class UserInfo extends React.Component {
   */
   signout() {
     localStorage.setItem('userProfile', null);
-    this.setState({ UserInfo: {}, isAuth: false });
+    this.setState({ UserInfo: {}, isAuth: false, favouriteCount: 0 });
     ArticlesAction.resetArticles();
     AuthAction(false, {});
   }

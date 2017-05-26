@@ -17,6 +17,19 @@ const userInfo = {
   imageUrl: 'test.jpg',
   email: 'okorocelestine@gmail.com'
 };
+const articles = [
+  {
+    'author': 'Abhimanyu Ghoshal',
+    'description': 'After a failed effort to offer free internet acces.',
+    'publishedAt': '2017-05-04T13: 18: 36Z',
+    'scrapeDetails': 'After a failed effort Facebook  ',
+    'title': 'Facebook launches Express Wi-Fi in India to bre',
+    'url': 'https: //thenextweb.com/facebook/2017/05/04/' +
+      'facebook-launches-express-wi-fi-in-india-to-bring-rural-areas-online/',
+    'urlToImage': 'https: //cdn2.tnwcdn.com/wp-content/blogs.dir/1/files/' +
+      '2017/05/Facebook-Express-Wi-Fi.jpg'
+  }
+];
 
 test('Should have an initial state with; an empty userInfo object, ' +
   ' isAuth to be false and favourite count to be one',
@@ -24,10 +37,10 @@ test('Should have an initial state with; an empty userInfo object, ' +
     const state = wrapper1.node.state;
     expect(state.UserInfo).toEqual({});
     expect(state.isAuth).toBe(false);
-    expect(state.favouriteCount).toBe(1);
   });
 
 localStorage.setItem('userProfile', JSON.stringify(userInfo));
+localStorage.setItem('articles', JSON.stringify(articles));
 const wrapper2 = mount(<UserInfo />);
 const state1 = wrapper2.node.state;
 test('Should display the user image, name; a signout button ' +
@@ -35,7 +48,6 @@ test('Should display the user image, name; a signout button ' +
   () => {
     expect(state1.UserInfo).toEqual(userInfo);
     expect(state1.isAuth).toBe(true);
-    expect(state1.favouriteCount).toBe(1);
   });
 
 ArticlesAction.getFavouriteArticles = jest.fn(email =>
@@ -58,5 +70,5 @@ test('Component has a Function; \'signout\' that resets the user\'s info' +
    const state = newUserInfo.state;
    expect(state.UserInfo).toEqual({});
    expect(state.isAuth).toBe(false);
-   expect(state.favouriteCount).toBe(1);
+   expect(state.favouriteCount).toBe(0);
  });
