@@ -287,7 +287,7 @@ class ArticlesDashboard extends React.Component {
   fetchAvailableSort(source) {
     // fix source name
     const sourceName = this.toTitleCase(source.toString());
-    const sources = JSON.parse(localStorage.sources);
+    const sources = JSON.parse(localStorage.getItem('sources'));
     const sourceNode = sources.filter(obj => obj.id === source);
     ArticlesAction.getArticles(source, '');
     this.setState({

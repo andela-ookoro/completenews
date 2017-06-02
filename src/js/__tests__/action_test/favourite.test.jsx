@@ -14,17 +14,27 @@ const articles = [
       '2017/05/Facebook-Express-Wi-Fi.jpg'
   }
 ];
-localStorage.setItem('articles', JSON.stringify(articles));
-test('Check if action  has function \'getAuthStatus\'', () => {
+
+describe('should have a function \'getAuthStatus\'', () => {
   expect(FavouriteAction).toBeInstanceOf(Function);
+  localStorage.setItem('favouriteArticles', JSON.stringify(articles));
+
+  it('should dispatch the count of the favourite articles in localstorage' +
+    ' when invoke with no parameter'
+  , () => {
+    FavouriteAction();
+    expect(FavouriteStore.count).toBe(1);
+  });
+
+  it('should dispatch the count of the favourite articles in localstorage' +
+    ' when invoke with zero', () => {
+    FavouriteAction(0);
+    expect(FavouriteStore.count).toBe(2);
+  });
+
+  it('should dispatch parameter passed', () => {
+    FavouriteAction(2);
+    expect(FavouriteStore.count).toBe(3);
+  });
 });
 
-test('Action should dispatch parameter passed', () => {
-  FavouriteAction();
-  expect(FavouriteStore.count).toBe(1);
-});
-
-test('Datatype of status should be "Boolean"', () => {
-  FavouriteAction(2);
-  expect(FavouriteStore.count).toBe(2);
-});
