@@ -39,7 +39,8 @@ class ArticlesDashboard extends React.Component {
       isDb: false,
       scrapeUrl: '',
       scrapeContent: '',
-      scarpeImage: ''
+      scarpeImage: '',
+      showloader: false
     };
     this.count = 0;
     this.fecthArticles = this.fecthArticles.bind(this);
@@ -73,15 +74,7 @@ class ArticlesDashboard extends React.Component {
               scarpeImage: response.data.image
             });
           });
-      // // literal ends here
-      // if (scrapeUrl.includes('https')) {
-      //   this.setState({
-      //     scrapeUrl: '',
-      //     message: 'Cannot view page; access blocked by source',
-      //   });
-      // } else {
       this.setState({ message: '', scrapeUrl, scrapeTitle });
-      //}
     });
     this.viewFavourite = (() => {
       let userEmail = JSON.parse(localStorage.getItem('userProfile'))
@@ -93,7 +86,6 @@ class ArticlesDashboard extends React.Component {
     this.resetScrapeUrl = this.resetScrapeUrl.bind(this);
     this.sourceClick = this.sourceClick.bind(this);
     this.sortClick = this.sortClick.bind(this);
-    // this.onInput = this.onInput.bind(this);
   }
 
    /**
@@ -141,28 +133,6 @@ class ArticlesDashboard extends React.Component {
     NotifyStore.removeListener('change', this.notifyUser);
     AuthStore.removeListener('change', this.setAuth);
   }
-
-   /**
-   * get the source select from the autocomplete text box
-   * @return {null} Return no value.
-  */
-  // onInput() {
-  //   const val = document.getElementById('source1').value;
-  //   const opts = document.getElementById('sourcesData').childNodes;
-  //   let sourceName;
-  //   for (let i = 0; i < opts.length; i += 1) {
-  //     if (opts[i].value === val) {
-  //       sourceName = opts[i].value;
-  //       break;
-  //     }
-  //   }
-  //   const results = this.state.sources.filter(item =>
-  //    item.name === sourceName
-  //   );
-  //   if (results.length > 0) {
-  //     this.fetchAvailableSort('tst', results[0].id);
-  //   }
-  // }
 
   /**
    * set the sources
@@ -370,16 +340,14 @@ class ArticlesDashboard extends React.Component {
         </div>
         <div className="col s11 m11 l10" id="articles">
           <div id="articles-menu">
-            <div >
               {(this.state.message === '' && this.state.articles.length < 1)
                 ?
-                  <div className="progress">
-                    <div className="indeterminate" />
-                  </div>
+                  ''
                 :
-                  <h5> {this.state.message} </h5>
+                  <div>
+                    <h5> {this.state.message} </h5>
+                  </div>
               }
-            </div>
             <h5 name={'source'}>
               {this.state.articleSource}
               {
@@ -418,15 +386,18 @@ class ArticlesDashboard extends React.Component {
               </div>
             :
               this.state.articles.map((article, i) =>
-                <Article
-                  key={i} id={i} author={article.author} title={article.title}
-                  urlToImage={article.urlToImage}
-                  description={article.description}
-                  publishedAt={article.publishedAt} url={article.url}
-                  source={(article.source) ? article.source : this.state.source}
-                  isAuth={showAddToFavouriteButton}
-                  scrape={this.scrape}
-                />,
+                <div>
+                  <Article
+                    key={i} id={i} author={article.author} title={article.title}
+                    urlToImage={article.urlToImage}
+                    description={article.description}
+                    publishedAt={article.publishedAt} url={article.url}
+                    source={(article.source) ? article.source : this.state.source}
+                    isAuth={showAddToFavouriteButton}
+                    scrape={this.scrape}
+                  />
+                  <hr />
+                </div>,
               )
             }
           </div>

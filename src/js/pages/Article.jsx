@@ -34,8 +34,8 @@ class Article extends React.Component {
      * @return {null} Return no value.
     */
     this.addArticle = ((e) => {
-      const index = e.target.getAttribute('value');
-      const articles = JSON.parse(localStorage.articles);
+      const index = e.target.value;
+      const articles = JSON.parse(localStorage.getItem('articles'));
       const article = articles[index];
       article.source = this.props.source;
       //  const timestamp = new Date().valueOf();
@@ -73,10 +73,10 @@ class Article extends React.Component {
   */
   render() {
     return (
-      <div className="col s12 m12 l12  hoverable">
+      <div className="col s12 m12 l12 shadow hoverable">
         <div className="article-content">
           <h6 className="header">
-            <span className="paragraphstyle">
+            <span className="articleHeader">
               {(this.props.author) ? `${this.props.author}:  ` : ''}
               {this.props.title}
             </span>

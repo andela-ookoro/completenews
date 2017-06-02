@@ -5,115 +5,12 @@ import HeadlineDashboard from '../../pages/Headlines';
 import * as ArticlesAction from '../../action/headlineAction';
 import Dispatcher from '../../dispatcher/Dispatcher';
 import * as Constant from '../../constants';
+import mockData from '../../__mocks__/mockData';
 
-const userInfo = {
-  name: 'celestine',
-  imageUrl: 'test.jpg',
-  email: 'okorocelestine@gmail.com'
-};
-const control = {
-  preventDefault: jest.fn(),
-  target: {
-    value: 'top',
-    getAttribute: jest.fn(() => 'abc-news-au')
-  }
-};
-const sources = [
-  {
-    'id': 'abc-news-au',
-    'name': 'ABC News (AU)',
-    'description': 'Australias most trusted source of local',
-    'url': 'http: //www.abc.net.au/news',
-    'category': 'general',
-    'language': 'en',
-    'country': 'au',
-    'urlsToLogos': { 'small': '', 'medium': '', 'large': '' },
-    'sortBysAvailable': ['top']
-  },
-  {
-    'id': 'al-jazeera-english',
-    'name': 'Al Jazeera English',
-    'description': 'News, analysis from the Middle East and worldwide.',
-    'url': 'http: //www.aljazeera.com',
-    'category': 'general',
-    'language': 'en',
-    'country': 'us',
-    'urlsToLogos': { 'small': '', 'medium': '', 'large': '' },
-    'sortBysAvailable': ['top', 'latest']
-  }
-];
-const articles = [
-  {
-    'author': 'Abhimanyu Ghoshal',
-    'description': 'After a failed effort to offer free internet acces.',
-    'publishedAt': '2017-05-04T13: 18: 36Z',
-    'scrapeDetails': 'After a failed effort Facebook  ',
-    'title': 'Facebook launches Express Wi-Fi in India to bre',
-    'url': 'https: //thenextweb.com/facebook/2017/05/04/' +
-      'facebook-launches-express-wi-fi-in-india-to-bring-rural-areas-online/',
-    'urlToImage': 'https: //cdn2.tnwcdn.com/wp-content/blogs.dir/1/files/' +
-      '2017/05/Facebook-Express-Wi-Fi.jpg'
-  }
-];
-const sourceGroup = JSON.stringify({
-  'general': [
-    {
-      'id': 'abc-news-au',
-      'name': 'ABC News (AU)',
-      'description': 'Australias most trusted more.',
-      'url': 'http: //www.abc.net.au/news',
-      'category': 'general',
-      'language': 'en',
-      'country': 'au',
-      'urlsToLogos': { 'small': '', 'medium': '', 'large': '' },
-      'sortBysAvailable': ['top']
-    }
-  ],
-  'technology': [
-    {
-      'id': 'ars-technica',
-      'name': 'Ars Technica',
-      'description': 'The PC enthusiasts resource.',
-      'url': 'http: //arstechnica.com',
-      'category': 'technology',
-      'language': 'en',
-      'country': 'us',
-      'urlsToLogos': { 'small': '', 'medium': '', 'large': '' },
-      'sortBysAvailable': ['top', 'latest']
-    }
-  ],
-  'sport': [
-    {
-      'id': 'bbc-sport',
-      'name': 'BBC Sport',
-      'description': 'The home of BBC Sport online.',
-      'url': 'http: //www.bbc.co.uk/sport',
-      'category': 'sport',
-      'language': 'en',
-      'country': 'gb',
-      'urlsToLogos': { 'small': '', 'medium': '', 'large': '' },
-      'sortBysAvailable': ['top']
-    }
-  ],
-  'business': [
-    {
-      'id': 'bloomberg',
-      'name': 'Bloomberg',
-      'description': 'Bloomberg delivers business and markets news.',
-      'url': 'http: //www.bloomberg.com',
-      'category': 'business',
-      'language': 'en',
-      'country': 'us',
-      'urlsToLogos': { 'small': '', 'medium': '', 'large': '' },
-      'sortBysAvailable': ['top']
-    }
-  ],
-});
-
-const cat = ['general', 'businesss'];
 ArticlesAction.getFavouriteArticles = jest.fn(email =>
-    articles
-);
+  mockData.articles
+ );
+
 describe('Article Dashboard', () => {
   describe('Testing rendered dom ', () => {
     const component = shallow(<HeadlineDashboard />);
@@ -121,9 +18,16 @@ describe('Article Dashboard', () => {
     const isAuth = true;
     const articleSource = 'bloomberg';
     const source = 'Bloomberg';
-    localStorage.setItem('categories', sourceGroup);
+    localStorage.setItem('categories', mockData.sourceGroup);
     component.setState(
-      { sources, articles, isAuth, categories, articleSource, source }
+      {
+        sources: mockData.sources,
+        articles: mockData.articles,
+        isAuth,
+        categories,
+        articleSource,
+        source
+      }
     );
     const sideNav = component.nodes[0].props.children[0];
 
@@ -157,7 +61,7 @@ describe('Article Dashboard', () => {
     });
 
 
-    const businessSources = JSON.parse(sourceGroup).business;
+    const businessSources = JSON.parse(mockData.sourceGroup).business;
     it('On click of each source category should display the sources in ' +
       'the category',
     () => {
@@ -181,17 +85,17 @@ describe('Article Dashboard', () => {
       const header = articleSubMenu.children[1];
       expect(header.props.children[0]).toBe(businessSources[0].id);
     });
-
     const articlesContent = articlesPanel.children[2].props.children;
-    const firstArticle = articlesContent[0].props;
+    const firstArticle = articlesContent[0].props.children[0].props;
     it('The Article panel should display articles from the current source',
     () => {
-      expect(firstArticle.author).toBe(articles[0].author);
-      expect(firstArticle.title).toBe(articles[0].title);
-      expect(firstArticle.urlToImage).toBe(articles[0].urlToImage);
-      expect(firstArticle.description).toBe(articles[0].description);
-      expect(firstArticle.publishedAt).toBe(articles[0].publishedAt);
-      expect(firstArticle.url).toBe(articles[0].url);
+      const firtArticlepanel = mockData.articles[0];
+      expect(firstArticle.author).toBe(firtArticlepanel.author);
+      expect(firstArticle.title).toBe(firtArticlepanel.title);
+      expect(firstArticle.urlToImage).toBe(firtArticlepanel.urlToImage);
+      expect(firstArticle.description).toBe(firtArticlepanel.description);
+      expect(firstArticle.publishedAt).toBe(firtArticlepanel.publishedAt);
+      expect(firstArticle.url).toBe(firtArticlepanel.url);
       expect(firstArticle.source).toBe(businessSources[0].name);
       expect(firstArticle.scrape).toBeInstanceOf(Function);
       expect(firstArticle.isAuth).toBe(isAuth);
@@ -200,8 +104,8 @@ describe('Article Dashboard', () => {
 
   describe('Testing component fucntions', () => {
     const newArticleDashboard = new HeadlineDashboard();
-    localStorage.setItem('userProfile', JSON.stringify(userInfo));
-    localStorage.setItem('sources', JSON.stringify(sources));
+    localStorage.setItem('userProfile', JSON.stringify(mockData.userInfo));
+    localStorage.setItem('sources', JSON.stringify(mockData.sources));
 
     it('should a have function to convert string to toTitleCase', () => {
       const dashboard = new HeadlineDashboard();
@@ -226,7 +130,7 @@ describe('Article Dashboard', () => {
       () => {
         Dispatcher.dispatch({
           Type: Constant.GET_FAVOURITE_ARTICLES,
-          articles,
+          articles: mockData.articles
         });
         sinon.spy(HeadlineDashboard.prototype, 'getFavouriteArticles');
         expect(HeadlineDashboard.prototype.getFavouriteArticles.calledOnce)
@@ -243,7 +147,7 @@ describe('Article Dashboard', () => {
       () => {
         Dispatcher.dispatch({
           Type: Constant.GET_ARTICLES,
-          articles,
+          articles: mockData.articles,
           source: 'bloomberg'
         });
         sinon.spy(HeadlineDashboard.prototype, 'getArticles');
@@ -276,7 +180,7 @@ describe('Article Dashboard', () => {
       () => {
         Dispatcher.dispatch({
           Type: Constant.GET_SOURCES,
-          sources
+          sources: mockData.sources
         });
         sinon.spy(HeadlineDashboard.prototype, 'updateSource');
         expect(HeadlineDashboard.prototype.updateSource.calledOnce)
@@ -291,7 +195,7 @@ describe('Article Dashboard', () => {
       it('getSources is invoked on component willmount',
       () => {
         sinon.spy(HeadlineDashboard.prototype, 'getSources');
-        localStorage.setItem('cat', JSON.stringify(cat));
+        localStorage.setItem('cat', JSON.stringify(mockData.cat));
         newArticleDashboard.getSources();
         expect(HeadlineDashboard.prototype.getSources.calledOnce)
         .toBeDefined();
@@ -306,7 +210,7 @@ describe('Article Dashboard', () => {
         'which invokes the fetchAvailableSort method',
       () => {
         sinon.spy(HeadlineDashboard.prototype, 'fetchAvailableSort');
-        newArticleDashboard.sourceClick(control);
+        newArticleDashboard.sourceClick(mockData.control);
         expect(HeadlineDashboard.prototype.fetchAvailableSort.calledOnce)
         .toBeDefined();
       });
@@ -320,7 +224,7 @@ describe('Article Dashboard', () => {
         'which invokes the fetchArticles method',
       () => {
         sinon.spy(HeadlineDashboard.prototype, 'fecthArticles');
-        newArticleDashboard.sortClick(control);
+        newArticleDashboard.sortClick(mockData.control);
         expect(HeadlineDashboard.prototype.fecthArticles.calledOnce)
         .toBeDefined();
       });

@@ -1,4 +1,7 @@
  @import '../../node_modules/react-selectize/themes/material.css';
+ @import url('https://fonts.googleapis.com/css?family=Droid+Serif|El+Messiri|Lora|Merriweather|Titillium+Web');
+ @import url('https://fonts.googleapis.com/css?family=Barrio|Lora|Roboto+Slab|Slabo+27px');
+ @import url('https://fonts.googleapis.com/css?family=Slabo+27px');
  @media screen and (max-width: 1000px) {
   #side-nav {
     display: none;
@@ -28,6 +31,16 @@ button{
   margin-left: 5px;
   z-index: 0;
   cursor: pointer; 
+  background-color: whitesmoke;
+}
+button:active {
+    border: 2px solid #00b8d4;
+    background-color: whitesmoke
+}
+
+button:focus {
+    border: 2px solid #006064;
+    background-color: whitesmoke
 }
 .SocialMediaShareButton{
   cursor: pointer;
@@ -45,7 +58,8 @@ img {
 	margin-right: 100px
 }
 #articles{
-	float:right
+	float:right;
+  padding-top:10px;
 }
 .children{
 	position: relative;
@@ -123,6 +137,14 @@ footer {
 .paragraphstyle{
   width: '80%';
 };
+.articleHeader{
+  width: '80%';
+  font-family: 'El Messiri', sans-serif;
+  font-family: 'Lora', serif;
+  font-family: 'Droid Serif', serif;
+  font-family: 'Titillium Web', sans-serif;
+  font-family: 'Merriweather', serif;
+}
 .sort-btn{
 	color: #00838f;
   font-size: 15px;
@@ -231,7 +253,7 @@ iframe{
   font-family: Verdana, Geneva, sans-serif;
 }
 .blueBorderBottom{
- border-bottom: 4px solid #00b8d4;;
+ border: 0px solid #00b8d4;
 }
 .article-content{
   @extend .blueBorderBottom
@@ -267,4 +289,7 @@ iframe{
 .scrapeImage{
   margin-bottom: 5px;
   height: 40%
+}
+.shadow{
+  box-shadow: 10px 10px 5px #888888;
 }
