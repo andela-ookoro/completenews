@@ -2,7 +2,7 @@
 
 exports[`Article component rendering dom should render content as describe in the component 1`] = `
 <div
-  className="col s12 m12 l12  hoverable"
+  className="col s12 m12 l12 shadow hoverable"
 >
   <div
     className="article-content"
@@ -11,7 +11,7 @@ exports[`Article component rendering dom should render content as describe in th
       className="header"
     >
       <span
-        className="paragraphstyle"
+        className="articleHeader"
       >
         Abhimanyu Ghoshal:  
         Facebook launches Express Wi-Fi in India to bre
