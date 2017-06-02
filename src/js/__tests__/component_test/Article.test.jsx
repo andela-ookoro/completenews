@@ -48,8 +48,8 @@ describe('Article component', () => {
       <Article {...props} />,
     );
 
-    it('component should have a heading in the format <author>:<title', () => {
-      const heading = wrapper.find('.paragraphstyle').nodes[0].props.children;
+    it('component should have a heading in the format <author>:<title>', () => {
+      const heading = wrapper.find('.articleHeader').nodes[0].props.children;
       const author = heading[0].toString().trimRight();
       const headingText = `${author} ${heading[1]}`;
       expect(headingText).toEqual(`${article.author}: ${article.title}`);
