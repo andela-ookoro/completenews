@@ -25,6 +25,7 @@ class ArticlesDashboard extends React.Component {
    */
   constructor(props, context) {
     super(props, context);
+
     this.state = {
       source: '',
       sort: '',
@@ -42,19 +43,23 @@ class ArticlesDashboard extends React.Component {
       scarpeImage: '',
       showloader: false
     };
+
     this.count = 0;
     this.fecthArticles = this.fecthArticles.bind(this);
     this.getSources = this.getSources.bind(this);
+
     this.toTitleCase = (str =>
        str.replace(/-/g, ' ').replace(/\w\S*/g, txt =>
         txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase())
       );
+
     this.fetchAvailableSort = this.fetchAvailableSort.bind(this);
     this.notifyUser = this.notifyUser.bind(this);
     this.updateSource = this.updateSource.bind(this);
     this.getArticles = this.getArticles.bind(this);
     this.getFavouriteArticles = this.getFavouriteArticles.bind(this);
     this.setAuth = this.setAuth.bind(this);
+
     this.scrape = ((e) => {
       e.preventDefault();
       const index = e.target.value;
@@ -62,27 +67,33 @@ class ArticlesDashboard extends React.Component {
       const article = articles[index];
       const scrapeUrl = article.url.toString();
       const scrapeTitle = article.title;
+
       // try lateral
       const url = `https://document-parser-api.lateral.io/?url=${scrapeUrl}
         &subscription-key=${process.env.LATERAL_READ_WRITE_KEY}`;
+
       axios.get(url, { 'content-type': 'application/json' })
-          .then((response) => {
-            document.getElementById('scrapeBody').innerHTML =
-              Utilties.replaceLinks(response.data.body);
-            this.setState({
-              scrapeContent: response.data.body,
-              scarpeImage: response.data.image
-            });
+        .then((response) => {
+          document.getElementById('scrapeBody').innerHTML =
+            Utilties.replaceLinks(response.data.body);
+          this.setState({
+            scrapeContent: response.data.body,
+            scarpeImage: response.data.image
           });
+        });
+
       this.setState({ message: '', scrapeUrl, scrapeTitle });
     });
+
     this.viewFavourite = (() => {
       let userEmail = JSON.parse(localStorage.getItem('userProfile'))
                       .email.toString().replace('.', '_');
+
       userEmail = userEmail.substring(0, userEmail.indexOf('@'));
       ArticlesAction.getFavouriteArticles(userEmail);
       this.setState({ scrapeUrl: '' });
     });
+
     this.resetScrapeUrl = this.resetScrapeUrl.bind(this);
     this.sourceClick = this.sourceClick.bind(this);
     this.sortClick = this.sortClick.bind(this);
@@ -97,6 +108,7 @@ class ArticlesDashboard extends React.Component {
     this.getSources();
     ArticlesStore.on('dbchange', this.getFavouriteArticles);
     ArticlesStore.on('change', this.getArticles);
+
     const routeParams = this.props.routeParams;
     let sourceIDParam = '';
     let sortOptionParam = '';
@@ -104,6 +116,7 @@ class ArticlesDashboard extends React.Component {
       sourceIDParam = routeParams.sourceId;
       sortOptionParam = routeParams.sortOption;
     }
+
     const userinfo = JSON.parse(localStorage.getItem('userProfile'));
 
     if (sortOptionParam) {
@@ -158,6 +171,7 @@ class ArticlesDashboard extends React.Component {
     const articles = ArticlesStore.articles;
     const error = ArticlesStore.error;
     localStorage.setItem('articles', JSON.stringify(articles));
+
     this.setState({
       articles,
       message: error,
@@ -178,14 +192,17 @@ class ArticlesDashboard extends React.Component {
     const source = ArticlesStore.source;
     const error = ArticlesStore.error;
     localStorage.setItem('articles', JSON.stringify(articles));
+
     // fix source name
     const sourceName = this.toTitleCase(source.toString());
     const sources = JSON.parse(localStorage.getItem('sources'));
     const sourceNode = sources.filter(obj => obj.id === source);
     let showSortOption = (sourceNode[0]);
+
     if (showSortOption) {
       showSortOption = (!(sourceNode[0].sortBysAvailable.length < 2));
     }
+
     this.setState({
       articles,
       message: error,
@@ -213,6 +230,7 @@ class ArticlesDashboard extends React.Component {
     const sources = Sources.sources;
     const sourcescategories = {};
     const categories = [];
+
     sources.forEach((source) => {
       if (!sourcescategories.hasOwnProperty(source.category)) {
         sourcescategories[source.category] = [];
@@ -220,6 +238,7 @@ class ArticlesDashboard extends React.Component {
       }
       sourcescategories[source.category].push(source);
     });
+
     localStorage.setItem('cat', JSON.stringify(categories));
     localStorage.setItem('categories', JSON.stringify(sourcescategories));
     localStorage.setItem('sources', JSON.stringify(sources));
@@ -243,6 +262,7 @@ class ArticlesDashboard extends React.Component {
     let cursource = '';
     e.preventDefault();
     cursource = e.target.getAttribute('value');
+
     if (!cursource) {
       cursource = e.target.value;
     }
@@ -259,7 +279,9 @@ class ArticlesDashboard extends React.Component {
     const sourceName = this.toTitleCase(source.toString());
     const sources = JSON.parse(localStorage.getItem('sources'));
     const sourceNode = sources.filter(obj => obj.id === source);
+
     ArticlesAction.getArticles(source, '');
+
     this.setState({
       sources,
       source,
@@ -310,12 +332,14 @@ class ArticlesDashboard extends React.Component {
   */
   render() {
     const showAddToFavouriteButton = (this.state.isAuth && !this.state.isDb);
+
     return (
       <div className="row">
         <div className="col s1 m1 l2" id="side-nav">
           <h5 className="sourcesHeader"> Sources </h5>
           <br />
           <SelectSources />
+
           <ul className="collapsible" data-collapsible="accordion">
             {(this.state.categories.length < 1 || !this.state.categories) ?
               ''
@@ -338,16 +362,17 @@ class ArticlesDashboard extends React.Component {
             )}
           </ul>
         </div>
+
         <div className="col s11 m11 l10" id="articles">
           <div id="articles-menu">
-              {(this.state.message === '' && this.state.articles.length < 1)
-                ?
-                  ''
-                :
-                  <div>
-                    <h5> {this.state.message} </h5>
-                  </div>
-              }
+            {(this.state.message === '' && this.state.articles.length < 1)
+              ?
+                ''
+              :
+                <div>
+                  <h5> {this.state.message} </h5>
+                </div>
+            }
             <h5 name={'source'}>
               {this.state.articleSource}
               {
@@ -377,10 +402,12 @@ class ArticlesDashboard extends React.Component {
                   <button onClick={this.resetScrapeUrl}>
                      &larr; View more Articles </button>
                 </h6>
+
                 <img
                   className="col s12 m10 l8 scrapeImage"
                   src={this.state.scarpeImage} alt="article image"
                 />
+
                 <div className="col s12 m10 l8 scrapeArticle" id="scrapeBody">
                 </div>
               </div>

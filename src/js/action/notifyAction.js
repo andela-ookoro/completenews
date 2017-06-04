@@ -2,7 +2,7 @@ import Dispatcher from '../dispatcher/Dispatcher';
 import * as Constant from '../constants';
 
 /**
- * dispatch a messah=ge
+ * dispatch a message
  * @param {string} message - the message that should be dispatched
  * @return {string } Return nothing.
 */

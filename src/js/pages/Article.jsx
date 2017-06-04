@@ -12,6 +12,7 @@ const {
   LinkedinShareButton,
   TwitterShareButton,
 } = ShareButtons;
+
 const FacebookIcon = generateShareIcon('facebook');
 const TwitterIcon = generateShareIcon('twitter');
 const GooglePlusIcon = generateShareIcon('google');
@@ -38,6 +39,7 @@ class Article extends React.Component {
       const articles = JSON.parse(localStorage.getItem('articles'));
       const article = articles[index];
       article.source = this.props.source;
+
       //  const timestamp = new Date().valueOf();
       let userEmail = JSON.parse(localStorage.getItem('userProfile'))
         .email.toString().replace('.', '_');

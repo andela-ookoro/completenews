@@ -3,8 +3,8 @@
 exports[`rendering should render content as describe in the component 1`] = `
 <sources
   fetchAvailableSort={[Function]}
-  id="BBC"
-  name="BBC News"
-  title="BBC world news"
+  id="abc-news-au"
+  name="ABC News (AU)"
+  title="Australias most trusted source of local"
 />
 `;

@@ -14,11 +14,14 @@ export const getSources = () =>
 
 export const getArticles = ((source, sort) => {
   let sortBy = '';
+
   if (sort !== '') {
     sortBy = `&sortBy=${sort}`;
   }
+
   const apiURl = `https://newsapi.org/v1/articles?source=${source}${sortBy
                   }&apiKey=${process.env.NEWSAPI_KEY}`;
+
   return new Promise((resolve, reject) => {
     axios.get(apiURl)
     .then((response) => {
@@ -40,9 +43,11 @@ export const getFavouriteArticles = (email =>
     .then((result) => {
       const articles = [];
       const dbArticles = result.val();
+
       Object.keys(dbArticles).forEach((key) => {
         articles.push(dbArticles[key]);
       });
+
       resolve(articles);
     })
     .catch((error) => {
@@ -54,6 +59,7 @@ export const getFavouriteArticles = (email =>
 const Linkify = ((str) => {
   // get the last sectio of the link
   let str1 = str.match(/[\/][a-zA-Z0-9]*/g).pop();
+
   if (str1 === '/') {
     str1 = str.match(/[\.][a-zA-Z0-9]*[\.]/g).pop();
     str1 = str1.substr(1, str1.length - 2);

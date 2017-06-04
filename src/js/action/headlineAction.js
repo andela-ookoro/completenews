@@ -3,7 +3,7 @@ import * as Api from '../utilities/utilities';
 import * as Constant from '../constants';
 
 /**
- * get articles from the api and dispatch them
+ * dispatch articles from the api
  *  @param {string} source - the source to of the articles
  * @param {string} sort - the sort parameter
  * @return {string } Return nothing.
@@ -26,7 +26,7 @@ export const getArticles = (source, sort = '') => {
 };
 
 /**
- * get users favourite articles from the database  and dispatch them
+ * dispatch users favourite articles from the database
  *  @param {string} userEmail - the user email
  * @return {string } Return nothing.
 */
@@ -34,6 +34,7 @@ export const getFavouriteArticles = (userEmail) => {
   Api.getFavouriteArticles(userEmail)
     .then((articles) => {
       localStorage.setItem('favoutireArticles', JSON.stringify(articles));
+
       Dispatcher.dispatch({
         Type: Constant.GET_FAVOURITE_ARTICLES,
         articles,

@@ -38,20 +38,22 @@ class SourceList extends React.Component {
        * @return {null} Return no value.
       */
     this.updateSource = () => {
-      const newSources = Sources.sources;
+      const sources = Sources.sources;
       const sourcescategories = {};
       const categories = [];
-      newSources.forEach((source) => {
+
+      sources.forEach((source) => {
         if (!sourcescategories.hasOwnProperty(source.category)) {
           sourcescategories[source.category] = [];
           categories.push(source.category);
         }
         sourcescategories[source.category].push(source);
       });
+
       localStorage.setItem('cat', JSON.stringify(categories));
       localStorage.setItem('categories', JSON.stringify(sourcescategories));
-      localStorage.setItem('sources', JSON.stringify(newSources));
-      this.setState({ sources: newSources, categories });
+      localStorage.setItem('sources', JSON.stringify(sources));
+      this.setState({ sources, categories });
     };
   }
 
@@ -79,6 +81,7 @@ class SourceList extends React.Component {
   */
   render() {
     const SimpleSelect = ReactSelectize.SimpleSelect;
+
     return (
       <SimpleSelect
         id="sources"
