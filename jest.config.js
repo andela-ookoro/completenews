@@ -19,7 +19,7 @@ module.exports = {
   coverageReporters: ['lcov'],
   collectCoverageFrom: [
     '**/src/js/action/**', '**/src/js/store/**', '!**/src/js/pages/login.jsx',
-    '**/src/js/pages/**',
-    '!**/node_modules/**', '!**/lcov-report/**', '!**/vendor/**"]',
+    '**/src/js/pages/**', '!**/node_modules/**',
+    '!**/lcov-report/**', '!**/vendor/**"]',
   ],
 };

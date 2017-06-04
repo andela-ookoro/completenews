@@ -1,37 +1,13 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import SourceSelect from '../../pages/headlines/selectSource';
 import Sources from '../../store/SourceStore';
 import * as resourceFetch from '../../utilities/utilities';
-
-const Mocksources = [
-  {
-    'id': 'abc-news-au',
-    'name': 'ABC News (AU)',
-    'description': 'Australias most trusted source of local',
-    'url': 'http: //www.abc.net.au/news',
-    'category': 'general',
-    'language': 'en',
-    'country': 'au',
-    'urlsToLogos': { 'small': '', 'medium': '', 'large': '' },
-    'sortBysAvailable': ['top']
-  },
-  {
-    'id': 'al-jazeera-english',
-    'name': 'Al Jazeera English',
-    'description': 'News, analysis from the Middle East and worldwide.',
-    'url': 'http: //www.aljazeera.com',
-    'category': 'general',
-    'language': 'en',
-    'country': 'us',
-    'urlsToLogos': { 'small': '', 'medium': '', 'large': '' },
-    'sortBysAvailable': ['top', 'latest']
-  }
-];
+import MockData from '../../__mocks__/mockData';
 
 resourceFetch.getSources = jest.fn(() =>
    new Promise((resolve, reject) => {
-     resolve(Mocksources);
+     resolve(MockData.sources);
      reject('Error occurred');
    })
 );
@@ -45,7 +21,7 @@ describe('rendering', () => {
 
   describe('Has a function \'getSource\'', () => {
     const setSources = (() => {
-      expect(Sources.sources).toBe(Mocksources);
+      expect(Sources.sources).toBe(MockData.sources);
     });
     const SourceChanged = jest.fn();
     it('getSource calls \'source Action \' ' +
@@ -55,7 +31,7 @@ describe('rendering', () => {
      Sources.on('change', setSources);
    });
 
-    localStorage.setItem('sources', JSON.stringify(Mocksources));
+    localStorage.setItem('sources', JSON.stringify(MockData.sources));
     it('Else, it sets the state variable \'sources\' ' +
       'to the value of the variable \'sources\'  in localstorage ',
    () => {

@@ -27,6 +27,7 @@ class FavouriteCount extends EventEmitter {
         } else {
           this.count = action.favouriteCount;
         }
+
         this.emit('change');
         break;
       default:

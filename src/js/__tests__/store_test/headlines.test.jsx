@@ -1,54 +1,46 @@
 import HeadlineStore from '../../store/HeadlineStore';
 import Dispatcher from '../../dispatcher/Dispatcher';
 import * as Constant from '../../constants';
+import Mockdata from '../../__mocks__/mockData';
 
-const articles = [
-  {
-    title: 'Love is real',
-    description: 'Love has been with man kind from the beginning.',
-  },
-  {
-    id: 'Champions league update',
-    description: 'Real Madrid qualitfy for champions league semi-finals',
-  },
-];
-const source = 'Real word';
+describe('articleDashboard store', () => {
+  const source = 'Real word';
 
-test('HeadlineStore should be intiated with empty values', () => {
-  expect(HeadlineStore.articles).toHaveLength(0);
-  expect(HeadlineStore.error).toBe('');
-});
-
-test('Function "getHeadline" that update the headlines property', () => {
-  expect(HeadlineStore.setArticles).toBeInstanceOf(Function);
-  HeadlineStore.setArticles(articles);
-  expect(HeadlineStore.articles).toBe(articles);
-});
-
-test('Function "displayError" that update the "error" property', () => {
-  expect(HeadlineStore.setError).toBeInstanceOf(Function);
-  const error = 'no internet';
-  HeadlineStore.setError(error);
-  expect(HeadlineStore.error).toBe(error);
-});
-
-test('Store should listen to "GetHeadline" event', () => {
-  Dispatcher.dispatch({
-    Type: Constant.GET_ARTICLE,
-    articles,
-    source
+  it('should be intiated with empty values', () => {
+    expect(HeadlineStore.articles).toHaveLength(0);
+    expect(HeadlineStore.error).toBe('');
   });
-  expect(HeadlineStore.articles).toEqual(articles);
-});
 
-test('Store should listen to "GetHeadlinesError" event', () => {
-  const error = 'no internet';
-  Dispatcher.dispatch({
-    Type: Constant.GetHeadlinesError,
-    err: error,
+  it('should have a function \'getHeadline\' that update the headlines property',
+   () => {
+     expect(HeadlineStore.setArticles).toBeInstanceOf(Function);
+     HeadlineStore.setArticles(Mockdata.articles);
+     expect(HeadlineStore.articles).toBe(Mockdata.articles);
+   });
+
+  it('should have a function \'displayError\' that update the "error" property',
+   () => {
+     expect(HeadlineStore.setError).toBeInstanceOf(Function);
+     HeadlineStore.setError(Mockdata.errorMessage);
+     expect(HeadlineStore.error).toBe(Mockdata.errorMessage);
+   });
+
+  it('should listen to "GetHeadline" event', () => {
+    Dispatcher.dispatch({
+      Type: Constant.GET_ARTICLE,
+      articles: Mockdata.articles,
+      source
+    });
+
+    expect(HeadlineStore.articles).toEqual(Mockdata.articles);
   });
-  expect(HeadlineStore.error).toBe(error);
+
+  it('should listen to "GetHeadlinesError" event', () => {
+    Dispatcher.dispatch({
+      Type: Constant.GET_ARTICLES_ERROR,
+      err: Mockdata.errorMessage,
+    });
+
+    expect(HeadlineStore.error).toBe(Mockdata.errorMessage);
+  });
 });
-
-
-

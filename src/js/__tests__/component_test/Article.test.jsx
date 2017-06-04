@@ -1,8 +1,7 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import Renderer from 'react-test-renderer';
 import mockData from '../../__mocks__/mockData';
-import firebase from '../../utilities/firebase';
 
 const Article = require('../../pages/Article').default;
 

@@ -15,8 +15,10 @@ class Login extends React.Component {
   /** Create Login object  */
   constructor() {
     super();
+
     this.state = { message: '' };
     this.notifyUser = this.notifyUser.bind(this);
+
     /**
      * authenticate user, if user is not registered; a user object is created
      * @param {object} response The reponse recieved from google
@@ -51,6 +53,7 @@ class Login extends React.Component {
               imageUrl: userProfile.imageUrl,
               favourite: [],
             };
+
             userRef.child(userEmail).set(user)
             .then(() => {
               AuthAction(true, userinfo);

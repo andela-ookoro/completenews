@@ -109,7 +109,8 @@ const mockData = {
       }
     ],
   }),
-  cat: ['general', 'businesss']
+  cat: ['general', 'businesss'],
+  errorMessage: 'Error occurred',
 };
 
 export default mockData;

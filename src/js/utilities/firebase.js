@@ -8,5 +8,7 @@ const config = {
   storageBucket: process.env.FIREBASE_STORAGEBUCKET,
   messagingSenderId: process.env.FIREBASE_MESSAGING_SENDERID,
 };
+
 firebase.initializeApp(config);
+
 export default firebase;

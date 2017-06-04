@@ -16,23 +16,28 @@ class UserInfo extends React.Component {
   /** Create UserInfo object  */
   constructor() {
     super();
+
     this.state = {
       UserInfo: {},
       isAuth: false,
       favouriteCount: 0
     };
+
     this.signout = this.signout.bind(this);
+
     this.viewFavourite = (() => {
       let userEmail = JSON.parse(localStorage.getItem('userProfile'));
       userEmail = userEmail.email.toString().replace('.', '_');
       userEmail = userEmail.substring(0, userEmail.indexOf('@'));
       ArticlesAction.getFavouriteArticles(userEmail);
+
       // check if user is viewing the headline page else redirect
       const url = window.location.href.toString();
       if (!url.includes('headlines')) {
         window.location = '/#/headlines';
       }
     });
+
     this.UpdateUserInfo = this.UpdateUserInfo.bind(this);
     this.UpdateCount = this.UpdateCount.bind(this);
   }
@@ -44,6 +49,7 @@ class UserInfo extends React.Component {
   componentWillMount() {
     FavouriteStore.on('change', this.UpdateCount);
     const userinfo = JSON.parse(localStorage.getItem('userProfile'));
+
     if (userinfo) {
       this.setState({ UserInfo: userinfo, isAuth: true });
     }

@@ -3,12 +3,11 @@ import Dispatcher from '../dispatcher/Dispatcher';
 import * as Constant from '../constants';
 
 /**
- * set the articles to an empty array
+ * dispatches the user's current state
  * @param {boolean} status - The user's current authentication value
  * @param {object} userinfo - An object that content the user name, email and
- * profile image link
- * articles count
- * @return {object } Return nothing.
+ * profile image link and favourite articles count
+ * @return {null } Return nothing.
 */
 const getAuthStatus = (status, userinfo) => {
   if (typeof status === 'boolean') {
