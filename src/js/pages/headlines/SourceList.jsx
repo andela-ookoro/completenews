@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactSelectize from 'react-selectize';
-import SourceAction from '../../action/sourceAction';
+import SourceAction from '../../action/getSource';
 import Sources from '../../store/SourceStore';
 import * as ArticlesAction from '../../action/articleAction';
 

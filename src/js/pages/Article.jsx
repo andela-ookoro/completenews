@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ShareButtons, generateShareIcon } from 'react-share';
 import * as Utilties from '../utilities/utilities';
 import firebase from '../utilities/firebase';
-import Notification from '../action/notifyAction';
+import Notification from '../action/getNotification';
 import FavouriteAction from '../action/favouriteAction';
 
 const {
@@ -39,6 +39,11 @@ class Article extends React.Component {
       const articles = JSON.parse(localStorage.getItem('articles'));
       const article = articles[index];
       article.source = this.props.source;
+
+      // get favourite form localstorage and push the article
+      let favourites = JSON.parse(localStorage.getItem('favoutireArticles'));
+      favourites.push(article);
+      localStorage.setItem('favoutireArticles', JSON.stringify(favourites));
 
       // get user email from local storage
       let userEmail = JSON.parse(localStorage.getItem('userProfile'))
@@ -77,6 +82,11 @@ class Article extends React.Component {
       let userEmail = JSON.parse(localStorage.getItem('userProfile'))
         .email.toString().replace('.', '_');
       userEmail = userEmail.substring(0, userEmail.indexOf('@'));
+
+       // get favourite form localstorage and remove the article
+      let favourites = JSON.parse(localStorage.getItem('favoutireArticles'));
+      favourites.splice(e.target.id, 1);
+      localStorage.setItem('favoutireArticles', JSON.stringify(favourites));
 
       // create the article ref
       const articleAddress = `/user/${userEmail}/favourite/${articleKey}`;

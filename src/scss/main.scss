@@ -238,7 +238,8 @@ footer {
 
 iframe {
   min-height: 40em;
-  min-width: 70em
+  min-width: 70em;
+  border-width: 0px;
 }
 
 #viewfavouritebtn {
@@ -337,6 +338,7 @@ iframe {
 
 .shadow {
   box-shadow: 10px 10px 5px #888888;
+  border-bottom: 2px #006064
 }
 /* hide iframe from google auth */
 iframe[id^='oauth2relay']{
