@@ -16,7 +16,7 @@
   * User can share aritcles on social networks such as facebook, twitter and more
 *  Click [here](http://completenews.herokuapp.com/) to access the app on Heroku
 
-# Tech Stack
+## Tech Stack
 completenews uses [React](https://facebook.github.io/react/) and [Materialize css](http://materializecss.com/) on front-end, it has no back-end and it is served with Node.js/Express.js. The folllowing are list of packages used:
 *  **[Node JS](https://nodejs.org/en/)** - Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. 
 * **[React](https://facebook.github.io/react/)** - React is a JavaScript library for building user interfaces.
@@ -26,7 +26,7 @@ completenews uses [React](https://facebook.github.io/react/) and [Materialize cs
 * **[Jest](https://facebook.github.io/jest/)** - Complete and easy to set-up JavaScript testing solution. Works out of the box for any React project.
 * **[Axios](https://github.com/mzabriskie/axios)** -A Promise based HTTP client for the browser and node.js. Used in making the Api Call.
 
-# Installation and setup
+## Installation and setup
 *  Navigate to a directory of choice on `terminal`.
 *  Clone this repository on that directory using SSH or HTTP.
   *  Using SSH;
@@ -40,7 +40,7 @@ completenews uses [React](https://facebook.github.io/react/) and [Materialize cs
 
 * Install the app's backend dependencies.Open node.js, navigate to the directory that contains the application code base,then enter the command below:
    >npm install
-   #### Create a .env file in the root folder with the variables in the .env.example file; ensure that your change the values to real values.The variable includes [firebase web config values](console.firebase.google.com), [google client key](console.developers.google.com/) and [Newsapi key](newsapi.org). Ensure that you create a project on these platforms.
+   ### Create a .env file in the root folder with the variables in the .env.example file; ensure that your change the values to real values.The variable includes [firebase web config values](console.firebase.google.com), [google client key](console.developers.google.com/) and [Newsapi key](newsapi.org). Ensure that you create a project on these platforms.
 * The project test includes unit test and end to end test.It uses jest and nightmare for testing.
   ### To run test on the project, enter the command below
   > npm test
@@ -59,17 +59,17 @@ completenews uses [React](https://facebook.github.io/react/) and [Materialize cs
 * Open the  **[link](http://localhost:1142)** on a browser to view the application.
   [Google chrome ](https://www.google.com/chrome/) is recommended 
 
-# Code Structure
+## Code Structure
 * React files are stored in `src/js/(action|component|action)` folders
 * SCSS files  are stored in the `src/scss` folder
 * Test scripts are stored in the `src/js/__tests__` folder
 
-# Limitations of the project
+## Limitations of the project
 * The Application uses only Google Login as a form of Authentication
-* The Application does not store scraped articles  for later viewing
+* The Application does not store scraped articles 
 
-# Contribution
- ## To contribute to this project, follow the steps below:
+## Contribution
+ ### To contribute to this project, follow the steps below:
   * Clone the repository as described in the section 'Installation and setup' above
   * Create a branch using the format, branch name => `Feature_<few words about your contribution>` 
   * Add your contributions to your branch
