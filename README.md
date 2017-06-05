@@ -64,6 +64,10 @@ completenews uses [React](https://facebook.github.io/react/) and [Materialize cs
 * SCSS files  are stored in the `src/scss` folder
 * Test scripts are stored in the `src/js/__tests__` folder
 
+# Limitations of the project
+* The Application uses only Google Login as a form of Authentication
+* The Application does not store scraped articles  for later viewing
+
 # Contribution
  ## To contribute to this project, follow the steps below:
   * Clone the repository as described in the section 'Installation and setup' above
