@@ -2,7 +2,7 @@ import React from 'react';
 import ReactSelectize from 'react-selectize';
 import SourceAction from '../../action/sourceAction';
 import Sources from '../../store/SourceStore';
-import * as ArticlesAction from '../../action/headlineAction';
+import * as ArticlesAction from '../../action/articleAction';
 
 /**
  * @FileOverview A class that renders Articles

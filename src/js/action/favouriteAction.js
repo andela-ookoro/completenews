@@ -8,7 +8,7 @@ import * as Constant from '../constants';
  * articles count
  * @return {object } Return nothing.
 */
-const setFavouriteArticles = (i = 0) => {
+const favouriteAction = (i = 0) => {
   const favourites = JSON.parse(localStorage.getItem('favoutireArticles'));
 
   if (favourites && i === 0) {
@@ -25,4 +25,4 @@ const setFavouriteArticles = (i = 0) => {
     });
   }
 };
-export default setFavouriteArticles;
+export default favouriteAction;

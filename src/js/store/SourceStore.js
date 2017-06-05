@@ -41,6 +41,6 @@ class Sources extends EventEmitter {
     }
   }
 }
-const sources = new Sources();
-Dispatcher.register(sources.handleActions.bind(sources));
-export default sources;
+const SourceStore = new Sources();
+Dispatcher.register(SourceStore.handleActions.bind(SourceStore));
+export default SourceStore;

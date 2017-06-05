@@ -1,4 +1,4 @@
-import HeadlineStore from '../../store/HeadlineStore';
+import ArticleStore from '../../store/ArticleStore';
 import Dispatcher from '../../dispatcher/Dispatcher';
 import * as Constant from '../../constants';
 import Mockdata from '../../__mocks__/mockData';
@@ -7,22 +7,22 @@ describe('articleDashboard store', () => {
   const source = 'Real word';
 
   it('should be intiated with empty values', () => {
-    expect(HeadlineStore.articles).toHaveLength(0);
-    expect(HeadlineStore.error).toBe('');
+    expect(ArticleStore.articles).toHaveLength(0);
+    expect(ArticleStore.error).toBe('');
   });
 
   it('should have a function \'getHeadline\' that update the headlines property',
    () => {
-     expect(HeadlineStore.setArticles).toBeInstanceOf(Function);
-     HeadlineStore.setArticles(Mockdata.articles);
-     expect(HeadlineStore.articles).toBe(Mockdata.articles);
+     expect(ArticleStore.setArticles).toBeInstanceOf(Function);
+     ArticleStore.setArticles(Mockdata.articles);
+     expect(ArticleStore.articles).toBe(Mockdata.articles);
    });
 
   it('should have a function \'displayError\' that update the "error" property',
    () => {
-     expect(HeadlineStore.setError).toBeInstanceOf(Function);
-     HeadlineStore.setError(Mockdata.errorMessage);
-     expect(HeadlineStore.error).toBe(Mockdata.errorMessage);
+     expect(ArticleStore.setError).toBeInstanceOf(Function);
+     ArticleStore.setError(Mockdata.errorMessage);
+     expect(ArticleStore.error).toBe(Mockdata.errorMessage);
    });
 
   it('should listen to "GetHeadline" event', () => {
@@ -32,7 +32,7 @@ describe('articleDashboard store', () => {
       source
     });
 
-    expect(HeadlineStore.articles).toEqual(Mockdata.articles);
+    expect(ArticleStore.articles).toEqual(Mockdata.articles);
   });
 
   it('should listen to "GetHeadlinesError" event', () => {
@@ -41,6 +41,6 @@ describe('articleDashboard store', () => {
       err: Mockdata.errorMessage,
     });
 
-    expect(HeadlineStore.error).toBe(Mockdata.errorMessage);
+    expect(ArticleStore.error).toBe(Mockdata.errorMessage);
   });
 });

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router';
-import * as ArticlesAction from '../action/headlineAction';
+import * as ArticlesAction from '../action/articleAction';
 import AuthAction from '../action/authAction';
 import AuthStore from '../store/authStore';
 import FavouriteStore from '../store/favouriteStore';
-import FavouriteAction from '../action/favourite';
+import FavouriteAction from '../action/favouriteAction';
 
 /**
  * @FileOverview A class that renders user metadata

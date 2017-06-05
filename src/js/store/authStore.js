@@ -45,7 +45,7 @@ class UserInfo extends EventEmitter {
   }
 }
 
-const userInfo = new UserInfo();
-Dispatcher.register(userInfo.handleActions.bind(userInfo));
-export default userInfo;
+const authStore = new UserInfo();
+Dispatcher.register(authStore.handleActions.bind(authStore));
+export default authStore;
 

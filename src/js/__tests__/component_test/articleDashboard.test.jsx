@@ -2,14 +2,16 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
 import HeadlineDashboard from '../../pages/Headlines';
-import * as ArticlesAction from '../../action/headlineAction';
+import * as ArticlesAction from '../../action/articleAction';
 import Dispatcher from '../../dispatcher/Dispatcher';
 import * as Constant from '../../constants';
 import mockData from '../../__mocks__/mockData';
 
-ArticlesAction.getFavouriteArticles = jest.fn(email =>
-  mockData.articles
- );
+ArticlesAction.getFavouriteArticles = jest.fn((email) => {
+  if (email) {
+    return mockData.articles;
+  }
+});
 
 describe('Article Dashboard', () => {
   describe('Testing rendered dom ', () => {
