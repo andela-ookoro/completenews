@@ -60,6 +60,11 @@ class ArticlesDashboard extends React.Component {
     this.getFavouriteArticles = this.getFavouriteArticles.bind(this);
     this.setAuth = this.setAuth.bind(this);
 
+     /**
+      * display the full content of the article
+     * @param {object} e  - the control that fire the event
+     * @return {null} Return no value.
+    */
     this.scrape = ((e) => {
       e.preventDefault();
       const index = e.target.value;
@@ -68,7 +73,7 @@ class ArticlesDashboard extends React.Component {
       const scrapeUrl = article.url.toString();
       const scrapeTitle = article.title;
 
-      // try lateral
+      // use lateral api to the article's full content
       const url = `https://document-parser-api.lateral.io/?url=${scrapeUrl}
         &subscription-key=${process.env.LATERAL_READ_WRITE_KEY}`;
 
@@ -88,7 +93,7 @@ class ArticlesDashboard extends React.Component {
     this.viewFavourite = (() => {
       let userEmail = JSON.parse(localStorage.getItem('userProfile'))
                       .email.toString().replace('.', '_');
-
+      // get the user's email with the domain
       userEmail = userEmail.substring(0, userEmail.indexOf('@'));
       ArticlesAction.getFavouriteArticles(userEmail);
       this.setState({ scrapeUrl: '' });
@@ -109,6 +114,7 @@ class ArticlesDashboard extends React.Component {
     ArticlesStore.on('dbchange', this.getFavouriteArticles);
     ArticlesStore.on('change', this.getArticles);
 
+    // fetch the route sections
     const routeParams = this.props.routeParams;
     let sourceIDParam = '';
     let sortOptionParam = '';
@@ -119,6 +125,7 @@ class ArticlesDashboard extends React.Component {
 
     const userinfo = JSON.parse(localStorage.getItem('userProfile'));
 
+    // use the route section to call the appropriate function
     if (sortOptionParam) {
       this.fecthArticles(sourceIDParam, sortOptionParam);
     } else if (sourceIDParam) {
@@ -172,6 +179,7 @@ class ArticlesDashboard extends React.Component {
     const error = ArticlesStore.error;
     localStorage.setItem('articles', JSON.stringify(articles));
 
+    // set the state properties to the favourite articles
     this.setState({
       articles,
       message: error,
@@ -193,7 +201,7 @@ class ArticlesDashboard extends React.Component {
     const error = ArticlesStore.error;
     localStorage.setItem('articles', JSON.stringify(articles));
 
-    // fix source name
+    // change source name to title case
     const sourceName = this.toTitleCase(source.toString());
     const sources = JSON.parse(localStorage.getItem('sources'));
     const sourceNode = sources.filter(obj => obj.id === source);
@@ -231,6 +239,7 @@ class ArticlesDashboard extends React.Component {
     const sourcescategories = {};
     const categories = [];
 
+    // populate the object with the category and sources
     sources.forEach((source) => {
       if (!sourcescategories.hasOwnProperty(source.category)) {
         sourcescategories[source.category] = [];
@@ -263,6 +272,7 @@ class ArticlesDashboard extends React.Component {
     e.preventDefault();
     cursource = e.target.getAttribute('value');
 
+    // check if the control was a link or a button
     if (!cursource) {
       cursource = e.target.value;
     }
@@ -408,8 +418,7 @@ class ArticlesDashboard extends React.Component {
                   src={this.state.scarpeImage} alt="article image"
                 />
 
-                <div className="col s12 m10 l8 scrapeArticle" id="scrapeBody">
-                </div>
+                <div className="col s12 m10 l8 scrapeArticle" id="scrapeBody" />
               </div>
             :
               this.state.articles.map((article, i) =>

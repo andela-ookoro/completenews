@@ -40,13 +40,14 @@ class Article extends React.Component {
       const article = articles[index];
       article.source = this.props.source;
 
-      //  const timestamp = new Date().valueOf();
+      // get user email from local storage
       let userEmail = JSON.parse(localStorage.getItem('userProfile'))
         .email.toString().replace('.', '_');
       userEmail = userEmail.substring(0, userEmail.indexOf('@'));
       const FavouriteAddress = `/user/${userEmail}/favourite`;
       const FavouriteRef = firebase.database().ref(FavouriteAddress);
 
+      // add article to user favourite list in firebase
       FavouriteRef.push(article)
         .then(() => {
           Notification('Headlines has been successfully added to favourites.');
@@ -75,7 +76,7 @@ class Article extends React.Component {
   */
   render() {
     return (
-      <div className="col s12 m12 l12 shadow hoverable">
+      <div className="col s12 m12 l12 shadow  hoverable">
         <div className="article-content">
           <h6 className="header">
             <span className="articleHeader">
