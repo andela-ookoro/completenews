@@ -59,6 +59,7 @@ class Articles extends EventEmitter {
     }
   }
 }
-const articles = new Articles();
-Dispatcher.register(articles.handleActions.bind(articles));
-export default articles;
+
+const ArticleStore = new Articles();
+Dispatcher.register(ArticleStore.handleActions.bind(ArticleStore));
+export default ArticleStore;

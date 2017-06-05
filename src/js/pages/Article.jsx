@@ -4,7 +4,7 @@ import { ShareButtons, generateShareIcon } from 'react-share';
 import * as Utilties from '../utilities/utilities';
 import firebase from '../utilities/firebase';
 import Notification from '../action/notifyAction';
-import FavouriteAction from '../action/favourite';
+import FavouriteAction from '../action/favouriteAction';
 
 const {
   FacebookShareButton,
@@ -91,7 +91,11 @@ class Article extends React.Component {
                   alt="No news image"
                 />
                 :
-                <img src="https://placehold.it/800x400?text=CompleteNEWS" alt="Image" />
+                <img
+                  src="https://placehold.it/800x400?text=CompleteNEWS"
+                  alt="Image"
+                  className="imgStyle"
+                />
               }
             </div>
             <div className="card-stacked">

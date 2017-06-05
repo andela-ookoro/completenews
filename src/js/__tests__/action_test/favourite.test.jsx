@@ -1,4 +1,4 @@
-import FavouriteAction from '../../action/favourite';
+import FavouriteAction from '../../action/favouriteAction';
 import FavouriteStore from '../../store/favouriteStore';
 import MockData from '../../__mocks__/mockData';
 

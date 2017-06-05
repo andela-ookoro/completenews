@@ -83,6 +83,7 @@
     "webpack-dev-server": "^2.4.5"
   },
   "devDependencies": {
+    "babel-plugin-add-module-exports": "^0.2.1",
     "dotenv": "^4.0.0",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^14.1.0",

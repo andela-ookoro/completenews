@@ -9,7 +9,7 @@ import * as Constant from '../constants';
  * profile image link and favourite articles count
  * @return {null } Return nothing.
 */
-const getAuthStatus = (status, userinfo) => {
+const authAction = (status, userinfo) => {
   if (typeof status === 'boolean') {
     Dispatcher.dispatch({
       Type: Constant.GET_AUTH_STATUS,
@@ -24,4 +24,4 @@ const getAuthStatus = (status, userinfo) => {
   }
 };
 
-export default getAuthStatus;
+export default authAction;

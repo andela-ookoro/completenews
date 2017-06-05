@@ -35,7 +35,7 @@ class FavouriteCount extends EventEmitter {
   }
 }
 
-const favouriteCount = new FavouriteCount();
-Dispatcher.register(favouriteCount.handleActions.bind(favouriteCount));
-export default favouriteCount;
+const favouriteStore = new FavouriteCount();
+Dispatcher.register(favouriteStore.handleActions.bind(favouriteStore));
+export default favouriteStore;
 

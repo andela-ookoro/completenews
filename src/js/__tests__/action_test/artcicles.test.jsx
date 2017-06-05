@@ -1,5 +1,5 @@
-import * as HeadlineAction from '../../action/headlineAction';
-import HeadlineStore from '../../store/HeadlineStore';
+import * as HeadlineAction from '../../action/articleAction';
+import HeadlineStore from '../../store/ArticleStore';
 import NotifyStore from '../../store/NotifyStore';
 import * as resourceFetch from '../../utilities/utilities';
 import MockData from '../../__mocks__/mockData';
