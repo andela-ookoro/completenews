@@ -17,7 +17,14 @@
 *  Click [here](http://completenews.herokuapp.com/) to access the app on Heroku
 
 # Tech Stack
-completenews uses [React](https://facebook.github.io/react/) and [Materialize css](http://materializecss.com/) on front-end, it has no back-end and it is served with Node.js/Express.js.
+completenews uses [React](https://facebook.github.io/react/) and [Materialize css](http://materializecss.com/) on front-end, it has no back-end and it is served with Node.js/Express.js. The folllowing are list of packages used:
+*  **[Node JS](https://nodejs.org/en/)** - Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. 
+* **[React](https://facebook.github.io/react/)** - React is a JavaScript library for building user interfaces.
+* **[Webpack](https://webpack.github.io/)** - webpack is a module bundler for modern JavaScript applications.
+* **[Babel](https://babeljs.io/)** - Babel is a JavaScript compiler, it is used for transpiling ES6 down to ES5.
+* **[Express](https://expressjs.com/)** - Express is a minimal and flexible Node.js web application framework, It is used as the web server.
+* **[Jest](https://facebook.github.io/jest/)** - Complete and easy to set-up JavaScript testing solution. Works out of the box for any React project.
+* **[Axios](https://github.com/mzabriskie/axios)** -A Promise based HTTP client for the browser and node.js. Used in making the Api Call.
 
 # Installation and setup
 *  Navigate to a directory of choice on `terminal`.
