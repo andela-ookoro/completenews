@@ -12,6 +12,7 @@ class FavouriteCount extends EventEmitter {
   constructor() {
     super();
     this.count = 0;
+    this.countchange = false;
   }
 
   /**
@@ -23,6 +24,7 @@ class FavouriteCount extends EventEmitter {
     switch (action.Type) {
       case Constant.GET_FAVOURITE_COUNT:
         this.count = action.favouriteCount;
+        this.countchange = action.countchange;
         this.emit('change');
         break;
       default:

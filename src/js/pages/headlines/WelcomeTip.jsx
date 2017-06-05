@@ -1,7 +1,7 @@
 import React from 'react';
 
 // class to display tip
-const tip = () => (
+const WelcomeTip = () => (
   <div className="tip">
     <div className="tipHeading">
       <p> <em>Welcome to Complete news</em></p>
@@ -13,4 +13,4 @@ const tip = () => (
     <p> &#8592; </p>
   </div>
 );
-export default tip;
+export default WelcomeTip;

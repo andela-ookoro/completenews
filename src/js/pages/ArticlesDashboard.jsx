@@ -3,14 +3,14 @@ import axios from 'axios';
 import SortBY from './headlines/SortBy';
 import Article from './Article';
 import SourceLink from './headlines/SourceOptions';
-import SelectSources from './headlines/selectSource';
+import SelectSources from './headlines/SourceList';
 import NotifyStore from '../store/NotifyStore';
-import SourceAction from '../action/sourceAction';
+import SourceAction from '../action/getSource';
 import Sources from '../store/SourceStore';
 import * as ArticlesAction from '../action/articleAction';
 import ArticlesStore from '../store/ArticleStore';
-import AuthStore from '../store/authStore';
-import Tip from './headlines/tip';
+import AuthStore from '../store/UserInfo';
+import Tip from './headlines/WelcomeTip';
 import * as Utilties from '../utilities/utilities';
 /**
  * @FileOverview A class that renders Articles
@@ -372,7 +372,6 @@ class ArticlesDashboard extends React.Component {
             )}
           </ul>
         </div>
-
         <div className="col s11 m11 l10" id="articles">
           <div id="articles-menu">
             {(this.state.message === '' && this.state.articles.length < 1)
@@ -432,7 +431,6 @@ class ArticlesDashboard extends React.Component {
                     isAuth={showAddToFavouriteButton}
                     scrape={this.scrape} firebaseKey={article.key}
                   />
-                  <hr />
                 </div>,
               )
             }

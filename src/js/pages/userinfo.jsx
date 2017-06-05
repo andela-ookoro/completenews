@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import * as ArticlesAction from '../action/articleAction';
 import AuthAction from '../action/authAction';
-import AuthStore from '../store/authStore';
+import AuthStore from '../store/UserInfo';
 import FavouriteStore from '../store/favouriteStore';
 import FavouriteAction from '../action/favouriteAction';
 import firebase from '../utilities/firebase';
@@ -109,9 +109,10 @@ class UserInfo extends React.Component {
   UpdateCount() {
     let currentCount = this.state.favouriteCount;
     const storeCount = FavouriteStore.count;
+    const countchange = FavouriteStore.countchange;
 
     // check if it is not the initial state
-    if (storeCount === 1 || storeCount === -1) {
+    if (countchange) {
       currentCount += storeCount;
     } else {
       currentCount = storeCount;
@@ -126,7 +127,8 @@ class UserInfo extends React.Component {
    * @return {null} Return no value.
   */
   signout() {
-    localStorage.setItem('userProfile', null);
+    localStorage.removeItem('userProfile');
+    localStorage.removeItem('favoutireArticles', null);
     this.setState({ UserInfo: {}, isAuth: false, favouriteCount: 0 });
     ArticlesAction.resetArticles();
     AuthAction(false, {});

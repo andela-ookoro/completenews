@@ -9,18 +9,25 @@ import * as Constant from '../constants';
  * @return {object } Return nothing.
 */
 const favouriteAction = (i = 0) => {
-  const favourites = JSON.parse(localStorage.getItem('favoutireArticles'));
+  // check if variable exist
+  let favourites = [];
+  if (localStorage.getItem('favoutireArticles')) {
+    favourites = JSON.parse(localStorage.getItem('favoutireArticles'));
+  }
 
   if (favourites && i === 0) {
     const favouriteCount = favourites.length;
+    console.log(favouriteCount);
     Dispatcher.dispatch({
       Type: Constant.GET_FAVOURITE_COUNT,
       favouriteCount,
+      countchange: false
     });
   } else {
     Dispatcher.dispatch({
       Type: Constant.GET_FAVOURITE_COUNT,
       favouriteCount: i,
+      countchange: true
     });
   }
 };

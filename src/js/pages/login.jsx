@@ -2,7 +2,7 @@ import React from 'react';
 import GoogleLogin from 'react-google-login';
 import firebase from '../utilities/firebase';
 import AuthAction from '../action/authAction';
-import Notification from '../action/notifyAction';
+import Notification from '../action/getNotification';
 import NotificationStore from '../store/NotifyStore';
 
 /**
