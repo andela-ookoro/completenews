@@ -44,8 +44,12 @@ export const getFavouriteArticles = (email =>
       const articles = [];
       const dbArticles = result.val();
 
+      // push each article into the array
+      let curArticle = {};
       Object.keys(dbArticles).forEach((key) => {
-        articles.push(dbArticles[key]);
+        curArticle = dbArticles[key];
+        curArticle.key = key;
+        articles.push(curArticle);
       });
 
       resolve(articles);
@@ -57,7 +61,7 @@ export const getFavouriteArticles = (email =>
  );
 
 const Linkify = ((str) => {
-  // get the last sectio of the link
+  // get the last section of the link
   let str1 = str.match(/[\/][a-zA-Z0-9]*/g).pop();
 
   if (str1 === '/') {
