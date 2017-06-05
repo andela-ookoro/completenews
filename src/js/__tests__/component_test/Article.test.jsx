@@ -71,15 +71,5 @@ describe('Article component', () => {
       const button = wrapper.find('#btnAddToFav');
       expect(button.nodes).toHaveLength(0);
     });
-
-    const Identifiedprops = createTestProps({ isAuth: true });
-    const IdentifiedWrapper = shallow(
-      <Article {...Identifiedprops} />,
-    );
-
-    it('should show the "Add to favourite button" for identified user"', () => {
-      const button = IdentifiedWrapper.find('#btnAddToFav').props('isAuth');
-      expect(button).toBeTruthy();
-    });
   });
 });

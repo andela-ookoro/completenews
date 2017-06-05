@@ -13,7 +13,6 @@ const favouriteAction = (i = 0) => {
 
   if (favourites && i === 0) {
     const favouriteCount = favourites.length;
-
     Dispatcher.dispatch({
       Type: Constant.GET_FAVOURITE_COUNT,
       favouriteCount,
@@ -21,7 +20,7 @@ const favouriteAction = (i = 0) => {
   } else {
     Dispatcher.dispatch({
       Type: Constant.GET_FAVOURITE_COUNT,
-      favouriteCount: 1,
+      favouriteCount: i,
     });
   }
 };

@@ -5,6 +5,7 @@ import AuthAction from '../action/authAction';
 import AuthStore from '../store/authStore';
 import FavouriteStore from '../store/favouriteStore';
 import FavouriteAction from '../action/favouriteAction';
+import firebase from '../utilities/firebase';
 
 /**
  * @FileOverview A class that renders user metadata
@@ -22,6 +23,31 @@ class UserInfo extends React.Component {
       isAuth: false,
       favouriteCount: 0
     };
+
+    // get user email from local storage
+    if (this.state.isAuth) {
+      let userEmail = JSON.parse(localStorage.getItem('userProfile'))
+        .email.toString().replace('.', '_');
+      userEmail = userEmail.substring(0, userEmail.indexOf('@'));
+
+      // create the user favourite article ref
+      const favArticleAddress = `/user/${userEmail}/favourite`;
+      const favArticleRef = firebase.database().ref(favArticleAddress);
+
+      // update the favourite count when an article is added
+      favArticleRef.on('child_added', () => {
+        this.setState({
+          favouriteCount: this.state.favouriteCount + 1
+        });
+      });
+
+      // update the favourite count when an article is deteled
+      favArticleRef.on('child_removed', () => {
+        this.setState({
+          favouriteCount: this.state.favouriteCount - 1
+        });
+      });
+    }
 
     this.signout = this.signout.bind(this);
 
@@ -48,8 +74,10 @@ class UserInfo extends React.Component {
   */
   componentWillMount() {
     FavouriteStore.on('change', this.UpdateCount);
+
     const userinfo = JSON.parse(localStorage.getItem('userProfile'));
 
+    // set the user in logged in
     if (userinfo) {
       this.setState({ UserInfo: userinfo, isAuth: true });
     }
@@ -79,7 +107,16 @@ class UserInfo extends React.Component {
    * @return {null} Return no value.
   */
   UpdateCount() {
-    this.setState({ favouriteCount: FavouriteStore.count });
+    let currentCount = this.state.favouriteCount;
+    const storeCount = FavouriteStore.count;
+
+    // check if it is not the initial state
+    if (storeCount === 1 || storeCount === -1) {
+      currentCount += storeCount;
+    } else {
+      currentCount = storeCount;
+    }
+    this.setState({ favouriteCount: currentCount });
   }
 
   /**

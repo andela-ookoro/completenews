@@ -11,18 +11,18 @@ describe('favourite action', () => {
       ' when invoke with no parameter'
     , () => {
       FavouriteAction();
-      expect(FavouriteStore.count).toBe(1);
+      expect(FavouriteStore.count).toBe(0);
     });
 
     it('should dispatch the count of the favourite articles in localstorage' +
       ' when invoke with zero', () => {
       FavouriteAction(0);
-      expect(FavouriteStore.count).toBe(2);
+      expect(FavouriteStore.count).toBe(0);
     });
 
     it('should dispatch parameter passed', () => {
       FavouriteAction(2);
-      expect(FavouriteStore.count).toBe(3);
+      expect(FavouriteStore.count).toBe(2);
     });
   });
 });

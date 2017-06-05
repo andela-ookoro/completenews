@@ -430,7 +430,7 @@ class ArticlesDashboard extends React.Component {
                     publishedAt={article.publishedAt} url={article.url}
                     source={(article.source) ? article.source : this.state.source}
                     isAuth={showAddToFavouriteButton}
-                    scrape={this.scrape}
+                    scrape={this.scrape} firebaseKey={article.key}
                   />
                   <hr />
                 </div>,

@@ -52,10 +52,47 @@ class Article extends React.Component {
         .then(() => {
           Notification('Headlines has been successfully added to favourites.');
           FavouriteAction(1);
+
+          // hide the button
+          const buttonID = `btnAddToFav${index}`;
+          document.getElementById(buttonID).style.display = 'none';
         })
         .catch((err) => {
           Notification(`Error occurred, ${err}`);
         });
+    });
+
+    /**
+     * Add an article to the user favourite list and update the favourite count
+     * @param {object} e The object that trigger the event
+     * @return {null} Return no value.
+    */
+    this.removeArticle = ((e) => {
+      // get the key of the article in firebase
+      const articleKey = e.target.value;
+      // get the id of the article container
+      const divId = `artcile${e.target.id}`;
+
+      // get user email from local storage
+      let userEmail = JSON.parse(localStorage.getItem('userProfile'))
+        .email.toString().replace('.', '_');
+      userEmail = userEmail.substring(0, userEmail.indexOf('@'));
+
+      // create the article ref
+      const articleAddress = `/user/${userEmail}/favourite/${articleKey}`;
+      const artcileRef = firebase.database().ref(articleAddress);
+      // remove the article from firebase
+      artcileRef.remove()
+      .then(() => {
+        Notification('Article has been successfully removed from favourites.');
+        FavouriteAction(-1);
+
+        // hide the article container
+        document.getElementById(divId).style.display = 'none';
+      })
+      .catch((err) => {
+        Notification(`Error occurred, ${err}`);
+      });
     });
 
      /**
@@ -75,8 +112,12 @@ class Article extends React.Component {
    * @return {null} Return no value.
   */
   render() {
+    // create the add favourite button ID
+    const addFavBtnID = `btnAddToFav${this.props.id}`;
+    const divID = `artcile${this.props.id}`;
+
     return (
-      <div className="col s12 m12 l12 shadow  hoverable">
+      <div className="col s12 m12 l12 shadow  hoverable" id={divID}>
         <div className="article-content">
           <h6 className="header">
             <span className="articleHeader">
@@ -127,12 +168,24 @@ class Article extends React.Component {
                 </button>
                 {(this.props.isAuth) ?
                   <button
-                    id="btnAddToFav"
+                    id={addFavBtnID}
                     value={this.props.id} onClick={this.addArticle}
                     className="waves-effect waves-light"
                     title="Add to favourite"
                   >
                   Add to favourite
+                </button>
+                :
+                ''
+                }
+                {(this.props.firebaseKey) ?
+                  <button
+                    id={this.props.id}
+                    value={this.props.firebaseKey} onClick={this.removeArticle}
+                    className="waves-effect waves-light"
+                    title="Add to favourite"
+                  >
+                  Delete favourite
                 </button>
                 :
                 ''
@@ -189,6 +242,7 @@ Article.propTypes = {
   source: PropTypes.string.isRequired,
   isAuth: PropTypes.bool.isRequired,
   scrape: PropTypes.func.isRequired,
+  firebaseKey: PropTypes.string,
 };
 
 Article.defaultProps = {
@@ -198,6 +252,7 @@ Article.defaultProps = {
   description: '',
   publishedAt: '',
   url: '',
+  firebaseKey: ''
 };
 
 export default Article;
