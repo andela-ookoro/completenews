@@ -33,7 +33,7 @@ class UserInfo extends React.Component {
       // create the user favourite article ref
       const favArticleAddress = `/user/${userEmail}/favourite`;
       const favArticleRef = firebase.database().ref(favArticleAddress);
-      console.log(favArticleAddress);
+
       // update the favourite count when an article is added
       favArticleRef.on('child_added', () => {
         this.setState({

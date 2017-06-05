@@ -2,7 +2,8 @@
 
 exports[`Article component rendering dom should render content as describe in the component 1`] = `
 <div
-  className="col s12 m12 l12 shadow hoverable"
+  className="col s12 m12 l12 shadow  hoverable"
+  id="artcile0"
 >
   <div
     className="article-content"
@@ -64,13 +65,14 @@ exports[`Article component rendering dom should render content as describe in th
           </button>
           <button
             className="waves-effect waves-light"
-            id="btnAddToFav"
+            id="btnAddToFav0"
             onClick={[Function]}
             title="Add to favourite"
             value={0}
           >
             Add to favourite
           </button>
+          
           <div
             className="col m12"
             style={

@@ -8,7 +8,7 @@ exports[`userinfo component snapshot should be same as render content 1`] = `
     title="view favourite headline"
   >
      Favourite Articles (
-    3
+    0
     )
   </button>
   <a
