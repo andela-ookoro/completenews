@@ -51,6 +51,10 @@ class UserInfo extends React.Component {
 
     this.signout = this.signout.bind(this);
 
+     /**
+     * fetch user's favorite articles
+     * @return {null} Return no value.
+    */
     this.viewFavourite = (() => {
       let userEmail = JSON.parse(localStorage.getItem('userProfile'));
       userEmail = userEmail.email.toString().replace('.', '_');
