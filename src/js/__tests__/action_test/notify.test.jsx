@@ -1,4 +1,4 @@
-import NotifyAction from '../../action/notifyAction';
+import NotifyAction from '../../action/getNotification';
 import NotifyStore from '../../store/NotifyStore';
 
 describe('notify action', () => {

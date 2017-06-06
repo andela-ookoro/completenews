@@ -2,8 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Renderer from 'react-test-renderer';
 import mockData from '../../__mocks__/mockData';
-
-const Article = require('../../pages/Article').default;
+import Article from '../../pages/Article';
 
 const source = 'bbc';
 const i = 1;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import sinon from 'sinon';
-import HeadlineDashboard from '../../pages/Headlines';
+import HeadlineDashboard from '../../pages/ArticlesDashboard';
 import * as ArticlesAction from '../../action/articleAction';
 import Dispatcher from '../../dispatcher/Dispatcher';
 import * as Constant from '../../constants';
@@ -88,7 +88,7 @@ describe('Article Dashboard', () => {
       expect(header.props.children[0]).toBe(businessSources[0].id);
     });
     const articlesContent = articlesPanel.children[2].props.children;
-    const firstArticle = articlesContent[0].props.children[0].props;
+    const firstArticle = articlesContent[0].props.children.props;
     it('The Article panel should display articles from the current source',
     () => {
       const firtArticlepanel = mockData.articles[0];

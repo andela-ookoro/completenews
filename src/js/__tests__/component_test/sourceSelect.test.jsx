@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
-import SourceSelect from '../../pages/headlines/selectSource';
+import SourceSelect from '../../pages/headlines/SourceList';
 import Sources from '../../store/SourceStore';
 import * as resourceFetch from '../../utilities/utilities';
 import MockData from '../../__mocks__/mockData';

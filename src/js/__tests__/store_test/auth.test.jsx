@@ -1,4 +1,4 @@
-import AuthStore from '../../store/authStore';
+import AuthStore from '../../store/UserInfo';
 import Dispatcher from '../../dispatcher/Dispatcher';
 import * as Constant from '../../constants';
 import Mockdata from '../../__mocks__/mockData';

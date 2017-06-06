@@ -1,4 +1,4 @@
-import SourcesAction from '../../action/sourceAction';
+import SourcesAction from '../../action/getSource';
 import Sources from '../../store/SourceStore';
 import * as resourceFetch from '../../utilities/utilities';
 import MockData from '../../__mocks__/mockData';

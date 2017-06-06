@@ -7,7 +7,6 @@ import mockData from '../../__mocks__/mockData';
 describe('rendering', () => {
   const onClick = jest.fn();
   const source = mockData.sources[0];
-
   it('should render content as describe in the component', () => {
     const component = Renderer.create(
       <sources
