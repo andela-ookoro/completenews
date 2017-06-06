@@ -1,5 +1,5 @@
 import AuthAction from '../../action/authAction';
-import AuthStore from '../../store/authStore';
+import AuthStore from '../../store/UserInfo';
 import NotifyStore from '../../store/NotifyStore';
 
 const status = false;

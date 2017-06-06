@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Renderer from 'react-test-renderer';
-import UserInfo from '../../pages/userinfo';
+import UserInfo from '../../pages/UserInfo';
 import * as ArticlesAction from '../../action/articleAction';
 import Mockdata from '../../__mocks__/mockData';
 

@@ -9,7 +9,7 @@ module.exports = {
   coverageDirectory: '<rootDir>',
   coverageReporters: ['lcov'],
   collectCoverageFrom: [
-    '**/src/js/action/**', '**/src/js/store/**', '!**/src/js/pages/login.jsx',
+    '**/src/js/action/**', '**/src/js/store/**', '!**/src/js/pages/Login.jsx',
     '**/src/js/pages/**', '!**/node_modules/**',
     '!**/lcov-report/**', '!**/vendor/**"]',
   ],
