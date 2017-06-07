@@ -39,23 +39,25 @@ export const getArticles = ((source, sort) => {
 
 export const getFavouriteArticles = (email =>
   new Promise((resolve, reject) => {
-    firebase.database().ref(`/user/${email}/favourite`).once('value')
-    .then((result) => {
-      const articles = [];
-      const dbArticles = result.val();
+    firebase.database().ref(`/user/${email}/favourite`).once('value',
+    (result) => {
+      const valueExists = result.exists();
+      if (valueExists) {
+        const articles = [];
+        const dbArticles = result.val();
 
-      // push each article into the array
-      let curArticle = {};
-      Object.keys(dbArticles).forEach((key) => {
-        curArticle = dbArticles[key];
-        curArticle.key = key;
-        articles.push(curArticle);
-      });
+        // push each article into the array
+        let curArticle = {};
+        Object.keys(dbArticles).forEach((key) => {
+          curArticle = dbArticles[key];
+          curArticle.key = key;
+          articles.push(curArticle);
+        });
 
-      resolve(articles);
-    })
-    .catch((error) => {
-      reject(`Error occurred, ${error}`);
+        resolve(articles);
+      } else {
+        resolve([]);
+      }
     });
   })
  );
