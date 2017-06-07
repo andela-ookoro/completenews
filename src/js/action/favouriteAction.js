@@ -15,7 +15,7 @@ const favouriteAction = (i = 0) => {
     favourites = JSON.parse(localStorage.getItem('favoutireArticles'));
   }
 
-  if (favourites && i === 0) {
+  if (i === 0) {
     const favouriteCount = favourites.length;
     Dispatcher.dispatch({
       Type: Constant.GET_FAVOURITE_COUNT,

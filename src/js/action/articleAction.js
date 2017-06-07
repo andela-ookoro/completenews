@@ -41,6 +41,7 @@ export const getFavouriteArticles = (userEmail) => {
       });
     })
     .catch((err) => {
+      console.log(err);
       Dispatcher.dispatch({
         Type: Constant.GET_NOTIFY,
         message: err,
