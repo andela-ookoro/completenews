@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import UserInfo from './userinfo';
-import SelectSources from './headlines/selectSource';
+import UserInfo from './UserInfo';
+import SelectSources from './headlines/SourceList';
 
  /**
  * @FileOverview A class that renders master template of the application.

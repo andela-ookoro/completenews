@@ -5,6 +5,7 @@ import SortBy from '../../pages/headlines/SortBy';
 
 const data = 'Top';
 const onClick = jest.fn();
+
 describe('rendering', () => {
   it('should render content as describe in the component', () => {
     const component = Renderer.create(

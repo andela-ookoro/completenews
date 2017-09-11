@@ -41,7 +41,7 @@ class Notification extends EventEmitter {
   }
 }
 
-const notificationStore = new Notification();
-Dispatcher.register(notificationStore.handleActions.bind(notificationStore));
-export default notificationStore;
+const NotifyStore = new Notification();
+Dispatcher.register(NotifyStore.handleActions.bind(NotifyStore));
+export default NotifyStore;
 

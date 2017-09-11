@@ -3,7 +3,7 @@ const path = require('path');
 const opn = require('opn');
 
 const app = express();
-app.set('port', process.env.PORT || 1142);
+app.set('port', process.env.PORT || 1131);
 const router = express.Router();
 const sourcePath = path.join(__dirname, '/src/');
 app.use(express.static(sourcePath));
@@ -18,6 +18,6 @@ router.get('*', (req, res) => {
 app.use('/', router);
 
 app.listen(app.get('port'), () => {
-  const url = `http://localhost:${app.get('port')}`;
-  opn(url);
+  // const url = `http://localhost:${app.get('port')}`;
+  // Opn(url);
 });

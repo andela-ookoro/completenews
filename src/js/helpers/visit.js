@@ -6,6 +6,7 @@ const BASE_URL = url.format({
   hostname: process.env.HOST || 'localhost',
   port: process.env.PORT || 1142,
 });
+
 const browser = new Nightmare({
   show: true,
   typeInterval: 20,
