@@ -3,7 +3,7 @@ const path = require('path');
 const opn = require('opn');
 
 const app = express();
-app.set('port', process.env.PORT || 1142);
+app.set('port', process.env.PORT || 1131);
 const router = express.Router();
 const sourcePath = path.join(__dirname, '/src/');
 app.use(express.static(sourcePath));

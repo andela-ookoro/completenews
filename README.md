@@ -9,12 +9,13 @@
   * User can view headline sources
   * User can view sources based on category
   * User can view headlines from a source
-  * User can view headlines from a source basd on a sort option which may include; top, latest or popular
+  * User can view headlines from a source based on a sort option which may include; top, latest or popular
   * User can add headlines to her favourite list
   * User can view headlines on her favourite list
   * User can view healine web page on its website or in the application panel
   * User can share aritcles on social networks such as facebook, twitter and more
-  * User can scrape article 
+  * User can scrape article
+  *  
 *  Click [here](http://completenews.herokuapp.com/) to access the app on Heroku
 
 ## Tech Stack

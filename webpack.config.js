@@ -33,7 +33,7 @@ module.exports = {
   entry: ['./js/client.jsx', './scss/main.scss'],
   devServer: {
     inline: true,
-    port: process.env.PORT || 1142,
+    port: process.env.PORT || 1131,
   },
   resolve: {
     extensions: ['.js', '.jsx'],

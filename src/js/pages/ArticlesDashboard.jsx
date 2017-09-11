@@ -210,7 +210,6 @@ class ArticlesDashboard extends React.Component {
     if (showSortOption) {
       showSortOption = (!(sourceNode[0].sortBysAvailable.length < 2));
     }
-
     this.setState({
       articles,
       message: error,
