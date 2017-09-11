@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router';
-import * as ArticlesAction from '../action/headlineAction';
+import * as ArticlesAction from '../action/articleAction';
 import AuthAction from '../action/authAction';
-import AuthStore from '../store/authStore';
+import AuthStore from '../store/UserInfo';
 import FavouriteStore from '../store/favouriteStore';
-import FavouriteAction from '../action/favourite';
+import FavouriteAction from '../action/favouriteAction';
+import firebase from '../utilities/firebase';
 
 /**
  * @FileOverview A class that renders user metadata
@@ -16,23 +17,53 @@ class UserInfo extends React.Component {
   /** Create UserInfo object  */
   constructor() {
     super();
+
     this.state = {
       UserInfo: {},
       isAuth: false,
       favouriteCount: 0
     };
+
+    // get user email from local storage
+    if (this.state.isAuth) {
+      let userEmail = JSON.parse(localStorage.getItem('userProfile'))
+        .email.toString().replace('.', '_');
+      userEmail = userEmail.substring(0, userEmail.indexOf('@'));
+
+      // create the user favourite article ref
+      const favArticleAddress = `/user/${userEmail}/favourite`;
+      const favArticleRef = firebase.database().ref(favArticleAddress);
+
+      // update the favourite count when an article is added
+      favArticleRef.on('child_added', () => {
+        this.setState({
+          favouriteCount: this.state.favouriteCount + 1
+        });
+      });
+
+      // update the favourite count when an article is deteled
+      favArticleRef.on('child_removed', () => {
+        this.setState({
+          favouriteCount: this.state.favouriteCount - 1
+        });
+      });
+    }
+
     this.signout = this.signout.bind(this);
+
     this.viewFavourite = (() => {
       let userEmail = JSON.parse(localStorage.getItem('userProfile'));
       userEmail = userEmail.email.toString().replace('.', '_');
       userEmail = userEmail.substring(0, userEmail.indexOf('@'));
       ArticlesAction.getFavouriteArticles(userEmail);
+
       // check if user is viewing the headline page else redirect
       const url = window.location.href.toString();
       if (!url.includes('headlines')) {
         window.location = '/#/headlines';
       }
     });
+
     this.UpdateUserInfo = this.UpdateUserInfo.bind(this);
     this.UpdateCount = this.UpdateCount.bind(this);
   }
@@ -43,7 +74,10 @@ class UserInfo extends React.Component {
   */
   componentWillMount() {
     FavouriteStore.on('change', this.UpdateCount);
+
     const userinfo = JSON.parse(localStorage.getItem('userProfile'));
+
+    // set the user in logged in
     if (userinfo) {
       this.setState({ UserInfo: userinfo, isAuth: true });
     }
@@ -73,7 +107,17 @@ class UserInfo extends React.Component {
    * @return {null} Return no value.
   */
   UpdateCount() {
-    this.setState({ favouriteCount: FavouriteStore.count });
+    let currentCount = this.state.favouriteCount;
+    const storeCount = FavouriteStore.count;
+    const countchange = FavouriteStore.countchange;
+
+    // check if it is not the initial state
+    if (countchange) {
+      currentCount += storeCount;
+    } else {
+      currentCount = storeCount;
+    }
+    this.setState({ favouriteCount: currentCount });
   }
 
   /**
@@ -83,7 +127,8 @@ class UserInfo extends React.Component {
    * @return {null} Return no value.
   */
   signout() {
-    localStorage.setItem('userProfile', null);
+    localStorage.removeItem('userProfile');
+    localStorage.removeItem('favoutireArticles', null);
     this.setState({ UserInfo: {}, isAuth: false, favouriteCount: 0 });
     ArticlesAction.resetArticles();
     AuthAction(false, {});

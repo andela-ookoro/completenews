@@ -12,6 +12,7 @@ class FavouriteCount extends EventEmitter {
   constructor() {
     super();
     this.count = 0;
+    this.countchange = false;
   }
 
   /**
@@ -22,11 +23,8 @@ class FavouriteCount extends EventEmitter {
   handleActions(action) {
     switch (action.Type) {
       case Constant.GET_FAVOURITE_COUNT:
-        if (action.favouriteCount === 1) {
-          this.count += 1;
-        } else {
-          this.count = action.favouriteCount;
-        }
+        this.count = action.favouriteCount;
+        this.countchange = action.countchange;
         this.emit('change');
         break;
       default:
@@ -34,7 +32,7 @@ class FavouriteCount extends EventEmitter {
   }
 }
 
-const favouriteCount = new FavouriteCount();
-Dispatcher.register(favouriteCount.handleActions.bind(favouriteCount));
-export default favouriteCount;
+const favouriteStore = new FavouriteCount();
+Dispatcher.register(favouriteStore.handleActions.bind(favouriteStore));
+export default favouriteStore;
 

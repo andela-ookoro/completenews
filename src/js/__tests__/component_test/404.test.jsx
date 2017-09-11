@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Renderer from 'react-test-renderer';
-import NotFound from '../../pages/404';
+import NotFound from '../../pages/RouteNotFound';
 
 describe('rendering', () => {
   it('should render content as describe in the component', () => {

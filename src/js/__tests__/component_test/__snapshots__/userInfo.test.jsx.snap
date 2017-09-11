@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Component render the article template 1`] = `
+exports[`userinfo component snapshot should be same as render content 1`] = `
 <div>
   <button
     id="viewfavouritebtn"
@@ -8,7 +8,7 @@ exports[`Component render the article template 1`] = `
     title="view favourite headline"
   >
      Favourite Articles (
-    3
+    0
     )
   </button>
   <a

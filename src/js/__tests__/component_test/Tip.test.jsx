@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Renderer from 'react-test-renderer';
-import Tip from '../../pages/headlines/tip';
+import Tip from '../../pages/headlines/WelcomeTip';
 
 describe('rendering', () => {
   it('should render content as describe in the component', () => {

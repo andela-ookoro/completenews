@@ -1,8 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`rendering should render content as describe in the component 1`] = `
+exports[`Article component rendering dom should render content as describe in the component 1`] = `
 <div
-  className="col s12 m12 l12  hoverable"
+  className="col s12 m12 l12 shadow  hoverable"
+  id="artcile0"
 >
   <div
     className="article-content"
@@ -11,10 +12,10 @@ exports[`rendering should render content as describe in the component 1`] = `
       className="header"
     >
       <span
-        className="paragraphstyle"
+        className="articleHeader"
       >
-        celestine:  
-        My story
+        Abhimanyu Ghoshal:  
+        Facebook launches Express Wi-Fi in India to bre
       </span>
     </h6>
     <div
@@ -26,7 +27,7 @@ exports[`rendering should render content as describe in the component 1`] = `
         <img
           alt="No news image"
           className="imgStyle"
-          src="test.jpg"
+          src="https: //cdn2.tnwcdn.com/wp-content/blogs.dir/1/files/2017/05/Facebook-Express-Wi-Fi.jpg"
         />
       </div>
       <div
@@ -38,7 +39,7 @@ exports[`rendering should render content as describe in the component 1`] = `
           <p
             className="paragraphstyle"
           >
-            Tia is me
+            After a failed effort to offer free internet acces.
           </p>
         </div>
         <div
@@ -48,29 +49,30 @@ exports[`rendering should render content as describe in the component 1`] = `
             Published on 
           </p>
           <a
-            href="http://localhost"
+            href="https: //thenextweb.com/facebook/2017/05/04/facebook-launches-express-wi-fi-in-india-to-bring-rural-areas-online/"
             rel="noopener noreferrer"
             target="_blank"
           >
-            Read on  BBC 
+            Read on  bbc 
           </a>
           <button
             className="waves-effect waves-light"
             onClick={[Function]}
             title="view full story"
-            value={undefined}
+            value={0}
           >
              Read more
           </button>
           <button
             className="waves-effect waves-light"
-            id="btnAddToFav"
+            id="btnAddToFav0"
             onClick={[Function]}
             title="Add to favourite"
-            value={undefined}
+            value={0}
           >
             Add to favourite
           </button>
+          
           <div
             className="col m12"
             style={

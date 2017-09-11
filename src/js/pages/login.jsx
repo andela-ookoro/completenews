@@ -2,7 +2,7 @@ import React from 'react';
 import GoogleLogin from 'react-google-login';
 import firebase from '../utilities/firebase';
 import AuthAction from '../action/authAction';
-import Notification from '../action/notifyAction';
+import Notification from '../action/getNotification';
 import NotificationStore from '../store/NotifyStore';
 
 /**
@@ -15,8 +15,10 @@ class Login extends React.Component {
   /** Create Login object  */
   constructor() {
     super();
+
     this.state = { message: '' };
     this.notifyUser = this.notifyUser.bind(this);
+
     /**
      * authenticate user, if user is not registered; a user object is created
      * @param {object} response The reponse recieved from google
@@ -29,6 +31,7 @@ class Login extends React.Component {
         userEmail = userEmail.substring(0, userEmail.indexOf('@'));
         userEmail = userEmail.replace('.', '_');
 
+        // create a user object
         const userinfo = {
           'email': userProfile.email,
           'name': userProfile.name,
@@ -36,9 +39,11 @@ class Login extends React.Component {
           'userEmail': userEmail,
         };
 
+        // create the reference to the user favourite node on firebase
         localStorage.setItem('userProfile', JSON.stringify(userinfo));
         const userRef = firebase.database().ref('/user');
 
+        // fecth user's favourite articles and redirect to the headlines page
         userRef.once('value')
         .then((snapshot) => {
           if (snapshot.hasChild(userEmail)) {
@@ -51,6 +56,7 @@ class Login extends React.Component {
               imageUrl: userProfile.imageUrl,
               favourite: [],
             };
+
             userRef.child(userEmail).set(user)
             .then(() => {
               AuthAction(true, userinfo);
